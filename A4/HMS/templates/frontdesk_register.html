@@ -1,0 +1,39 @@
+{% extends 'frontdesk_base.html' %}
+
+{% block sidebar %} 
+    <a href="/frontdesk" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">Main Dashboard</a>
+    <a href="/frontdesk/register" class="list-group-item list-group-item-action py-2 ripple active" aria-current="true">Register Patient</a>
+    <a href="/frontdesk/admit" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">Admit Patient</a>
+    <a href="/frontdesk/discharge" class="list-group-item list-group-item-action py-2 ripple" aria-current="true">Discharge Patient</a>
+{% endblock %}
+
+{% block main_content %}
+    <div class="container-margin">
+        <form method="post">
+            <div class="container">
+                <label for="Patient Name" class="col-4">Patient Name:</label>
+                <input class = "col-5" type="text" name="Patient Name" id="Patient Name" required>
+            </div>
+            <div class = "container">
+                <label for="address" class="col-4">Patient Address</label>
+                <input class="col-5" type="text" name="address" id="address" required>
+            </div>
+            <div class="container">
+                <label for="Contact No" class="col-4">Patient Contact Number</label>
+                <input class="col-5" type="text" name="Contact No" id="Contact No" required>
+            </div>
+            <div class="container">
+                <label for="Age" class="col-4">Patient Age</label>
+                <input class="col-5" type="text" name="Age" id="Age" required>
+            </div>
+            <div class="container">
+                <label for="emergency_contact" class="col-4">Emergency Contact</label>
+                <input class="col-5" type="text" name="emergency_contact" id="emergency_contact" required>
+            </div>
+            <!-- <button type="submit">Register Patient</button> -->
+            <div class="container">
+                <button type="submit" class="btn btn-primary col-2">Register Patient</button>
+            </div>
+        </form>
+    </div>
+{% endblock %}
