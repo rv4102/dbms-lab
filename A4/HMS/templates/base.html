@@ -24,11 +24,11 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-nav justify-content-start">
-            <a class="nav-link" aria-current="page" href="{{ url_for('routes.patients') }}">Patients</a>
+            <!-- <a class="nav-link" aria-current="page" href="{{ url_for('routes.patients') }}">Patients</a>
             <a class="nav-link" href="{{ url_for('routes.doctors') }}">Doctors</a>
             <a class="nav-link" href="{{ url_for('routes.appointments') }}">Appointments</a>
             <a class="nav-link" href="{{ url_for('routes.tests') }}">Tests &amp; Treatments</a>
-            <a class="nav-link" href="{{ url_for('routes.admissions') }}">Admissions &amp; Discharges</a>
+            <a class="nav-link" href="{{ url_for('routes.admissions') }}">Admissions &amp; Discharges</a> -->
           </div>
           <div class="navbar-nav ms-auto justify-content-end">
             <a class="nav-link" href="{{ url_for('routes.index') }}">Logout</a>
@@ -36,9 +36,9 @@
         </div>
       </div>
     </nav>
-    <div class="container mt-5">
-      {% block content %} {% endblock %}
-    </div>
+    <!-- <div class="container mt-5"> -->
+    {% block content %} {% endblock %}
+    <!-- </div> -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>
   </body>
