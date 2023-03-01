@@ -5,8 +5,6 @@ from flask_login import LoginManager
 from flask import session, redirect, url_for
 from functools import wraps
 
-
-
 mysql = MySQL()
 
 def create_app():
@@ -22,8 +20,10 @@ def create_app():
     # init MYSQL
 
     app.config['MYSQL_HOST'] = 'localhost'
-    app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = 'Aniket'
+    # app.config['MYSQL_USER'] = 'root'
+    app.config['MYSQL_USER'] = 'shivam'
+    # app.config['MYSQL_PASSWORD'] = 'Aniket'
+    app.config['MYSQL_PASSWORD'] = 'password'
     app.config['MYSQL_DB'] = 'hospital_db'
 
     mysql.init_app(app)
