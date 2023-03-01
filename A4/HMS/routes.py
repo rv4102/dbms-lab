@@ -26,6 +26,8 @@ def tests():
 def admissions():
     return render_template('admissions.html')
 
-
+@routes.route('/login')
+def login():
+    return render_template('login.html')
 
 
