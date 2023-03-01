@@ -7,29 +7,26 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-      <a class="navbar-brand" href="{{ url_for('index') }}">Hospital Management System</a>
+      <a class="navbar-brand" href="{{ url_for('routes.index') }}">Hospital Management System</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-          <!-- <li class="nav-item active">
-            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
-          </li> -->
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('patients') }}">Patients</a>
+            <a class="nav-link" href="{{ url_for('routes.patients') }}">Patients</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('doctors') }}">Doctors</a>
+            <a class="nav-link" href="{{ url_for('routes.doctors') }}">Doctors</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('appointments') }}">Appointments</a>
+            <a class="nav-link" href="{{ url_for('routes.appointments') }}">Appointments</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('tests') }}">Tests &amp; Treatments</a>
+            <a class="nav-link" href="{{ url_for('routes.tests') }}">Tests &amp; Treatments</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('admissions') }}">Admissions &amp; Discharges</a>
+            <a class="nav-link" href="{{ url_for('routes.admissions') }}">Admissions &amp; Discharges</a>
           </li>
         </ul>
       </div>
