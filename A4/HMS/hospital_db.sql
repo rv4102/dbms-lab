@@ -32,11 +32,13 @@ CREATE TABLE Room(
 
 CREATE TABLE Administrator(
     Admin_ID        int NOT NULL AUTO_INCREMENT,
+    Username        TEXT,
+    Password        TEXT,
     Name            TEXT,
     District        TEXT,
     PIN             TEXT,
     House           TEXT,
-    Age             INT NOT NULL,
+    Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
     PRIMARY KEY(Admin_ID)
@@ -44,11 +46,13 @@ CREATE TABLE Administrator(
 
 CREATE TABLE DE_Operator(
     DEOp_ID         int NOT NULL AUTO_INCREMENT,
+    Username        TEXT,
+    Password        TEXT,
     Name            TEXT,
     District        TEXT,
     PIN             TEXT,
     House           TEXT,
-    Age             INT NOT NULL,
+    Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
     PRIMARY KEY(DEOp_ID)
@@ -56,11 +60,13 @@ CREATE TABLE DE_Operator(
 
 CREATE TABLE FD_Operator(
     FDOp_ID         int NOT NULL AUTO_INCREMENT,
+    Username        TEXT,
+    Password        TEXT,
     Name            TEXT,
     District        TEXT,
     PIN             TEXT,
     House           TEXT,
-    Age             INT NOT NULL,
+    Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
     PRIMARY KEY(FDOp_ID)
@@ -68,11 +74,13 @@ CREATE TABLE FD_Operator(
 
 CREATE TABLE Doctor(
     Doctor_ID       int NOT NULL AUTO_INCREMENT,
+    Username        TEXT,
+    Password        TEXT,
     Name            TEXT,
     District        TEXT,
     PIN             TEXT,
     House           TEXT,
-    Age             INT NOT NULL,
+    Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
     PRIMARY KEY(Doctor_ID)
