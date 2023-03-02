@@ -1,6 +1,5 @@
 from flask import Flask, sessions
 from flask_mysqldb import MySQL
-from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask import session, redirect, url_for
 from functools import wraps
@@ -22,15 +21,15 @@ def create_app():
     # app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
     # app.config['MYSQL_USER'] = 'shivam'
-    app.config['MYSQL_PASSWORD'] = 'Aniket'
+    # app.config['MYSQL_PASSWORD'] = 'Aniket'
+    app.config['MYSQL_PASSWORD'] = 'webDevGawd101'
     # app.config['MYSQL_PASSWORD'] = 'password'
     app.config['MYSQL_DB'] = 'hospital_db'
 
     mysql.init_app(app)
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
-
-    # bcrypt = Bcrypt(app)
+    
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
     login_manager.init_app(app)
