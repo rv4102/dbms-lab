@@ -8,5 +8,35 @@
 {% endblock %}
 
 {% block main_content %}
-
+<h1 class="mt-4">Discharge Patient</h1>
+    {% if patients|length == 0 %}
+        <p>No patients to admit</p>
+    {% else %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Patient ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Contact No.</th>
+                    <th scope="col">Emergency No.</th>
+                    <th scope="col">Discharge</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for patient in patients %}
+                <tr>
+                    {% for field in patient %}
+                    <td>{{ field }}</td>
+                    {% endfor %}
+                    <td><a href="/frontdesk/discharge/{{ patient[0] }}" class="btn btn-primary">Discharge</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
 {% endblock %}

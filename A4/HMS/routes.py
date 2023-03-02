@@ -87,6 +87,17 @@ def frontdesk_admit_patient(patient_id):
 
 @routes.route('/frontdesk/discharge')
 def frontdesk_discharge():
-    return render_template('frontdesk_discharge.html')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Patient")
+    patients = cur.fetchall()
+    cur.close()
+    print(patients)
+    return render_template('frontdesk_discharge.html', patients=patients)
+    # return render_t/emplate('frontdesk_discharge.html')
+
+@routes.route('/frontdesk/discharge/<patient_id>')
+def frontdesk_discharge_patient(patient_id):
+    print(patient_id)
+    return redirect(url_for('routes.frontdesk_discharge'))
 
 
