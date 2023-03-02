@@ -22,7 +22,7 @@ def login():
         print(password)
         print(check_password_hash(user.Password, password))
         if user and check_password_hash(user.Password, password):
-            print("Insusere")
+            print("Insecure")
             session['Access_Level'] = user.AccessLevel
             login_user(user, remember=True)
             flash('Logged in successfully.', category='success')
