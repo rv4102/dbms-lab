@@ -41,7 +41,6 @@ def logout():
 def sign_up():
     if request.method == 'POST':
         staff_type = identify_class(request.form.get('role'))
-        
         email = request.form.get('email')
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')

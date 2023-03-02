@@ -49,7 +49,18 @@ def index():
 
 @routes.route('/frontdesk')
 def frontdesk():
-    return render_template('frontdesk_dashboard.html',  user = current_user)
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Patient ORDER BY Patient_ID DESC LIMIT 5")
+    patients = cur.fetchall()
+    total_patients = len(patients)
+    cur.execute("SELECT * FROM Admitted")
+    admitted = cur.fetchall()
+    cur.execute("SELECT * FROM Discharged")
+    discharged = cur.fetchall()
+    # return render_template('frontdesk_dashboard.html',  total_patients = user = current_user)
+    # return render_template('frontdesk_dashboard.html', patients=patients, admitted=admitted, discharged=discharged, user = current_user)
+    return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), patients = patients, admitted_patients_list=admitted, user = current_user)  
+
 
 @routes.route('/frontdesk/register', methods=['GET', 'POST'])
 def frontdesk_register():
@@ -91,7 +102,6 @@ def frontdesk_admit_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()
     date = datetime.now().strftime("%Y-%m-%d")
-
     cur.execute("SELECT Room_Num FROM Room WHERE Room_Num NOT IN (SELECT Room_Num FROM Admitted)")
     room_number = cur.fetchone()
     if room_number is None:
