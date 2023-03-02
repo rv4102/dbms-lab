@@ -19,9 +19,9 @@ def create_app():
 
     # init MYSQL
 
-    app.config['MYSQL_HOST'] = 'localhost'
-    # app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_USER'] = 'shivam'
+    # app.config['MYSQL_HOST'] = 'localhost'
+    app.config['MYSQL_USER'] = 'root'
+    # app.config['MYSQL_USER'] = 'shivam'
     # app.config['MYSQL_PASSWORD'] = 'Aniket'
     app.config['MYSQL_PASSWORD'] = 'password'
     app.config['MYSQL_DB'] = 'hospital_db'

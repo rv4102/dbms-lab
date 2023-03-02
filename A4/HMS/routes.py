@@ -3,6 +3,7 @@ from flask_login import login_required, current_user
 from . import requires_access_level
 from .forms import RegisterPatient
 from flask import flash, redirect, url_for
+from . import mysql
 
 routes = Blueprint('routes', __name__)
 
@@ -71,7 +72,18 @@ def frontdesk_register():
 
 @routes.route('/frontdesk/admit')
 def frontdesk_admit():
-    return render_template('frontdesk_admit.html')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Patient")
+    patients = cur.fetchall()
+    cur.close()
+    print(patients)
+    return render_template('frontdesk_admit.html', patients=patients)
+    # return render_template('frontdesk_admit.html')
+
+@routes.route('/frontdesk/admit/<patient_id>')
+def frontdesk_admit_patient(patient_id):
+    print(patient_id)
+    return redirect(url_for('routes.frontdesk_admit'))
 
 @routes.route('/frontdesk/discharge')
 def frontdesk_discharge():
