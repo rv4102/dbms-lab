@@ -4,6 +4,7 @@ from . import requires_access_level
 from .forms import RegisterPatient
 from flask import flash, redirect, url_for
 from . import mysql
+from datetime import datetime
 
 routes = Blueprint('routes', __name__)
 
@@ -78,7 +79,7 @@ def frontdesk_register():
 @routes.route('/frontdesk/admit')
 def frontdesk_admit():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM Patient")
+    cur.execute("SELECT * FROM Patient WHERE Patient_ID NOT IN (SELECT Patient_ID FROM Admitted)")
     patients = cur.fetchall()
     cur.close()
     print(patients)
@@ -88,12 +89,23 @@ def frontdesk_admit():
 @routes.route('/frontdesk/admit/<patient_id>')
 def frontdesk_admit_patient(patient_id):
     print(patient_id)
-    return redirect(url_for('routes.frontdesk_admit'), user = current_user)
+    cur = mysql.connection.cursor()
+    date = datetime.now().strftime("%Y-%m-%d")
+
+    cur.execute("SELECT Room_Num FROM Room WHERE Room_Num NOT IN (SELECT Room_Num FROM Admitted)")
+    room_number = cur.fetchone()
+    if room_number is None:
+        flash(f'No rooms available', 'danger')
+        return redirect(url_for('routes.frontdesk_admit'))
+    cur.execute("INSERT INTO Admitted (Patient_ID, Room_Num, Date_Admitted) VALUES (%s, %s, %s)", (patient_id, room_number, date))
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('routes.frontdesk_admit'))
 
 @routes.route('/frontdesk/discharge')
 def frontdesk_discharge():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM Patient")
+    cur.execute("SELECT * FROM Patient WHERE Patient_ID IN (SELECT Patient_ID FROM Admitted)")
     patients = cur.fetchall()
     cur.close()
     print(patients)
@@ -103,6 +115,10 @@ def frontdesk_discharge():
 @routes.route('/frontdesk/discharge/<patient_id>')
 def frontdesk_discharge_patient(patient_id):
     print(patient_id)
-    return redirect(url_for('routes.frontdesk_discharge'), user = current_user)
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM Admitted WHERE Patient_ID = %s", (patient_id,))
+    mysql.connection.commit()
+    cur.close()
+    return redirect(url_for('routes.frontdesk_discharge'))
 
 
