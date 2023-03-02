@@ -18,6 +18,7 @@
 </head>
 
 <body {% block bg_custom %}{% endblock %}>
+  {% block navbar %}
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <a class="navbar-brand" href="{{ url_for('routes.index') }}">Hospital Management System</a>
@@ -41,6 +42,7 @@
       </div>
     </div>
   </nav>
+  {% endblock %}
 
   {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
