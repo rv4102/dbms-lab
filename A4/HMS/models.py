@@ -3,7 +3,6 @@ from flask_login import UserMixin
 
 class Administrator(UserMixin):
     def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
-    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.Admin_ID = id
         self.Username = username
         self.Password = password
@@ -64,7 +63,6 @@ class Administrator(UserMixin):
 
 class Doctor(UserMixin):
     def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
-    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.Doctor_ID = id
         self.Username = username
         self.Password = password
@@ -105,7 +103,6 @@ class Doctor(UserMixin):
 
     @staticmethod
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
-    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO Doctor(Doctor_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
@@ -124,7 +121,6 @@ class Doctor(UserMixin):
         return self.SuperID
 
 class FD_Operator(UserMixin):
-    def __init__(self, id, username, password, name, Address, Age, Gender):
     def __init__(self, id, username, password, name, Address, Age, Gender):
         self.FD_Operator_ID = id
         self.Username = username
@@ -164,7 +160,6 @@ class FD_Operator(UserMixin):
 
     @staticmethod
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
-    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO FD_Operator(FDOp_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
@@ -183,7 +178,6 @@ class FD_Operator(UserMixin):
         return self.SuperID
 
 class DE_Operator(UserMixin):
-    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
     def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.DE_Operator_ID = id
         self.Username = username
@@ -223,7 +217,6 @@ class DE_Operator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO DE_Operator(DEOp_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
