@@ -73,7 +73,7 @@ def frontdesk_register():
         cur.execute("INSERT INTO Patient (Name, Address, Age, Gender, Personal_Contact, Emergency_Contact) VALUES (%s, %s, %s, %s, %s, %s)", (form.name.data, form.address.data, form.age.data, form.gender.data, form.contact_number.data, form.emergency_contact.data))
         mysql.connection.commit()
         cur.close()
-        return redirect(url_for('routes.frontdesk'))
+        return redirect(url_for('routes.frontdesk_register'))
     return render_template('frontdesk_register.html', form=form,  user = current_user)
 
 @routes.route('/frontdesk/admit')
@@ -97,6 +97,7 @@ def frontdesk_admit_patient(patient_id):
     if room_number is None:
         flash(f'No rooms available', 'danger')
         return redirect(url_for('routes.frontdesk_admit'))
+    flash(f'Patient admitted to room {room_number[0]}', 'success')
     cur.execute("INSERT INTO Admitted (Patient_ID, Room_Num, Date_Admitted) VALUES (%s, %s, %s)", (patient_id, room_number, date))
     mysql.connection.commit()
     cur.close()
@@ -119,6 +120,7 @@ def frontdesk_discharge_patient(patient_id):
     cur.execute("DELETE FROM Admitted WHERE Patient_ID = %s", (patient_id,))
     mysql.connection.commit()
     cur.close()
+    flash(f'Patient discharged', 'success')
     return redirect(url_for('routes.frontdesk_discharge'))
 
 

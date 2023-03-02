@@ -1,16 +1,19 @@
 {% extends 'frontdesk_base.html' %}
 
-{% block sidebar %} 
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/frontdesk/register">Register Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+{% block sidebar %}
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main
+  DashBoard</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black"
+  href="/frontdesk/register">Register Patient</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black"
+  href="/frontdesk/admit">Admit Patient</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black"
+  href="/frontdesk/discharge">Discharge Patient</a>
 {% endblock %}
 
 {% block main_content %}
 <h1 class="mt-4">Register Patient</h1>
 <div class="container">
-
   <form method="post">
     {{ form.hidden_tag() }}
     <div class="form-group row">
@@ -18,7 +21,7 @@
       <div class="col-sm-8">
         {{ form.name(class="form-control") }}
         {% for error in form.name.errors %}
-          <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     </div>
@@ -27,7 +30,7 @@
       <div class="col-sm-8">
         {{ form.address(class="form-control") }}
         {% for error in form.address.errors %}
-          <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     </div>
@@ -36,7 +39,7 @@
       <div class="col-sm-8">
         {{ form.age(class="form-control") }}
         {% for error in form.age.errors %}
-          <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     </div>
@@ -45,7 +48,7 @@
       <div class="col-sm-8">
         {{ form.gender(class="form-control") }}
         {% for error in form.gender.errors %}
-          <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     </div>
@@ -54,7 +57,7 @@
       <div class="col-sm-8">
         {{ form.contact_number(class="form-control") }}
         {% for error in form.contact_number.errors %}
-          <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     </div>
@@ -63,7 +66,7 @@
       <div class="col-sm-8">
         {{ form.emergency_contact(class="form-control") }}
         {% for error in form.emergency_contact.errors %}
-          <span class="help-block">{{ error }}</span>
+        <span class="help-block">{{ error }}</span>
         {% endfor %}
       </div>
     </div>
