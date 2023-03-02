@@ -22,8 +22,8 @@ def create_app():
     # app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
     # app.config['MYSQL_USER'] = 'shivam'
-    # app.config['MYSQL_PASSWORD'] = 'Aniket'
-    app.config['MYSQL_PASSWORD'] = 'password'
+    app.config['MYSQL_PASSWORD'] = 'Aniket'
+    # app.config['MYSQL_PASSWORD'] = 'password'
     app.config['MYSQL_DB'] = 'hospital_db'
 
     mysql.init_app(app)
@@ -37,10 +37,21 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        for staff in [Administrator, Doctor, DE_Operator, FD_Operator]:
-            user = staff.get(id)
-            if user:
-                return user
+        print(id, "HELLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        id = str(id)
+        type = id[0]
+        print(id[1:])
+        id = int(id[1:])
+        if type == '1':
+            return Administrator.get(id)
+        elif type == '2':
+            return Doctor.get(id)
+        elif type == '3':
+            return FD_Operator.get(id)
+        elif type == '4':
+            return DE_Operator.get(id)
+        else:
+            return None
 
     return app
 

@@ -8,7 +8,7 @@ from .models import Administrator, Doctor, FD_Operator, DE_Operator, identify_cl
 auth = Blueprint('auth', __name__)
 
 
-@auth.route('/login', methods=['GET', 'POST'])
+@auth.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         staff = identify_class(request.form.get('role'))
@@ -46,11 +46,17 @@ def sign_up():
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        print
+        District = request.form.get('District')
+        PIN = request.form.get('PIN')
+        House = request.form.get('House')
+        Age = request.form.get('Age')
+        Gender = request.form.get('Gender')
+        Personal_Contact = request.form.get('Personal_Contact')
         for staff in [Administrator, Doctor, FD_Operator, DE_Operator]:
             user = staff.get_by_username(email)
             if user:
                 flash('Email already exists.', category='error')
+                return render_template("sign_up.html", user = current_user)
         
         if len(email) < 4:
             flash('Email must be greater than 3 characters.', category='error')
@@ -62,10 +68,11 @@ def sign_up():
             flash('Password must be at least 7 characters.', category='error')
         else:
             temp = len(staff_type.get_all())
-            new_user = staff_type.create(temp+1,email, first_name, generate_password_hash(password1, method='sha256'))
+            new_user = staff_type.create(temp+1,email, first_name, generate_password_hash(password1, method='sha256'), District, PIN, House, Age, Gender, Personal_Contact)
             print(new_user)
             session['Access_Level'] = new_user.AccessLevel
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
             return redirect(url_for('routes.index'))
+        
     return render_template("sign_up.html", user=current_user)

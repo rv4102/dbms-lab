@@ -24,15 +24,17 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-nav justify-content-start">
-            <!-- <a class="nav-link" aria-current="page" href="{{ url_for('routes.patients') }}">Patients</a>
+            <a class="nav-link" aria-current="page" href="{{ url_for('routes.patients') }}">Patients</a>
             <a class="nav-link" href="{{ url_for('routes.doctors') }}">Doctors</a>
             <a class="nav-link" href="{{ url_for('routes.appointments') }}">Appointments</a>
             <a class="nav-link" href="{{ url_for('routes.tests') }}">Tests &amp; Treatments</a>
-            <a class="nav-link" href="{{ url_for('routes.admissions') }}">Admissions &amp; Discharges</a> -->
+            <a class="nav-link" href="{{ url_for('routes.admissions') }}">Admissions &amp; Discharges</a>
           </div>
+          {% if user.is_authenticated %}
           <div class="navbar-nav ms-auto justify-content-end">
-            <a class="nav-link" href="{{ url_for('routes.index') }}">Logout</a>
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
           </div>
+          {% endif %}
         </div>
       </div>
     </nav>

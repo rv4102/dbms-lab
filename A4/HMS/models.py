@@ -14,6 +14,7 @@ class Administrator(UserMixin):
         self.Gender = Gender
         self.Personal_Contact = Personal_Contact
         self.AccessLevel = 1
+        self.SuperID = int("1" + str(id))
 
     @staticmethod
     def get(Admin_ID):
@@ -43,9 +44,9 @@ class Administrator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password):
+    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Administrator(Admin_ID, Username, Name, Password) VALUES (%s, %s, %s, %s)", (id, username, name, password))
+        cur.execute("INSERT INTO Administrator(Admin_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return Administrator.get(id)
     
@@ -59,7 +60,7 @@ class Administrator(UserMixin):
         return rows
     
     def get_id(self):
-        return self.Admin_ID
+        return self.SuperID
 
 class Doctor(UserMixin):
     def __init__(self, id, username, password, name, District, PIN, House, Age, Gender, Personal_Contact):
@@ -74,6 +75,7 @@ class Doctor(UserMixin):
         self.Gender = Gender
         self.Personal_Contact = Personal_Contact
         self.AccessLevel = 2
+        self.SuperID = int('2' + str(id))
 
 
     @staticmethod
@@ -83,7 +85,6 @@ class Doctor(UserMixin):
         row = cur.fetchone()
         if row is not None:
             temp = Doctor(*row)
-            temp.AccessLevel = 2
             return temp
         return None
 
@@ -97,16 +98,15 @@ class Doctor(UserMixin):
             if row is None:
                 break
             temp = Doctor(*row)
-            temp.AccessLevel = 2
             Doctor_ID_List.append(temp)
         if Doctor_ID_List is not None:
             return Doctor_ID_List
         return None
 
     @staticmethod
-    def create(id, username, name, password):
+    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Doctor(Doctor_ID, Username, Name, Password) VALUES (%s, %s, %s, %s)", (id, username, name, password))
+        cur.execute("INSERT INTO Doctor(Doctor_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return Doctor.get(id)
 
@@ -120,10 +120,10 @@ class Doctor(UserMixin):
         return rows
     
     def get_id(self):
-        return self.Doctor_ID
+        return self.SuperID
 
 class FD_Operator(UserMixin):
-    def __init__(self, id, username, name, password, District, PIN, House, Age, Gender):
+    def __init__(self, id, username, password, name, District, PIN, House, Age, Gender):
         self.FD_Operator_ID = id
         self.Username = username
         self.Password = password
@@ -134,11 +134,12 @@ class FD_Operator(UserMixin):
         self.Age = Age
         self.Gender = Gender
         self.AccessLevel = 3
+        self.SuperID = int('3' + str(id))
 
     @staticmethod
     def get(FD_Operator_ID):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM FD_Operator WHERE FD_Operator_ID = %s", (FD_Operator_ID,))
+        cur.execute("SELECT * FROM FD_Operator WHERE FDOp_ID = %s", (FD_Operator_ID,))
         row = cur.fetchone()
         if row is not None:
             temp = FD_Operator(*row)
@@ -161,11 +162,11 @@ class FD_Operator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password):
+    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO FD_Operator VALUES (%s, %s, %s, %s)", (id, username, name, password))
+        cur.execute("INSERT INTO FD_Operator(FDOp_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
         mysql.connection.commit()
-        return FD_Operator(id, username, name, password)
+        return FD_Operator.get(id)
 
     @staticmethod
     def get_all():
@@ -177,10 +178,10 @@ class FD_Operator(UserMixin):
         return rows
     
     def get_id(self):
-        return self.FD_Operator_ID
+        return self.SuperID
 
 class DE_Operator(UserMixin):
-    def __init__(self, id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
+    def __init__(self, id, username, password, name, District, PIN, House, Age, Gender, Personal_Contact):
         self.DE_Operator_ID = id
         self.Username = username
         self.Password = password
@@ -192,11 +193,12 @@ class DE_Operator(UserMixin):
         self.Gender = Gender
         self.Personal_Contact = Personal_Contact
         self.AccessLevel = 4
+        self.SuperID = int('4' + str(id))
 
     @staticmethod
     def get(DE_Operator_ID):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM DE_Operator WHERE DE_Operator_ID = %s", (DE_Operator_ID,))
+        cur.execute("SELECT * FROM DE_Operator WHERE DEOp_ID = %s", (DE_Operator_ID,))
         row = cur.fetchone()
         if row is not None:
             temp = DE_Operator(*row)
@@ -219,11 +221,11 @@ class DE_Operator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password):
+    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO DE_Operator VALUES (%s, %s, %s, %s)", (id, username, name, password))
+        cur.execute("INSERT INTO DE_Operator(DEOp_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
         mysql.connection.commit()
-        return DE_Operator(id, username, name, password)
+        return DE_Operator.get(id)
 
     @staticmethod
     def get_all():
@@ -235,7 +237,7 @@ class DE_Operator(UserMixin):
         return rows
     
     def get_id(self):
-        return self.DE_Operator_ID
+        return self.SuperID
 
 def identify_class(name):
     if name == 'Administrator':

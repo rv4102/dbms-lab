@@ -8,47 +8,47 @@ from . import mysql
 routes = Blueprint('routes', __name__)
 
 @routes.route('/')
-@login_required
-def index():
-    return render_template('index.html')
+def login():
+    return render_template('login.html', user = current_user)
 
 @routes.route('/patients')
 @login_required
 @requires_access_level(1)
 def patients():
-    return render_template('patients.html')
+    return render_template('patients.html', user = current_user)
 
 @routes.route('/doctors')
 @login_required
 @requires_access_level(2)
 def doctors():
-    return render_template('doctors.html')
+    return render_template('doctors.html', user = current_user)
 
 @routes.route('/appointments')
 @login_required
 @requires_access_level(2)
 def appointments():
-    return render_template('appointments.html')
+    return render_template('appointments.html', user = current_user)
 
 @routes.route('/tests')
 @login_required
 @requires_access_level(3)
 def tests():
-    return render_template('tests.html')
+    return render_template('tests.html' ,user = current_user)
 
 @routes.route('/admissions')
 @login_required
 @requires_access_level(4)
 def admissions():
-    return render_template('admissions.html')
+    return render_template('admissions.html',  user = current_user)
 
-@routes.route('/login')
-def login():
-    return render_template('login.html')
+@routes.route('/index')
+@login_required
+def index():
+    return render_template('index.html', user = current_user)
 
 @routes.route('/frontdesk')
 def frontdesk():
-    return render_template('frontdesk_dashboard.html')
+    return render_template('frontdesk_dashboard.html',  user = current_user)
 
 @routes.route('/frontdesk/register', methods=['GET', 'POST'])
 def frontdesk_register():
@@ -73,7 +73,7 @@ def frontdesk_register():
         mysql.connection.commit()
         cur.close()
         return redirect(url_for('routes.frontdesk'))
-    return render_template('frontdesk_register.html', form=form)
+    return render_template('frontdesk_register.html', form=form,  user = current_user)
 
 @routes.route('/frontdesk/admit')
 def frontdesk_admit():
@@ -82,13 +82,13 @@ def frontdesk_admit():
     patients = cur.fetchall()
     cur.close()
     print(patients)
-    return render_template('frontdesk_admit.html', patients=patients)
+    return render_template('frontdesk_admit.html', patients=patients,  user = current_user)
     # return render_template('frontdesk_admit.html')
 
 @routes.route('/frontdesk/admit/<patient_id>')
 def frontdesk_admit_patient(patient_id):
     print(patient_id)
-    return redirect(url_for('routes.frontdesk_admit'))
+    return redirect(url_for('routes.frontdesk_admit'), user = current_user)
 
 @routes.route('/frontdesk/discharge')
 def frontdesk_discharge():
@@ -97,12 +97,12 @@ def frontdesk_discharge():
     patients = cur.fetchall()
     cur.close()
     print(patients)
-    return render_template('frontdesk_discharge.html', patients=patients)
+    return render_template('frontdesk_discharge.html', patients=patients,  user = current_user)
     # return render_t/emplate('frontdesk_discharge.html')
 
 @routes.route('/frontdesk/discharge/<patient_id>')
 def frontdesk_discharge_patient(patient_id):
     print(patient_id)
-    return redirect(url_for('routes.frontdesk_discharge'))
+    return redirect(url_for('routes.frontdesk_discharge'), user = current_user)
 
 
