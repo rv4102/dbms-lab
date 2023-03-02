@@ -27,7 +27,7 @@ def login():
             login_user(user, remember=True)
             flash('Logged in successfully.', category='success')
             return redirect(url_for('routes.index'))
-        flash('Incorrect username or password.', category='error')
+        flash('Incorrect username or password.', category='danger')
     return render_template('login.html', user = current_user)
 
 
@@ -45,29 +45,27 @@ def sign_up():
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        District = request.form.get('District')
-        PIN = request.form.get('PIN')
-        House = request.form.get('House')
+        Address = request.form.get('Address')
         Age = request.form.get('Age')
         Gender = request.form.get('Gender')
         Personal_Contact = request.form.get('Personal_Contact')
         for staff in [Administrator, Doctor, FD_Operator, DE_Operator]:
             user = staff.get_by_username(email)
             if user:
-                flash('Email already exists.', category='error')
+                flash('Email already exists.', category='danger')
                 return render_template("sign_up.html", user = current_user)
         
         if len(email) < 4:
-            flash('Email must be greater than 3 characters.', category='error')
+            flash('Email must be greater than 3 characters.', category='danger')
         elif len(first_name) < 2:
-            flash('First name must be greater than 1 character.', category='error')
+            flash('First name must be greater than 1 character.', category='danger')
         elif password1 != password2:
-            flash('Passwords don\'t match.', category='error')
+            flash('Passwords don\'t match.', category='danger')
         elif len(password1) < 7:
-            flash('Password must be at least 7 characters.', category='error')
+            flash('Password must be at least 7 characters.', category='danger')
         else:
             temp = len(staff_type.get_all())
-            new_user = staff_type.create(temp+1,email, first_name, generate_password_hash(password1, method='sha256'), District, PIN, House, Age, Gender, Personal_Contact)
+            new_user = staff_type.create(temp+1,email, first_name, generate_password_hash(password1, method='sha256'), Address, Age, Gender, Personal_Contact)
             print(new_user)
             session['Access_Level'] = new_user.AccessLevel
             login_user(new_user, remember=True)

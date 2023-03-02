@@ -7,7 +7,7 @@ USE hospital_db;
 CREATE TABLE Patient(
     Patient_ID      int NOT NULL AUTO_INCREMENT,
     Name            TEXT,
-    Address           TEXT,
+    Address         TEXT,
     Age             INT NOT NULL,
     Gender          TEXT,
     Personal_Contact TEXT,
