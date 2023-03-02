@@ -14,28 +14,26 @@
         width: 240px;
         z-index: 600;
     }
-    .header-sidebar{
-        background-color: #53ceca ;
-        color: #fff;
-        padding: 10px;
-        text-align: center;
-    }
     .container-margin{
         margin-left: 240px;
     }
 </style>
-<nav id="sidebarMenu" class="sidebar bg-white">
-    <div class="header-sidebar">
-        <h4>Front Desk Operator</h4>
+<div class="container-fluid">
+    <div class = "row">
+        <div class="col-12 col-lg-2 sidebar-self">
+            <div class="border-end" id="sidebar-wrapper">
+                <div class="sidebar-heading border-bottom" style="font-size:x-large;">Frontdesk Operator</div>
+                <div class="list-group list-group-flush">
+                    {% block sidebar %} {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            {% block main_content %} {% endblock %}
+        </div>
     </div>
-    <div class="position-sticky">
-      <div class="list-group list-group-flush mx-3 mt-4">
-        {% block sidebar %} {% endblock %}
-      </div>
-    </div>
-</nav>    
-
-{% block main_content %} {% endblock %}
+    
+</div>
 
 
 {% endblock %}
