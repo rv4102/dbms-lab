@@ -2,14 +2,12 @@ from . import mysql
 from flask_login import UserMixin
 
 class Administrator(UserMixin):
-    def __init__(self, id, username, password, name, District, PIN, House, Age, Gender, Personal_Contact):
+    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.Admin_ID = id
         self.Username = username
         self.Password = password
         self.Name = name
-        self.District = District
-        self.PIN = PIN
-        self.House = House
+        self.Address = Address
         self.Age = Age
         self.Gender = Gender
         self.Personal_Contact = Personal_Contact
@@ -44,9 +42,9 @@ class Administrator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
+    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Administrator(Admin_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO Administrator(Admin_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return Administrator.get(id)
     
@@ -63,14 +61,12 @@ class Administrator(UserMixin):
         return self.SuperID
 
 class Doctor(UserMixin):
-    def __init__(self, id, username, password, name, District, PIN, House, Age, Gender, Personal_Contact):
+    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.Doctor_ID = id
         self.Username = username
         self.Password = password
         self.Name = name
-        self.District = District
-        self.PIN = PIN
-        self.House = House
+        self.Address = Address
         self.Age = Age
         self.Gender = Gender
         self.Personal_Contact = Personal_Contact
@@ -104,9 +100,9 @@ class Doctor(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
+    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Doctor(Doctor_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO Doctor(Doctor_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return Doctor.get(id)
 
@@ -123,14 +119,12 @@ class Doctor(UserMixin):
         return self.SuperID
 
 class FD_Operator(UserMixin):
-    def __init__(self, id, username, password, name, District, PIN, House, Age, Gender):
+    def __init__(self, id, username, password, name, Address, Age, Gender):
         self.FD_Operator_ID = id
         self.Username = username
         self.Password = password
         self.Name = name
-        self.District = District
-        self.PIN = PIN
-        self.House = House
+        self.Address = Address
         self.Age = Age
         self.Gender = Gender
         self.AccessLevel = 3
@@ -162,9 +156,9 @@ class FD_Operator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
+    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO FD_Operator(FDOp_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO FD_Operator(FDOp_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return FD_Operator.get(id)
 
@@ -181,14 +175,12 @@ class FD_Operator(UserMixin):
         return self.SuperID
 
 class DE_Operator(UserMixin):
-    def __init__(self, id, username, password, name, District, PIN, House, Age, Gender, Personal_Contact):
+    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.DE_Operator_ID = id
         self.Username = username
         self.Password = password
         self.Name = name
-        self.District = District
-        self.PIN = PIN
-        self.House = House
+        self.Address = Address
         self.Age = Age
         self.Gender = Gender
         self.Personal_Contact = Personal_Contact
@@ -221,9 +213,9 @@ class DE_Operator(UserMixin):
         return None
 
     @staticmethod
-    def create(id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact):
+    def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO DE_Operator(DEOp_ID, Username, Name, Password, District, PIN, House, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, District, PIN, House, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO DE_Operator(DEOp_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return DE_Operator.get(id)
 

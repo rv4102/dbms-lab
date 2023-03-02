@@ -1,4 +1,4 @@
-from flask import Flask, sessions
+from flask import Flask, sessions, flash
 from flask_mysqldb import MySQL
 from flask_login import LoginManager
 from flask import session, redirect, url_for
@@ -55,13 +55,14 @@ def create_app():
     return app
 
 def requires_access_level(access_level):
-        def decorator(f):
-            @wraps(f)
-            def decorated_function(*args, **kwargs):
-                if session['Access_Level'] != access_level:
-                    return redirect(url_for('routes.index', message="You do not have access to that page. Sorry!"))
-                return f(*args, **kwargs)
-            return decorated_function
-        return decorator
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if session['Access_Level'] != access_level:
+                flash('You do not have access to that page. Sorry!', category='danger')
+                return redirect(url_for('routes.index'))
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
 
 
