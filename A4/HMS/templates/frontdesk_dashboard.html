@@ -5,6 +5,7 @@
     <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
     <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
     <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
 {% endblock %}
 
 {% block main_content %}
@@ -22,6 +23,14 @@
         <div class="card-body">
           <h5 class="card-title">Admitted Patients</h5>
           <p class="card-text">{{ admitted_patients }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Available Rooms</h5>
+          <p class="card-text">{{ available_rooms }}</p>
         </div>
       </div>
     </div>
