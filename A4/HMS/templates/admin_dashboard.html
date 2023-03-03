@@ -1,0 +1,114 @@
+{% extends 'admin_base.html' %}
+
+{% block sidebar %}
+<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black;" href="/admin">Main
+  DashBoard</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/admin/add">Add
+  User</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black"
+  href="/admin/delete">Delete User</a>
+{% endblock %}
+
+{% block main_content %}
+<div class="row mt-5">
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total Doctors</h5>
+        <p class="card-text">{{ total_doctors }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total FrontDesk Operators</h5>
+        <p class="card-text">{{ total_fdo }}</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-4 mb-4">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Total DataEntry Operators</h5>
+        <p class="card-text">{{ total_deo }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-6 mb-4">
+    <h5 class="mb-3">Recently Registered Doctors</h5>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Doctor ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Age</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Personal_Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for doctor in doctors %}
+        <tr>
+          {% for field in doctor %}
+          <td>{{ field }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6 mb-4">
+    <h5 class="mb-3">Recently Registered FrontDesk Operators</h5>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">FD_Operator ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Age</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Personal_Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for fdo in fdos %}
+        <tr>
+          {% for field in fdo %}
+          <td>{{ field }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="col-md-6 mb-4">
+    <h5 class="mb-3">Recently Registered DataEntry Operators</h5>
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">DE_Operator ID</th>
+          <th scope="col">Name</th>
+          <th scope="col">Address</th>
+          <th scope="col">Age</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Personal_Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for deo in deos %}
+        <tr>
+          {% for field in deo %}
+          <td>{{ field }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
