@@ -41,7 +41,7 @@ CREATE TABLE Administrator(
 );
 
 CREATE TABLE DE_Operator(
-    DEOp_ID         int NOT NULL AUTO_INCREMENT,
+    DE_Operator_ID         int NOT NULL AUTO_INCREMENT,
     Username        TEXT,
     Password        TEXT,
     Name            TEXT,
@@ -49,11 +49,11 @@ CREATE TABLE DE_Operator(
     Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
-    PRIMARY KEY(DEOp_ID)
+    PRIMARY KEY(DE_Operator_ID)
 );
 
 CREATE TABLE FD_Operator(
-    FDOp_ID         int NOT NULL AUTO_INCREMENT,
+    FD_Operator_ID         int NOT NULL AUTO_INCREMENT,
     Username        TEXT,
     Password        TEXT,
     Name            TEXT,
@@ -61,7 +61,7 @@ CREATE TABLE FD_Operator(
     Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
-    PRIMARY KEY(FDOp_ID)
+    PRIMARY KEY(FD_Operator_ID)
 );
 
 CREATE TABLE Doctor(
@@ -78,7 +78,8 @@ CREATE TABLE Doctor(
 
 CREATE TABLE Test(
     Test_ID         int NOT NULL AUTO_INCREMENT,
-    Name            TEXT,
+    Category        TEXT,
+    BodyPart        TEXT,
     Result          TEXT,
     Patient_ID      int NOT NULL,
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
@@ -105,7 +106,8 @@ CREATE TABLE Discharged(
 
 CREATE TABLE Treatment(
     Treatment_ID        int NOT NULL AUTO_INCREMENT,
-    Name                TEXT,
+    Category            TEXT,
+    Details             TEXT,
     Doctor_ID           int NOT NULL,
     Patient_ID          int NOT NULL,
     FOREIGN KEY(Doctor_ID) REFERENCES Doctor(Doctor_ID),

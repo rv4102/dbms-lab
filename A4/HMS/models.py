@@ -136,7 +136,7 @@ class FD_Operator(UserMixin):
     @staticmethod
     def get(FD_Operator_ID):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM FD_Operator WHERE FDOp_ID = %s", (FD_Operator_ID,))
+        cur.execute("SELECT * FROM FD_Operator WHERE FD_Operator_ID = %s", (FD_Operator_ID,))
         row = cur.fetchone()
         if row is not None:
             temp = FD_Operator(*row)
@@ -161,7 +161,7 @@ class FD_Operator(UserMixin):
     @staticmethod
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO FD_Operator(FDOp_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO FD_Operator(FD_Operator_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return FD_Operator.get(id)
 
@@ -194,7 +194,7 @@ class DE_Operator(UserMixin):
     @staticmethod
     def get(DE_Operator_ID):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM DE_Operator WHERE DEOp_ID = %s", (DE_Operator_ID,))
+        cur.execute("SELECT * FROM DE_Operator WHERE DE_Operator_ID = %s", (DE_Operator_ID,))
         row = cur.fetchone()
         if row is not None:
             temp = DE_Operator(*row)
@@ -219,7 +219,7 @@ class DE_Operator(UserMixin):
     @staticmethod
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO DE_Operator(DEOp_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO DE_Operator(DE_Operator_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return DE_Operator.get(id)
 

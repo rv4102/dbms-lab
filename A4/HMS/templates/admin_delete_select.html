@@ -1,0 +1,27 @@
+{% extends 'admin_base.html' %}
+
+{% block sidebar %}
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/admin">Main
+  DashBoard</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/admin/add">Add
+  User</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black"
+  href="/admin/delete">Delete User</a>
+{% endblock %}
+
+{% block main_content %}
+<h1 class="mt-4">Delete User</h1>
+<div class="container">
+  <form method="post">
+    {{ form.hidden_tag() }}
+    <p>
+      {{form.users(size="1", class="form-control")}}
+    </p>
+    <div class="form-group row">
+      <div class="offset-sm-4 col-sm-8">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

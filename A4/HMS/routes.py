@@ -1,51 +1,50 @@
-from flask import render_template, Blueprint, request
+from flask import render_template, Blueprint, flash, redirect, url_for, request
 from flask_login import login_required, current_user
-from . import requires_access_level
-from .forms import RegisterPatient
-from flask import flash, redirect, url_for
-from . import mysql
+from . import requires_access_level, mysql
+from werkzeug.security import generate_password_hash
+from .forms import *
 from datetime import datetime, timedelta
 
 routes = Blueprint('routes', __name__)
 
 @routes.route('/')
 def login():
-    return render_template('login.html', user = current_user)
+    return render_template('login.html', user=current_user)
 
 @routes.route('/patients')
 @login_required
 @requires_access_level(1)
 def patients():
-    return render_template('patients.html', user = current_user)
+    return render_template('patients.html', user=current_user)
 
 @routes.route('/doctors')
 @login_required
 @requires_access_level(2)
 def doctors():
-    return render_template('doctors.html', user = current_user)
+    return render_template('doctors.html', user=current_user)
 
 @routes.route('/appointments')
 @login_required
 @requires_access_level(2)
 def appointments():
-    return render_template('appointments.html', user = current_user)
+    return render_template('appointments.html', user=current_user)
 
 @routes.route('/tests')
 @login_required
 @requires_access_level(3)
 def tests():
-    return render_template('tests.html' ,user = current_user)
+    return render_template('tests.html' ,user=current_user)
 
 @routes.route('/admissions')
 @login_required
 @requires_access_level(4)
 def admissions():
-    return render_template('admissions.html',  user = current_user)
+    return render_template('admissions.html',  user=current_user)
 
 @routes.route('/index')
 @login_required
 def index():
-    return render_template('index.html', user = current_user)
+    return render_template('index.html', user=current_user)
 
 @routes.route('/frontdesk')
 def frontdesk():
@@ -81,13 +80,13 @@ def frontdesk_register():
         print(form.gender.data)
         print(form.contact_number.data)
         print(form.emergency_contact.data)
-        flash(f'Successfully registered patient {form.name.data}', 'success')
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO Patient (Name, Address, Age, Gender, Personal_Contact, Emergency_Contact) VALUES (%s, %s, %s, %s, %s, %s)", (form.name.data, form.address.data, form.age.data, form.gender.data, form.contact_number.data, form.emergency_contact.data))
         mysql.connection.commit()
         cur.close()
+        flash(f'Successfully registered patient {form.name.data}', 'success')
         return redirect(url_for('routes.frontdesk_register'))
-    return render_template('frontdesk_register.html', form=form,  user = current_user)
+    return render_template('frontdesk_register.html', form=form,  user=current_user)
 
 @routes.route('/frontdesk/admit')
 def frontdesk_admit():
@@ -96,10 +95,9 @@ def frontdesk_admit():
     patients = cur.fetchall()
     cur.close()
     print(patients)
-    return render_template('frontdesk_admit.html', patients=patients,  user = current_user)
-    # return render_template('frontdesk_admit.html')
+    return render_template('frontdesk_admit.html', patients=patients,  user=current_user)
 
-@routes.route('/frontdesk/admit/<patient_id>')
+@routes.route('/frontdesk/admit/<patient_id>',methods = ['POST'])
 def frontdesk_admit_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()
@@ -122,8 +120,7 @@ def frontdesk_discharge():
     patients = cur.fetchall()
     cur.close()
     print(patients)
-    return render_template('frontdesk_discharge.html', patients=patients,  user = current_user)
-    # return render_t/emplate('frontdesk_discharge.html')
+    return render_template('frontdesk_discharge.html', patients=patients,  user=current_user)
 
 @routes.route('/frontdesk/discharge/<patient_id>')
 def frontdesk_discharge_patient(patient_id):
@@ -202,3 +199,28 @@ def frontdesk_appointment_schedule_date(patient_id, doctor_id):
     
 
 
+@routes.route('/admin/delete', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(1)
+def admin_delete_select():
+    form = DeleteUser()
+    if form.validate_on_submit():
+        cur = mysql.connection.cursor()
+        cur.execute(f"SELECT {form.users.data}_ID, Name, Address, Age, Gender, Personal_Contact FROM {form.users.data}")
+        user_type_list = cur.fetchall()
+        mysql.connection.commit()
+        cur.close()
+        return render_template('admin_delete.html', user_type=form.users.data, user_type_list=user_type_list, user=current_user)
+
+    return render_template('admin_delete_select.html', form=form,  user=current_user)
+    
+@routes.route('/admin/delete/<user_type>/<user_id>', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(1)
+def admin_delete_user(user_type, user_id):
+    cur = mysql.connection.cursor()
+    cur.execute(f"DELETE FROM {user_type} WHERE {user_type}_ID = '{user_id}'")
+    mysql.connection.commit()
+    cur.close()
+    flash(f'Successfully deleted {user_type} with ID {user_id}', 'success')
+    return redirect(url_for('routes.admin_delete_select'))
