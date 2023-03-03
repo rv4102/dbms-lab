@@ -8,7 +8,29 @@
     <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
 {% endblock %}
 
+    <!-- {% set doctor_id = 0 %}
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            </div>
+            <form action="/frontdesk/appointment_schedule/{{patient_id}}/{{doc[0]}}" method="post">
+                <div class="form-group modal-body">
+                    <label for="date">Date</label>
+                    <input type="date" class="form-control" id="date" name="date" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div>     -->
+    
 {% block main_content %}
+
     <h1 class="mt-4">Select Doctor</h1>
     {% if doctors|length == 0 %}
         <p>No doctors</p>
@@ -35,6 +57,11 @@
                     <td>{{ doc[5] }}</td>
                     <td>{{ doc[6] }}</td>
                     <td>{{ doc[7] }}</td>
+                    <!-- <td>
+                        <button data-bs-toggle="modal"  data-bs-target="#exampleModal" type="button" class="btn btn-primary">
+                            Select Doctor
+                        </button>
+                    </td> -->
                     <td><a href="/frontdesk/appointment_schedule/{{ patient_id }}/{{ doc[0] }}" class="btn btn-primary">Select Doctor</a></td>
                 </tr>
                 {% endfor %}
