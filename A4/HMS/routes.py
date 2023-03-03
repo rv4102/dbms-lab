@@ -336,3 +336,20 @@ def dataentry_treatment(patient_id, doctor_id):
         flash(f'Successfully added treatment {form.category.data} for patient {patient} by doctor {doctor}', 'success')
         return redirect(url_for('routes.dataentry'))
     return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)
+@routes.route('/admin/add_room', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(1)
+def admin_add_room():
+    form = AddRoom()
+    if form.validate_on_submit():
+        print("Form validated")
+        cur = mysql.connection.cursor()
+        cur.execute(f"INSERT INTO Room (Room_Num, Floor) VALUES ({form.num.data}, {form.floor.data})")
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Successfully added room {form.num.data}', 'success')
+        return redirect(url_for('routes.admin_add_room'))
+    # else:
+    #     flash(f'Error adding user {form.name.data}', 'danger')
+
+    return render_template('admin_add_room.html', form=form,  user=current_user)

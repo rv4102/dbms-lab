@@ -49,3 +49,7 @@ class AddTreatment(FlaskForm):
     patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
     doctor = StringField("Doctor Name", validators=[DataRequired(), Length(min=2, max=1000)])
     submit = SubmitField("Add Treatment")
+class AddRoom(FlaskForm):
+    num = IntegerField("Room Number", validators=[DataRequired(), NumberRange(min=1)])
+    floor = IntegerField("Floor Number", validators=[DataRequired(), NumberRange(min=1)])
+    submit = SubmitField("Create Room")
