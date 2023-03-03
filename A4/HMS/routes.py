@@ -197,7 +197,36 @@ def frontdesk_appointment_schedule_date(patient_id, doctor_id):
     else:
         return render_template('frontdesk_appointment_schedule_date.html', patient_id=patient_id, doctor_id=doctor_id,  user = current_user)
     
+@routes.route('/admin')
+@login_required
+@requires_access_level(1)
+def admin():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Doctor_ID, Name, Address, Age, Gender, Personal_Contact FROM Doctor ORDER BY Doctor_ID LIMIT 5")
+    doctors = cur.fetchall()
+    cur.execute("SELECT FD_Operator_ID, Name, Address, Age, Gender, Personal_Contact FROM FD_Operator ORDER BY FD_Operator_ID LIMIT 5")
+    fdos = cur.fetchall()
+    cur.execute("SELECT DE_Operator_ID, Name, Address, Age, Gender, Personal_Contact FROM DE_Operator ORDER BY DE_Operator_ID LIMIT 5")
+    deos = cur.fetchall()
+    return render_template('admin_dashboard.html', total_doctors=len(doctors), total_fdo=len(fdos), total_deo=len(deos), doctors=doctors, fdos=fdos, deos=deos, user=current_user)
 
+@routes.route('/admin/add', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(1)
+def admin_add():
+    form = AddUser()
+    if form.validate_on_submit():
+        print("Form validated")
+        cur = mysql.connection.cursor()
+        cur.execute(f"INSERT INTO {form.users.data} (Username, Password, Name, Address, Age, Gender, Personal_Contact) VALUES ('{form.username.data}', '{generate_password_hash(form.password1.data, method='sha256')}', '{form.name.data}', '{form.address.data}', '{form.age.data}', '{form.gender.data}', '{form.contact_number.data}')")
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Successfully added user {form.name.data}', 'success')
+        return redirect(url_for('routes.admin_add'))
+    # else:
+    #     flash(f'Error adding user {form.name.data}', 'danger')
+
+    return render_template('admin_add.html', form=form,  user=current_user)
 
 @routes.route('/admin/delete', methods=['GET', 'POST'])
 @login_required
