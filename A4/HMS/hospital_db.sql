@@ -78,7 +78,8 @@ CREATE TABLE Doctor(
 
 CREATE TABLE Test(
     Test_ID         int NOT NULL AUTO_INCREMENT,
-    Name            TEXT,
+    Category        TEXT,
+    BodyPart        TEXT,
     Result          TEXT,
     Patient_ID      int NOT NULL,
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
@@ -105,7 +106,8 @@ CREATE TABLE Discharged(
 
 CREATE TABLE Treatment(
     Treatment_ID        int NOT NULL AUTO_INCREMENT,
-    Name                TEXT,
+    Category            TEXT,
+    Details             TEXT,
     Doctor_ID           int NOT NULL,
     Patient_ID          int NOT NULL,
     FOREIGN KEY(Doctor_ID) REFERENCES Doctor(Doctor_ID),

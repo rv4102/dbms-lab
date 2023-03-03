@@ -95,7 +95,7 @@ def frontdesk_admit():
     print(patients)
     return render_template('frontdesk_admit.html', patients=patients,  user=current_user)
 
-@routes.route('/frontdesk/admit/<patient_id>')
+@routes.route('/frontdesk/admit/<patient_id>',methods = ['POST'])
 def frontdesk_admit_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()

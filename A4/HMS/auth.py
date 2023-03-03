@@ -15,6 +15,9 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         user_IDs = staff.get_by_username(username)
+        if len(user_IDs) == 0:
+            flash('Incorrect username or password.', category='danger')
+            return render_template('login.html', user=current_user)
         user = user_IDs[0]
         # iterate through user and match password until possible login
         print(user_IDs)

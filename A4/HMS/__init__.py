@@ -3,7 +3,10 @@ from flask_mysqldb import MySQL
 from flask_login import LoginManager
 from flask import session, redirect, url_for
 from functools import wraps
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 mysql = MySQL()
 
 def create_app():
@@ -19,11 +22,8 @@ def create_app():
     # init MYSQL
 
     # app.config['MYSQL_HOST'] = 'localhost'
-    app.config['MYSQL_USER'] = 'root'
-    # app.config['MYSQL_USER'] = 'shivam'
-    # app.config['MYSQL_PASSWORD'] = 'Aniket'
-    app.config['MYSQL_PASSWORD'] = 'webDevGawd101'
-    # app.config['MYSQL_PASSWORD'] = 'password'
+    app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
+    app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
     app.config['MYSQL_DB'] = 'hospital_db'
 
     mysql.init_app(app)
