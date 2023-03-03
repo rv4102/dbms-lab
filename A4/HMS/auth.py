@@ -7,7 +7,6 @@ from .models import Administrator, Doctor, FD_Operator, DE_Operator, identify_cl
 
 auth = Blueprint('auth', __name__)
 
-
 @auth.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -15,21 +14,22 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         user_IDs = staff.get_by_username(username)
-        user = user_IDs[0]
-        # iterate through user and match password until possible login
-        print(user_IDs)
-        print(user.Password)
-        print(password)
-        print(check_password_hash(user.Password, password))
-        if user and check_password_hash(user.Password, password):
-            print("Insecure")
-            session['Access_Level'] = user.AccessLevel
-            login_user(user, remember=True)
-            flash('Logged in successfully.', category='success')
-            if staff == Administrator:
-                return redirect(url_for('routes.admin'))
-            return redirect(url_for('routes.index'))
-        flash('Incorrect username or password.', category='danger')
+        for user in user_IDs:
+            if user and check_password_hash(user.Password, password):
+                session['Access_Level'] = user.AccessLevel
+                login_user(user, remember=True)
+                flash('Logged in successfully.', category='success')
+                if staff == Administrator:
+                    return redirect(url_for('routes.admin'))
+                elif staff == Doctor:
+                    return redirect(url_for('routes.index'))
+                elif staff == DE_Operator:
+                    return redirect(url_for('routes.index'))
+                elif staff == FD_Operator:
+                    return redirect(url_for('routes.frontdesk'))
+                
+                return redirect(url_for('routes.index'))
+        flash('Incorrect Username or Password', category='danger')
     return render_template('login.html', user=current_user)
 
 @auth.route('/logout')

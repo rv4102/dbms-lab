@@ -15,14 +15,13 @@ def create_app():
 
     app.register_blueprint(routes, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
-
     # init MYSQL
 
     # app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = 'root'
     # app.config['MYSQL_USER'] = 'shivam'
-    # app.config['MYSQL_PASSWORD'] = 'Aniket'
-    app.config['MYSQL_PASSWORD'] = 'webDevGawd101'
+    app.config['MYSQL_PASSWORD'] = 'Aniket'
+    # app.config['MYSQL_PASSWORD'] = 'webDevGawd101'
     # app.config['MYSQL_PASSWORD'] = 'password'
     app.config['MYSQL_DB'] = 'hospital_db'
 
@@ -36,10 +35,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(id):
-        print(id, "HELLLLLLOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
         id = str(id)
         type = id[0]
-        print(id[1:])
         id = int(id[1:])
         if type == '1':
             return Administrator.get(id)

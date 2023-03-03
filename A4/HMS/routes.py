@@ -4,6 +4,7 @@ from . import requires_access_level, mysql
 from werkzeug.security import generate_password_hash
 from .forms import *
 from datetime import datetime
+from .models import DE_Operator,Doctor,FD_Operator,Administrator, identify_class
 
 routes = Blueprint('routes', __name__)
 
@@ -151,6 +152,11 @@ def admin_add():
     if form.validate_on_submit():
         print("Form validated")
         cur = mysql.connection.cursor()
+        print(form.users.data, form.username.data)
+        user = identify_class(form.users.data).get_by_username(form.username.data)
+        if user:
+            flash('Username already exists.', category='danger')
+            return render_template('admin_add.html', form=form,  user=current_user)
         cur.execute(f"INSERT INTO {form.users.data} (Username, Password, Name, Address, Age, Gender, Personal_Contact) VALUES ('{form.username.data}', '{generate_password_hash(form.password1.data, method='sha256')}', '{form.name.data}', '{form.address.data}', '{form.age.data}', '{form.gender.data}', '{form.contact_number.data}')")
         mysql.connection.commit()
         cur.close()
