@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange
 
 class RegisterPatient(FlaskForm):
@@ -10,5 +10,3 @@ class RegisterPatient(FlaskForm):
     contact_number = StringField("Patient Contact Number", validators=[DataRequired(), Length(min=10, max=10)])
     emergency_contact = StringField("Patient Emergency Contact", validators=[DataRequired(), Length(min=10, max=10)])
     submit = SubmitField("Register Patient")
-
-

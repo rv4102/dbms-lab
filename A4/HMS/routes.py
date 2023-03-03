@@ -4,7 +4,7 @@ from . import requires_access_level
 from .forms import RegisterPatient
 from flask import flash, redirect, url_for
 from . import mysql
-from datetime import datetime
+from datetime import datetime, timedelta
 
 routes = Blueprint('routes', __name__)
 
@@ -56,10 +56,12 @@ def frontdesk():
     cur.execute("SELECT * FROM Admitted")
     admitted = cur.fetchall()
     cur.execute("SELECT * FROM Discharged")
-    discharged = cur.fetchall()
+    # get free rooms
+    cur.execute("SELECT * FROM Room WHERE Room_Num NOT IN (SELECT Room_Num FROM Admitted)")
+    free_rooms = cur.fetchall()
     # return render_template('frontdesk_dashboard.html',  total_patients = user = current_user)
     # return render_template('frontdesk_dashboard.html', patients=patients, admitted=admitted, discharged=discharged, user = current_user)
-    return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), patients = patients, admitted_patients_list=admitted, user = current_user)  
+    return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), available_rooms = len(free_rooms), patients = patients, admitted_patients_list=admitted, user = current_user)  
 
 
 @routes.route('/frontdesk/register', methods=['GET', 'POST'])
@@ -132,5 +134,71 @@ def frontdesk_discharge_patient(patient_id):
     cur.close()
     flash(f'Patient discharged', 'success')
     return redirect(url_for('routes.frontdesk_discharge'))
+
+@routes.route('/frontdesk/appointment_schedule')
+def frontdesk_appointment_schedule():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Patient WHERE Patient_ID NOT IN (SELECT Patient_ID FROM Admitted)")
+    patients = cur.fetchall()
+    cur.close()
+    print(patients)
+    return render_template('frontdesk_appointment_schedule.html', patients=patients,  user = current_user)
+
+@routes.route('/frontdesk/appointment_schedule/<patient_id>', methods=['GET', 'POST'])
+def frontdesk_appointment_schedule_patient(patient_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Doctor")
+    doctors = cur.fetchall()
+    cur.close()
+    return render_template('frontdesk_appointment_schedule_patient.html', patient_id=patient_id, doctors=doctors,  user = current_user)
+
+@routes.route('/frontdesk/appointment_schedule/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+def frontdesk_appointment_schedule_date(patient_id, doctor_id):
+    if request.method == 'POST':
+        cur = mysql.connection.cursor()
+        date_selected = request.form.get('date')
+        cur.execute("SELECT Appointment_Time FROM Appointment WHERE Appointment_Date = %s AND Doctor_ID = %s", (date_selected, doctor_id))
+        appointments = cur.fetchall()
+        # print(appointments)
+        print("\n\n\nAPPOINTMENTS\n\n\n", appointments)
+        if(len(appointments) == 0):
+            time_scheduled = '10:00:00'
+            flash(f'Appointment scheduled for {date_selected} at {time_scheduled}', 'success')
+            cur = mysql.connection.cursor()
+            cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doctor_id, date_selected, time_scheduled))
+            mysql.connection.commit()
+        else:
+            sorted_appointments = sorted(appointments)
+            last_appointment_time = sorted_appointments[-1][0]
+            print("TYPE LAST APP", type(last_appointment_time))
+            last_appointment_time = str(last_appointment_time)
+            # print("STR TIME",str_time)
+            # print("\n\n\nLAST APPOINTMENT TIME\n\n\n", last_appointment_time)
+            # print((last_appointment_time[0]))
+            # last_appointment_time = datetime.strftime(last_appointment_time, '%H:%M:%S')
+            # print(last_appointment_time)
+            # check if last appointment is before 4pm
+            # if(last_appointment_time.hour < 16):
+            #     next_appointment_time = last_appointment_time + timedelta(minutes=60)
+            #     flash(f'Appointment scheduled for {date_selected} at {next_appointment_time}', 'success')
+            #     cur = mysql.connection.cursor()
+            #     cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doctor_id, date_selected, next_appointment_time))
+            #     mysql.connection.commit()
+            # else:
+            #     flash(f'No appointments available on {date_selected}', 'danger')
+            if last_appointment_time < '16:00:00':
+                next_appointment_time = datetime.strptime(last_appointment_time, '%H:%M:%S') + timedelta(minutes=60)
+                next_appointment_time = datetime.strftime(next_appointment_time, '%H:%M:%S')
+                flash(f'Appointment scheduled for {date_selected} at {next_appointment_time}', 'success')
+                cur = mysql.connection.cursor()
+                cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doctor_id, date_selected, next_appointment_time))
+                mysql.connection.commit()
+            else:
+                flash(f'No appointments available on {date_selected}', 'danger')
+        cur.close()
+        return redirect(url_for('routes.frontdesk_appointment_schedule'))
+    else:
+        return render_template('frontdesk_appointment_schedule_date.html', patient_id=patient_id, doctor_id=doctor_id,  user = current_user)
+    
 
 

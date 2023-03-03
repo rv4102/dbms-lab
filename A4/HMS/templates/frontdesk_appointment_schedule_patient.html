@@ -1,0 +1,46 @@
+{% extends 'frontdesk_base.html' %}
+
+{% block sidebar %} 
+<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
+{% endblock %}
+
+{% block main_content %}
+    <h1 class="mt-4">Select Doctor</h1>
+    {% if doctors|length == 0 %}
+        <p>No doctors</p>
+    {% else %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Doctor ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Address</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Contact No.</th>
+                    <th scope="col">Select Doctor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in doctors %}
+                <tr>
+                    <td>{{ doc[0] }}</td>
+                    <td>{{ doc[3] }}</td>
+                    <td>{{ doc[4] }}</td>
+                    <td>{{ doc[5] }}</td>
+                    <td>{{ doc[6] }}</td>
+                    <td>{{ doc[7] }}</td>
+                    <td><a href="/frontdesk/appointment_schedule/{{ patient_id }}/{{ doc[0] }}" class="btn btn-primary">Select Doctor</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+    
+{% endblock %}

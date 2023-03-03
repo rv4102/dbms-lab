@@ -115,10 +115,10 @@ CREATE TABLE Treatment(
 
 CREATE TABLE Appointment(
     Appointment_ID      int NOT NULL AUTO_INCREMENT,
-    Name                TEXT,
     Doctor_ID           int NOT NULL,
     Patient_ID          int NOT NULL,
-    Priority            TEXT,
+    Appointment_Date    DATE,
+    Appointment_Time    TIME,
     FOREIGN KEY(Doctor_ID) REFERENCES Doctor(Doctor_ID),
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
     PRIMARY KEY(Appointment_ID)
