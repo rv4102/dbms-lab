@@ -26,10 +26,11 @@ def login():
             session['Access_Level'] = user.AccessLevel
             login_user(user, remember=True)
             flash('Logged in successfully.', category='success')
+            if staff == Administrator:
+                return redirect(url_for('routes.admin'))
             return redirect(url_for('routes.index'))
         flash('Incorrect username or password.', category='danger')
-    return render_template('login.html', user = current_user)
-
+    return render_template('login.html', user=current_user)
 
 @auth.route('/logout')
 @login_required
@@ -53,7 +54,7 @@ def sign_up():
             user = staff.get_by_username(email)
             if user:
                 flash('Email already exists.', category='danger')
-                return render_template("sign_up.html", user = current_user)
+                return render_template("sign_up.html", user=current_user)
         
         if len(email) < 4:
             flash('Email must be greater than 3 characters.', category='danger')
