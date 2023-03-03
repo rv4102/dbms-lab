@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange
-
+from wtforms.fields import DateField
+import datetime
 class RegisterPatient(FlaskForm):
     name = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=50)])
     address = StringField("Patient Address", validators=[DataRequired(), Length(min=2, max=50)])
@@ -28,3 +29,23 @@ class DeleteUser(FlaskForm):
     choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator')]
     users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
     submit = SubmitField("Select User")
+
+class AddTestResult(FlaskForm):
+    choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasoud')]
+    test_date = DateField("Test Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the end date.")])
+    # test_date = StringField("Test Date",validators=[DataRequired(message="You need to enter the end date.")],render_kw={"placeholder": "YYYY-MM-DD"})
+    category = StringField("Category", validators=[DataRequired(), Length(min=2, max=1000)])
+    bodypart = StringField("Associated Body Part", validators=[DataRequired(), Length(min=2, max=1000)])
+    patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
+    result = StringField("Test Result", validators=[DataRequired(), Length(min=2, max=1000)])
+    submit = SubmitField("Add Test")
+
+class AddTreatment(FlaskForm):
+    choices = [('Prescription', 'Prescription'), ('Physiotherapy', 'Physiotherapy'), ('Operation', 'Operation')]
+    # treatment_date = StringField("Treatment Date", format='YYYY-MM-DD',validators=[DataRequired(message="You need to enter the end date.")],render_kw={"placeholder": "YYYY-MM-DD"})
+    treatment_date = DateField("Treatment Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the end date.")])
+    category = SelectField(u'Field name', choices = choices, validators = [DataRequired()])    
+    details = StringField("Details", validators=[DataRequired(), Length(min=2, max=1000)])
+    patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
+    doctor = StringField("Doctor Name", validators=[DataRequired(), Length(min=2, max=1000)])
+    submit = SubmitField("Add Treatment")

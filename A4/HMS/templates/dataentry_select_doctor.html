@@ -1,0 +1,40 @@
+{% extends 'frontdesk_base.html' %}
+
+{% block sidebar %} 
+<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black;" href="/dataentry">Main DashBoard</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/dataentry/treatment">Add Treatment</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/dataentry/test">Add Test Result</a>
+{% endblock %}
+
+{% block main_content %}
+<h1 class="mt-4">Select Doctor for Adding Treatment</h1>
+    {% if doctors|length == 0 %}
+        <p>No doctors to add treatment</p>
+    {% else %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Doctor ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Age</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Contact No.</th>
+                    <th scope="col">Add Treatment</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doctor in doctors %}
+                <tr>
+                    {% for field in doctor %}
+                    <td>{{ field }}</td>
+                    {% endfor %}
+                    <td><a href="/dataentry/treatment/{{ patient_id }}/{{ doctor[0] }}" class="btn btn-primary">Add Treatment</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

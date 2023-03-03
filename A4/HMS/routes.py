@@ -99,7 +99,7 @@ def frontdesk_admit():
     print(patients)
     return render_template('frontdesk_admit.html', patients=patients,  user=current_user)
 
-@routes.route('/frontdesk/admit/<patient_id>',methods = ['POST'])
+@routes.route('/frontdesk/admit/<patient_id>',methods = ['GET','POST'])
 def frontdesk_admit_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()
@@ -260,3 +260,79 @@ def admin_delete_user(user_type, user_id):
     cur.close()
     flash(f'Successfully deleted {user_type} with ID {user_id}', 'success')
     return redirect(url_for('routes.admin_delete_select'))
+
+@routes.route('/dataentry')
+def dataentry():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Test_ID , TestDate,  Category , Patient.Name, BodyPart FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 0")
+    incomplete_tests = cur.fetchall()
+    cur.execute("SELECT Test_ID , TestDate,  Category , Patient.Name, BodyPart , Result FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 1")
+    complete_tests = cur.fetchall()
+    cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details,Doctor.Name, Patient.Name FROM Treatment JOIN Patient JOIN Doctor where Treatment.Patient_ID = Patient.Patient_ID and Treatment.Doctor_ID = Doctor.Doctor_ID")
+    treatments = cur.fetchall()
+    cur.close()
+    print(incomplete_tests, complete_tests, treatments)
+    return render_template('dataentry_main_dashboard.html', incomplete_tests=incomplete_tests, complete_tests=complete_tests, treatments=treatments, user=current_user)
+
+@routes.route('/dataentry/test')
+def dataentry_test():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Test_ID , TestDate,  Category , Name, BodyPart FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 0")
+    tests = cur.fetchall()
+    cur.close()
+    return render_template('dataentry_select_test.html', user=current_user,tests = tests)
+
+@routes.route('/dataentry/test/<test_id>', methods=['GET', 'POST'])
+def dataentry_test_id(test_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT TestDate,  Category , BodyPart , Name  FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 0 and Test.Test_ID = %s", (test_id,))
+    test = cur.fetchone()
+    cur.close()
+    form = AddTestResult()
+    if form.validate_on_submit():
+        print("Form validated")
+        cur = mysql.connection.cursor()
+        cur.execute(f"UPDATE Test SET ResultObtained = 1 , Result = '{form.result.data}'WHERE Test_ID = '{test_id}'")
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Successfully added test result {test[1]} for patient {test[3]}', 'success')
+        return redirect(url_for('routes.dataentry'))
+    return render_template('dataentry_add_test.html', user=current_user, test=test, form=form)
+
+@routes.route('/dataentry/treatment')
+def dataentry_select_patient():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Patient_ID,Name,Address,Age,Gender,Personal_Contact ,Emergency_Contact FROM Patient")
+    patients = cur.fetchall()
+    return render_template('dataentry_select_patient.html', user=current_user,patients = patients)
+
+@routes.route('/dataentry/treatment/<patient_id>', methods=['GET', 'POST'])
+def dataentry_select_doctor(patient_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Doctor_ID,Name,Username,Age,Gender,Personal_Contact FROM Doctor")
+    doctors = cur.fetchall()
+    print(doctors)
+    return render_template('dataentry_select_doctor.html', user=current_user,doctors = doctors, patient_id = patient_id)
+
+@routes.route('/dataentry/treatment/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+def dataentry_treatment(patient_id, doctor_id):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Name FROM Patient where Patient_ID = %s", (patient_id,))
+    patient = cur.fetchone()
+    cur.execute("SELECT Name FROM Doctor where Doctor_ID = %s", (doctor_id,))
+    doctor = cur.fetchone()
+    patient = patient[0]
+    doctor = doctor[0]
+    print(patient)
+    print(doctor)
+    cur.close()
+    form = AddTreatment()
+    if form.validate_on_submit():
+        print("Form validated")
+        cur = mysql.connection.cursor()
+        cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category,Details) VALUES ('{patient_id}', '{doctor_id}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}')")
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Successfully added treatment {form.category.data} for patient {patient} by doctor {doctor}', 'success')
+        return redirect(url_for('routes.dataentry'))
+    return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)

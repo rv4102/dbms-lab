@@ -1,0 +1,38 @@
+{% extends 'frontdesk_base.html' %}
+
+{% block sidebar %} 
+    <a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black;" href="/dataentry">Main DashBoard</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/dataentry/treatment">Add Treatment</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/dataentry/test">Add Test Result</a>
+{% endblock %}
+
+{% block main_content %}
+<h1 class="mt-4">Add Test Results</h1>
+    {% if tests|length == 0 %}
+        <p>No Tests Results to Add</p>
+    {% else %}
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Test ID</th>
+                    <th scope="col">Test Date</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Patient Name</th>
+                    <th scope="col">Associated Body Part</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for test in tests %}
+                <tr>
+                    {% for field in test %}
+                    <td>{{ field }}</td>
+                    {% endfor %}
+                    <td><a href="/dataentry/test/{{ test[0] }}" class="btn btn-primary">Add Test Result</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+{% endblock %}

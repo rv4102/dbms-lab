@@ -78,9 +78,11 @@ CREATE TABLE Doctor(
 
 CREATE TABLE Test(
     Test_ID         int NOT NULL AUTO_INCREMENT,
+    TestDate        DATE,
     Category        TEXT,
     BodyPart        TEXT,
     Result          TEXT,
+    ResultObtained  BOOLEAN,
     Patient_ID      int NOT NULL,
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
     PRIMARY KEY(Test_ID)
@@ -106,6 +108,7 @@ CREATE TABLE Discharged(
 
 CREATE TABLE Treatment(
     Treatment_ID        int NOT NULL AUTO_INCREMENT,
+    TreatmentDate       DATE,
     Category            TEXT,
     Details             TEXT,
     Doctor_ID           int NOT NULL,
@@ -132,3 +135,7 @@ CREATE TABLE Drugs_Prescribed(
     FOREIGN KEY(Treatment_ID) REFERENCES Treatment(Treatment_ID),
     PRIMARY KEY(Name, Treatment_ID)
 );
+INSERT INTO Patient (Name, Address, Age, Gender, Personal_Contact, Emergency_Contact) VALUES ("hfjkds", "jfdksh", 231, "Male", "1234567890", "1234567890");
+INSERT INTO Doctor (Name, Address, Age, Gender, Personal_Contact) VALUES ("Dr. A", "A", 20, "Male", "1234567890");
+INSERT INTO Room (Room_Num, Floor) VALUES (1, 1);
+INSERT INTO Test (TestDate, Category, BodyPart, ResultObtained, Patient_ID) VALUES ('2023-05-03', 'PET Scan', 'Brain', 0, 1);

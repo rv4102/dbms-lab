@@ -1,0 +1,62 @@
+{% extends 'dataentry_base.html' %}
+
+{% block sidebar %} 
+<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black;" href="/dataentry">Main DashBoard</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/dataentry/treatment">Add Treatment</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/dataentry/test">Add Test Result</a>
+{% endblock %}
+
+
+{% block main_content %}
+<h1 class="mt-4">Add Treatment </h1>
+<div class = "container">
+    <form method="post">
+        {{ form.hidden_tag() }}
+        <p>
+            {{form.category(size="1", class="form-control")}}
+          </p>
+        <div class="form-group row">
+            {{ form.treatment_date.label(class="col-sm-4 col-form-label") }}
+            <div class="col-sm-8">
+              {{form.treatment_date(class="form-control")}}
+                {% for error in form.treatment_date.errors %}
+              <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form.patient.label(class="col-sm-4 col-form-label") }}
+            <div class="col-sm-8">
+              {{form.patient(class="form-control",value=patient,readonly = true)}}
+                {% for error in form.patient.errors %}
+              <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form.doctor.label(class="col-sm-4 col-form-label") }}
+            <div class="col-sm-8">
+              {{form.doctor(class="form-control",value=doctor,readonly = true)}}
+                {% for error in form.doctor.errors %}
+              <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+            {{ form.details.label(class="col-sm-4 col-form-label") }}
+            <div class="col-sm-8">
+              {{form.details(class="form-control")}}
+                {% for error in form.details.errors %}
+              <span class="help-block">{{ error }}</span>
+              {% endfor %}
+            </div>
+        </div>
+        <div class="form-group row">
+          <div class="offset-sm-4 col-sm-8">
+            {{ form.submit(class="btn btn-primary") }}
+          </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}
