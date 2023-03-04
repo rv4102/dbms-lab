@@ -60,7 +60,7 @@ def requires_access_level(access_level):
         def decorated_function(*args, **kwargs):
             if session['Access_Level'] != access_level:
                 flash('You do not have access to that page. Sorry!', category='danger')
-                return redirect(url_for('routes.index'))
+                return redirect(url_for('routes.login'))
             return f(*args, **kwargs)
         return decorated_function
     return decorator

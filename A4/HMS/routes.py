@@ -13,42 +13,14 @@ routes = Blueprint('routes', __name__)
 def login():
     return render_template('login.html', user=current_user)
 
-@routes.route('/patients')
-@login_required
-@requires_access_level(1)
-def patients():
-    return render_template('patients.html', user=current_user)
-
-@routes.route('/doctors')
-@login_required
-@requires_access_level(2)
-def doctors():
-    return render_template('doctors.html', user=current_user)
-
-@routes.route('/appointments')
-@login_required
-@requires_access_level(2)
-def appointments():
-    return render_template('appointments.html', user=current_user)
-
-@routes.route('/tests')
-@login_required
-@requires_access_level(3)
-def tests():
-    return render_template('tests.html' ,user=current_user)
-
-@routes.route('/admissions')
-@login_required
-@requires_access_level(4)
-def admissions():
-    return render_template('admissions.html',  user=current_user)
-
 @routes.route('/index')
 @login_required
 def index():
     return render_template('index.html', user=current_user)
 
 @routes.route('/frontdesk')
+@login_required
+@requires_access_level(3)
 def frontdesk():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Patient ORDER BY Patient_ID DESC LIMIT 5")
@@ -66,6 +38,8 @@ def frontdesk():
 
 
 @routes.route('/frontdesk/register', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(3)
 def frontdesk_register():
     # if(request.method == 'POST'):
     #     print(request.form)
@@ -91,6 +65,8 @@ def frontdesk_register():
     return render_template('frontdesk_register.html', form=form,  user=current_user)
 
 @routes.route('/frontdesk/admit')
+@login_required
+@requires_access_level(3)
 def frontdesk_admit():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Patient WHERE Patient_ID NOT IN (SELECT Patient_ID FROM Admitted)")
@@ -100,6 +76,8 @@ def frontdesk_admit():
     return render_template('frontdesk_admit.html', patients=patients,  user=current_user)
 
 @routes.route('/frontdesk/admit/<patient_id>',methods = ['GET','POST'])
+@login_required
+@requires_access_level(3)
 def frontdesk_admit_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()
@@ -116,6 +94,8 @@ def frontdesk_admit_patient(patient_id):
     return redirect(url_for('routes.frontdesk_admit'))
 
 @routes.route('/frontdesk/discharge')
+@login_required
+@requires_access_level(3)
 def frontdesk_discharge():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Patient WHERE Patient_ID IN (SELECT Patient_ID FROM Admitted)")
@@ -125,6 +105,8 @@ def frontdesk_discharge():
     return render_template('frontdesk_discharge.html', patients=patients,  user=current_user)
 
 @routes.route('/frontdesk/discharge/<patient_id>')
+@login_required
+@requires_access_level(3)
 def frontdesk_discharge_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()
@@ -135,6 +117,8 @@ def frontdesk_discharge_patient(patient_id):
     return redirect(url_for('routes.frontdesk_discharge'))
 
 @routes.route('/frontdesk/appointment_schedule')
+@login_required
+@requires_access_level(3)
 def frontdesk_appointment_schedule():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Patient WHERE Patient_ID NOT IN (SELECT Patient_ID FROM Admitted)")
@@ -144,6 +128,8 @@ def frontdesk_appointment_schedule():
     return render_template('frontdesk_appointment_schedule.html', patients=patients,  user = current_user)
 
 @routes.route('/frontdesk/appointment_schedule/<patient_id>', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(3)
 def frontdesk_appointment_schedule_patient(patient_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Doctor")
@@ -152,6 +138,8 @@ def frontdesk_appointment_schedule_patient(patient_id):
     return render_template('frontdesk_appointment_schedule_patient.html', patient_id=patient_id, doctors=doctors,  user = current_user)
 
 @routes.route('/frontdesk/appointment_schedule/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(3)
 def frontdesk_appointment_schedule_date(patient_id, doctor_id):
     if request.method == 'POST':
         cur = mysql.connection.cursor()
@@ -262,6 +250,8 @@ def admin_delete_user(user_type, user_id):
     return redirect(url_for('routes.admin_delete_select'))
 
 @routes.route('/dataentry')
+@login_required
+@requires_access_level(4)
 def dataentry():
     cur = mysql.connection.cursor()
     cur.execute("SELECT Test_ID , TestDate,  Category , Patient.Name, BodyPart FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 0")
@@ -275,6 +265,8 @@ def dataentry():
     return render_template('dataentry_main_dashboard.html', incomplete_tests=incomplete_tests, complete_tests=complete_tests, treatments=treatments, user=current_user)
 
 @routes.route('/dataentry/test')
+@login_required
+@requires_access_level(4)
 def dataentry_test():
     cur = mysql.connection.cursor()
     cur.execute("SELECT Test_ID , TestDate,  Category , Name, BodyPart FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 0")
@@ -283,6 +275,8 @@ def dataentry_test():
     return render_template('dataentry_select_test.html', user=current_user,tests = tests)
 
 @routes.route('/dataentry/test/<test_id>', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(4)
 def dataentry_test_id(test_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT TestDate,  Category , BodyPart , Name  FROM Test JOIN Patient where Test.Patient_ID = Patient.Patient_ID and Test.ResultObtained = 0 and Test.Test_ID = %s", (test_id,))
@@ -300,6 +294,8 @@ def dataentry_test_id(test_id):
     return render_template('dataentry_add_test.html', user=current_user, test=test, form=form)
 
 @routes.route('/dataentry/treatment')
+@login_required
+@requires_access_level(4)
 def dataentry_select_patient():
     cur = mysql.connection.cursor()
     cur.execute("SELECT Patient_ID,Name,Address,Age,Gender,Personal_Contact ,Emergency_Contact FROM Patient")
@@ -307,6 +303,8 @@ def dataentry_select_patient():
     return render_template('dataentry_select_patient.html', user=current_user,patients = patients)
 
 @routes.route('/dataentry/treatment/<patient_id>', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(4)
 def dataentry_select_doctor(patient_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT Doctor_ID,Name,Username,Age,Gender,Personal_Contact FROM Doctor")
@@ -315,6 +313,8 @@ def dataentry_select_doctor(patient_id):
     return render_template('dataentry_select_doctor.html', user=current_user,doctors = doctors, patient_id = patient_id)
 
 @routes.route('/dataentry/treatment/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(4)
 def dataentry_treatment(patient_id, doctor_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT Name FROM Patient where Patient_ID = %s", (patient_id,))

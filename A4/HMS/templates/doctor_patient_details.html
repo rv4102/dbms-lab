@@ -5,9 +5,11 @@
     DashBoard</a>
 <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black"
     href="/doctor/query_patients">Query Patients</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/doctor/add_treatment">Assign
+<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black"
+    href="/doctor/add_treatment">Assign
     Treatments</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/doctor/add_test">Assign Tests</a>
+<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black"
+    href="/doctor/add_test">Assign Tests</a>
 
 {% endblock %}
 
@@ -104,14 +106,18 @@
             </tr>
         </thead>
         <tbody>
-            {% for treatment in treatments %}
+            {% for test in tests %}
             <tr>
-                <td>{{ treatment[0] }}</td>
-                <td>{{ treatment[1] }}</td>
-                <td>{{ treatment[2] }}</td>
-                <td>{{ treatment[3] }}</td>
-                <td>{{ treatment[4] }}</td>
-                <td>{{ treatment[5] }}</td>
+                <td>{{ test[0] }}</td>
+                <td>{{ test[1] }}</td>
+                <td>{{ test[2] }}</td>
+                <td>{{ test[3] }}</td>
+                <td>{{ test[4] }}</td>
+                {% if test[5] == true %}
+                <td>True</td>
+                {% else %}
+                <td>False</td>
+                {% endif %}
             </tr>
             {% endfor %}
         </tbody>

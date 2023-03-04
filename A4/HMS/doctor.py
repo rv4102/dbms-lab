@@ -16,7 +16,9 @@ def doctor_dashboard():
     cur = mysql.connection.cursor()
     cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details, Patient.Name, Patient.Age, Patient.Gender FROM Treatment JOIN Patient WHERE Treatment.Patient_ID = Patient.Patient_ID and Treatment.Doctor_ID = %s", (current_user.Doctor_ID,))
     patients_treated = cur.fetchall()
-    
+    # delete those entries in appointments whose appointment date / appointment time has passed
+    cur.execute("DELETE FROM Appointment WHERE Appointment_Date < %s OR (Appointment_Date = %s AND Appointment_Time < %s)", (datetime.now().date(), datetime.now().date(), datetime.now().time()))
+    mysql.connection.commit()
     cur.execute("SELECT Appointment_ID, Appointment_Date, Appointment_Time, Patient.Name,  Patient.Age, Patient.Gender FROM Appointment JOIN Patient WHERE Appointment.Patient_ID = Patient.Patient_ID and Appointment.Doctor_ID = %s ORDER BY Appointment_Date, Appointment_Time", (current_user.Doctor_ID,))
     appointments = cur.fetchall()
     print(appointments)
