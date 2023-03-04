@@ -7,6 +7,7 @@ from datetime import datetime
 from .models import DE_Operator,Doctor,FD_Operator,Administrator, identify_class
 from datetime import datetime, timedelta
 
+
 routes = Blueprint('routes', __name__)
 
 @routes.route('/')
@@ -19,6 +20,7 @@ def index():
     return render_template('index.html', user=current_user)
 
 @routes.route('/frontdesk')
+@routes.route('/frontdesk/')
 @login_required
 @requires_access_level(3)
 def frontdesk():
@@ -36,8 +38,8 @@ def frontdesk():
     # return render_template('frontdesk_dashboard.html', patients=patients, admitted=admitted, discharged=discharged, user = current_user)
     return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), available_rooms = len(free_rooms), patients = patients, admitted_patients_list=admitted, user = current_user)  
 
-
 @routes.route('/frontdesk/register', methods=['GET', 'POST'])
+@routes.route('/frontdesk/register/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(3)
 def frontdesk_register():
@@ -65,6 +67,7 @@ def frontdesk_register():
     return render_template('frontdesk_register.html', form=form,  user=current_user)
 
 @routes.route('/frontdesk/admit')
+@routes.route('/frontdesk/admit/')
 @login_required
 @requires_access_level(3)
 def frontdesk_admit():
@@ -76,6 +79,7 @@ def frontdesk_admit():
     return render_template('frontdesk_admit.html', patients=patients,  user=current_user)
 
 @routes.route('/frontdesk/admit/<patient_id>',methods = ['GET','POST'])
+@routes.route('/frontdesk/admit/<patient_id>/',methods = ['GET','POST'])
 @login_required
 @requires_access_level(3)
 def frontdesk_admit_patient(patient_id):
@@ -94,6 +98,7 @@ def frontdesk_admit_patient(patient_id):
     return redirect(url_for('routes.frontdesk_admit'))
 
 @routes.route('/frontdesk/discharge')
+@routes.route('/frontdesk/discharge/')
 @login_required
 @requires_access_level(3)
 def frontdesk_discharge():
@@ -105,6 +110,7 @@ def frontdesk_discharge():
     return render_template('frontdesk_discharge.html', patients=patients,  user=current_user)
 
 @routes.route('/frontdesk/discharge/<patient_id>')
+@routes.route('/frontdesk/discharge/<patient_id>/')
 @login_required
 @requires_access_level(3)
 def frontdesk_discharge_patient(patient_id):
@@ -117,6 +123,7 @@ def frontdesk_discharge_patient(patient_id):
     return redirect(url_for('routes.frontdesk_discharge'))
 
 @routes.route('/frontdesk/appointment_schedule')
+@routes.route('/frontdesk/appointment_schedule/')
 @login_required
 @requires_access_level(3)
 def frontdesk_appointment_schedule():
@@ -128,6 +135,7 @@ def frontdesk_appointment_schedule():
     return render_template('frontdesk_appointment_schedule.html', patients=patients,  user = current_user)
 
 @routes.route('/frontdesk/appointment_schedule/<patient_id>', methods=['GET', 'POST'])
+@routes.route('/frontdesk/appointment_schedule/<patient_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(3)
 def frontdesk_appointment_schedule_patient(patient_id):
@@ -138,6 +146,7 @@ def frontdesk_appointment_schedule_patient(patient_id):
     return render_template('frontdesk_appointment_schedule_patient.html', patient_id=patient_id, doctors=doctors,  user = current_user)
 
 @routes.route('/frontdesk/appointment_schedule/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+@routes.route('/frontdesk/appointment_schedule/<patient_id>/<doctor_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(3)
 def frontdesk_appointment_schedule_date(patient_id, doctor_id):
@@ -188,6 +197,7 @@ def frontdesk_appointment_schedule_date(patient_id, doctor_id):
         return render_template('frontdesk_appointment_schedule_date.html', patient_id=patient_id, doctor_id=doctor_id,  user = current_user)
     
 @routes.route('/admin')
+@routes.route('/admin/')
 @login_required
 @requires_access_level(1)
 def admin():
@@ -201,6 +211,7 @@ def admin():
     return render_template('admin_dashboard.html', total_doctors=len(doctors), total_fdo=len(fdos), total_deo=len(deos), doctors=doctors, fdos=fdos, deos=deos, user=current_user)
 
 @routes.route('/admin/add', methods=['GET', 'POST'])
+@routes.route('/admin/add/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(1)
 def admin_add():
@@ -224,6 +235,7 @@ def admin_add():
     return render_template('admin_add.html', form=form,  user=current_user)
 
 @routes.route('/admin/delete', methods=['GET', 'POST'])
+@routes.route('/admin/delete/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(1)
 def admin_delete_select():
@@ -239,6 +251,7 @@ def admin_delete_select():
     return render_template('admin_delete_select.html', form=form,  user=current_user)
     
 @routes.route('/admin/delete/<user_type>/<user_id>', methods=['GET', 'POST'])
+@routes.route('/admin/delete/<user_type>/<user_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(1)
 def admin_delete_user(user_type, user_id):
@@ -249,7 +262,27 @@ def admin_delete_user(user_type, user_id):
     flash(f'Successfully deleted {user_type} with ID {user_id}', 'success')
     return redirect(url_for('routes.admin_delete_select'))
 
+@routes.route('/admin/add_room', methods=['GET', 'POST'])
+@routes.route('/admin/add_room/', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(1)
+def admin_add_room():
+    form = AddRoom()
+    if form.validate_on_submit():
+        print("Form validated")
+        cur = mysql.connection.cursor()
+        cur.execute(f"INSERT INTO Room (Room_Num, Floor) VALUES ({form.num.data}, {form.floor.data})")
+        mysql.connection.commit()
+        cur.close()
+        flash(f'Successfully added room {form.num.data}', 'success')
+        return redirect(url_for('routes.admin_add_room'))
+    # else:
+    #     flash(f'Error adding user {form.name.data}', 'danger')
+
+    return render_template('admin_add_room.html', form=form,  user=current_user)
+
 @routes.route('/dataentry')
+@routes.route('/dataentry/')
 @login_required
 @requires_access_level(4)
 def dataentry():
@@ -265,6 +298,7 @@ def dataentry():
     return render_template('dataentry_main_dashboard.html', incomplete_tests=incomplete_tests, complete_tests=complete_tests, treatments=treatments, user=current_user)
 
 @routes.route('/dataentry/test')
+@routes.route('/dataentry/test/')
 @login_required
 @requires_access_level(4)
 def dataentry_test():
@@ -275,6 +309,7 @@ def dataentry_test():
     return render_template('dataentry_select_test.html', user=current_user,tests = tests)
 
 @routes.route('/dataentry/test/<test_id>', methods=['GET', 'POST'])
+@routes.route('/dataentry/test/<test_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(4)
 def dataentry_test_id(test_id):
@@ -294,6 +329,7 @@ def dataentry_test_id(test_id):
     return render_template('dataentry_add_test.html', user=current_user, test=test, form=form)
 
 @routes.route('/dataentry/treatment')
+@routes.route('/dataentry/treatment/')
 @login_required
 @requires_access_level(4)
 def dataentry_select_patient():
@@ -303,6 +339,7 @@ def dataentry_select_patient():
     return render_template('dataentry_select_patient.html', user=current_user,patients = patients)
 
 @routes.route('/dataentry/treatment/<patient_id>', methods=['GET', 'POST'])
+@routes.route('/dataentry/treatment/<patient_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(4)
 def dataentry_select_doctor(patient_id):
@@ -313,6 +350,7 @@ def dataentry_select_doctor(patient_id):
     return render_template('dataentry_select_doctor.html', user=current_user,doctors = doctors, patient_id = patient_id)
 
 @routes.route('/dataentry/treatment/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+@routes.route('/dataentry/treatment/<patient_id>/<doctor_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(4)
 def dataentry_treatment(patient_id, doctor_id):
@@ -336,21 +374,3 @@ def dataentry_treatment(patient_id, doctor_id):
         flash(f'Successfully added treatment {form.category.data} for patient {patient} by doctor {doctor}', 'success')
         return redirect(url_for('routes.dataentry'))
     return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)
-
-@routes.route('/admin/add_room', methods=['GET', 'POST'])
-@login_required
-@requires_access_level(1)
-def admin_add_room():
-    form = AddRoom()
-    if form.validate_on_submit():
-        print("Form validated")
-        cur = mysql.connection.cursor()
-        cur.execute(f"INSERT INTO Room (Room_Num, Floor) VALUES ({form.num.data}, {form.floor.data})")
-        mysql.connection.commit()
-        cur.close()
-        flash(f'Successfully added room {form.num.data}', 'success')
-        return redirect(url_for('routes.admin_add_room'))
-    # else:
-    #     flash(f'Error adding user {form.name.data}', 'danger')
-
-    return render_template('admin_add_room.html', form=form,  user=current_user)
