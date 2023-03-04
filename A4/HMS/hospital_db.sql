@@ -29,7 +29,7 @@ CREATE TABLE Room(
 );
 
 CREATE TABLE Administrator(
-    Admin_ID        int NOT NULL AUTO_INCREMENT,
+    Administrator_ID        int NOT NULL AUTO_INCREMENT,
     Username        TEXT,
     Password        TEXT,
     Name            TEXT,
@@ -37,7 +37,7 @@ CREATE TABLE Administrator(
     Age             INT ,
     Gender          TEXT,
     Personal_Contact    TEXT,
-    PRIMARY KEY(Admin_ID)
+    PRIMARY KEY(Administrator_ID)
 );
 
 CREATE TABLE DE_Operator(

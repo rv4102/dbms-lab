@@ -3,6 +3,7 @@ from wtforms import StringField, PasswordField, SubmitField, IntegerField, Selec
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange
 from wtforms.fields import DateField
 import datetime
+
 class RegisterPatient(FlaskForm):
     name = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=50)])
     address = StringField("Patient Address", validators=[DataRequired(), Length(min=2, max=50)])
@@ -13,7 +14,7 @@ class RegisterPatient(FlaskForm):
     submit = SubmitField("Register Patient")
 
 class AddUser(FlaskForm):
-    choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator')]
+    choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator'), ('Administrator', 'Administrator')]
     users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
     username = StringField("Username", validators=[DataRequired(), Length(min=2, max=50)])
     password1 = PasswordField("Password", validators=[DataRequired(), Length(min=2, max=20)])
@@ -26,9 +27,14 @@ class AddUser(FlaskForm):
     submit = SubmitField("Add User")
 
 class DeleteUser(FlaskForm):
-    choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator')]
+    choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator'), ('Administrator', 'Administrator')]
     users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
     submit = SubmitField("Select User")
+
+class AddRoom(FlaskForm):
+    num = IntegerField("Room Number", validators=[DataRequired(), NumberRange(min=1)])
+    floor = IntegerField("Floor Number", validators=[DataRequired(), NumberRange(min=1)])
+    submit = SubmitField("Create Room")
 
 class AddTestResult(FlaskForm):
     choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasoud')]
@@ -49,13 +55,9 @@ class AddTreatment(FlaskForm):
     patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
     doctor = StringField("Doctor Name", validators=[DataRequired(), Length(min=2, max=1000)])
     submit = SubmitField("Add Treatment")
-class AddRoom(FlaskForm):
-    num = IntegerField("Room Number", validators=[DataRequired(), NumberRange(min=1)])
-    floor = IntegerField("Floor Number", validators=[DataRequired(), NumberRange(min=1)])
-    submit = SubmitField("Create Room")
 
 class AddTreatmentForm(FlaskForm):
-    choices = [('Prescription', 'Prescription'), ('Physiotherapy', 'Physiotherapy'), ('Operation', 'Operation'), ('Other', 'Other')]
+    choices = [('Prescription', 'Prescription'), ('Physiotherapy', 'Physiotherapy'), ('Operation', 'Operation'), ('General', 'General'), ]
     treatment_date = DateField("Treatment Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the date.")])
     category = SelectField(u'Field name', choices = choices, validators = [DataRequired()])    
     details = StringField("Details", validators=[DataRequired(), Length(min=2, max=1000)])

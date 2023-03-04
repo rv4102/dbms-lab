@@ -3,7 +3,7 @@ from flask_login import UserMixin
 
 class Administrator(UserMixin):
     def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
-        self.Admin_ID = id
+        self.Administrator_ID = id
         self.Username = username
         self.Password = password
         self.Name = name
@@ -16,9 +16,9 @@ class Administrator(UserMixin):
         self.SuperID = int("1" + str(id))
 
     @staticmethod
-    def get(Admin_ID):
+    def get(Administrator_ID):
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM Administrator WHERE Admin_ID = %s", (Admin_ID,))
+        cur.execute("SELECT * FROM Administrator WHERE Administrator_ID = %s", (Administrator_ID,))
         row = cur.fetchone()
         print('before')
         if row is not None:
@@ -31,21 +31,21 @@ class Administrator(UserMixin):
     def get_by_username(username):
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM Administrator WHERE Username = %s", (username,))
-        Admin_ID_List = []
+        Administrator_ID_List = []
         while True:
             row = cur.fetchone()
             if row is None:
                 break
             temp = Administrator(*row)
-            Admin_ID_List.append(temp)
-        if Admin_ID_List is not None:
-            return Admin_ID_List
+            Administrator_ID_List.append(temp)
+        if Administrator_ID_List is not None:
+            return Administrator_ID_List
         return None
 
     @staticmethod
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Administrator(Admin_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO Administrator(Administrator_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
         mysql.connection.commit()
         return Administrator.get(id)
     
