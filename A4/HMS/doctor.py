@@ -90,10 +90,11 @@ def add_test():
     return render_template('doctor_add_test.html', name=current_user.Name, form=form, user = current_user)
 
 
-@doctor.route('/doctor/show/treatment_pdf', methods=['GET', 'POST'])
+@doctor.route('/doctor/show/treatment_pdf', methods=['POST'])
 @login_required
 @requires_access_level(2)
 def show_static_pdf():
+
     if request.method == 'POST':
         path = request.form['path']
         filename = request.form['filename']
