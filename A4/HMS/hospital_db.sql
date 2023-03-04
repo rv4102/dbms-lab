@@ -111,6 +111,7 @@ CREATE TABLE Treatment(
     TreatmentDate       DATE,
     Category            TEXT,
     Details             TEXT,
+    Document_Path       TEXT,
     Doctor_ID           int NOT NULL,
     Patient_ID          int NOT NULL,
     FOREIGN KEY(Doctor_ID) REFERENCES Doctor(Doctor_ID),

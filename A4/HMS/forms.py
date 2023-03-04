@@ -1,4 +1,5 @@
 from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, DateField
 from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange
 from wtforms.fields import DateField
@@ -54,6 +55,7 @@ class AddTreatment(FlaskForm):
     details = StringField("Details", validators=[DataRequired(), Length(min=2, max=1000)])
     patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
     doctor = StringField("Doctor Name", validators=[DataRequired(), Length(min=2, max=1000)])
+    file_upload = FileField("Upload File(Optional)", validators=[FileAllowed(['jpg', 'png', 'pdf'], 'Images only!')])
     submit = SubmitField("Add Treatment")
 
 class AddTreatmentForm(FlaskForm):

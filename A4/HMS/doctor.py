@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint, flash, redirect, url_for, request
+from flask import render_template, Blueprint, flash, redirect, url_for, request, send_file
 from flask_login import login_required, current_user
 from . import requires_access_level, mysql
 from werkzeug.security import generate_password_hash
@@ -6,6 +6,7 @@ from .forms import *
 from datetime import datetime
 from .models import DE_Operator,Doctor,FD_Operator,Administrator, identify_class
 from datetime import datetime, timedelta
+import os
 
 doctor = Blueprint('doctor', __name__)
 
@@ -40,17 +41,25 @@ def query_patients():
 @requires_access_level(2)
 def query_patient(patient_id):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details FROM Treatment WHERE Patient_ID = %s", (patient_id,))
+    cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details, Document_Path FROM Treatment WHERE Patient_ID = %s", (patient_id,))
     treatments = cur.fetchall()
     cur.execute("SELECT Test_ID,TestDate,Category,BodyPart,Result,ResultObtained FROM Test WHERE Patient_ID = %s", (patient_id,))
     tests = cur.fetchall()
+    filename = ""
+    treatments_og = []
     for treatment in treatments:
+        if treatment[4] != None:
+            filename = os.path.basename(treatment[4])
+        else:
+            filename = None
         cur.execute("SELECT Name FROM Drugs_Prescribed WHERE Treatment_ID = %s", (treatment[0],))
         medicines = cur.fetchall()
+        treatment = treatment + (filename,)
         treatment = treatment + (medicines,)
-    print(treatments)
+        treatments_og.append(treatment)
+
     cur.close()
-    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments, tests = tests, user = current_user)
+    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests, user = current_user)
 
 @doctor.route('/doctor/add_treatment' , methods=['GET', 'POST'])
 @login_required
@@ -79,5 +88,17 @@ def add_test():
         flash('Treatment added successfully.', category='success')
         return redirect(url_for('doctor.doctor_dashboard'))
     return render_template('doctor_add_test.html', name=current_user.Name, form=form, user = current_user)
+
+
+@doctor.route('/doctor/show/treatment_pdf', methods=['GET', 'POST'])
+@login_required
+@requires_access_level(2)
+def show_static_pdf():
+    if request.method == 'POST':
+        path = request.form['path']
+        filename = request.form['filename']
+        return send_file(path, as_attachment=True, download_name=filename)
+
+
 
 
