@@ -36,8 +36,8 @@
                 <td>{{ treatment[1] }}</td>
                 <td>{{ treatment[2] }}</td>
                 <td>{{ treatment[3] }}</td>
-                <td><button type="button" class="btn btn-info btn-sm" data-toggle="modal"
-                        data-target="#myOutput{{ treatment[0] }}">Details</button></td>
+                <td><button type="button" class="btn btn-info" data-bs-toggle="modal"
+                        data-bs-target="#myOutput{{ treatment[0] }}">Details</button></td>
             </tr>
             {% endfor %}
         </tbody>
@@ -46,14 +46,14 @@
 
 {% for treatment in treatments %}
 <!-- Modal -->
-<div class="modal fade" id="myOutput{{ treatment[0] }}" role="dialog">
+<div class="modal fade" id="myOutput{{ treatment[0] }}" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">User Login&times;</button>
-                <h4 class="modal-title">Drugs Prescribed</h4>
+                <h4 class="modal-title" id="exampleModalLabel">Drugs Prescribed</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal">User Login&times;</button>
             </div>
             <div class="modal-body">
                 <div class="table-responsive">
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
 
