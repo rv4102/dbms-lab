@@ -7,9 +7,7 @@ from .forms import *
 from datetime import datetime
 from .models import DE_Operator,Doctor,FD_Operator,Administrator, identify_class
 from datetime import datetime, timedelta
-import os
-
-
+import os  
 routes = Blueprint('routes', __name__)
 
 @routes.route('/')
@@ -385,5 +383,30 @@ def dataentry_treatment(patient_id, doctor_id):
         return redirect(url_for('routes.dataentry'))
     return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)
 
-
+# @routes.route("/send/<patient_id>/<doctor_id>/<file>", methods = ["GET"])
+# def index(patient_id,doctor_id,file):
+#     extension = file[-3:]
+#     file = f"./HMS/public/{file}"
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT Username,Name FROM Doctor WHERE Doctor_ID = %s", (doctor_id,))
+#     doctor = cur.fetchone()
+#     cur.execute("SELECT Name,Age,Gender FROM Patient WHERE Patient_ID = %s", (patient_id,))
+#     patient = cur.fetchone()
+#     cur.close()
+#     subject = f"Health Report for {patient[0]}"
+#     body = f"Dear {doctor[1]},\n\nPlease find the attached health report for {patient[0]}.\n\nRegards,\nHMS Team"
+#     msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = ['kushaz.sehgal@gmail.com'])
+#     if extension == 'pdf':
+#         content_type = 'application/pdf'
+#     elif extension == 'png':
+#         content_type = 'image/png'    
+#     elif extension == 'txt':
+#         content_type = 'text/plain'
+#     with app.open_resource(file) as fp:  
+#         msg.attach(f"{patient[0]}_report.{extension}",content_type,fp.read())  
+#         # msg.attach(f"{patient[0]}_report2.{extension}",content_type,fp.read()) 
+#     with app.open_resource('./public/A2.pdf') as fp:  
+#         msg.attach(f"{patient[0]}_report2.pdf",'application/pdf',fp.read())          
+#     mail.send(msg)  
+#     return "sent"  
 

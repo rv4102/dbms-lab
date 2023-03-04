@@ -4,8 +4,7 @@ from flask_login import LoginManager
 from flask import session, redirect, url_for
 from functools import wraps
 import os
-from dotenv import load_dotenv
-
+from dotenv import load_dotenv 
 load_dotenv()
 mysql = MySQL()
 
@@ -25,8 +24,14 @@ def create_app():
     # app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
     app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
-
+    app.config["MAIL_SERVER"]='smtp.gmail.com'  
+    app.config["MAIL_PORT"] = 465  
+    app.config["MAIL_USERNAME"] = 'HMS.iitkgp@gmail.com'  
+    app.config['MAIL_PASSWORD'] = 'tulcolduqjiwwpcn'
+    app.config['MAIL_USE_TLS'] = False  
+    app.config['MAIL_USE_SSL'] = True  
     app.config['MYSQL_DB'] = 'hospital_db'
+
 
     mysql.init_app(app)
 
@@ -51,7 +56,6 @@ def create_app():
             return DE_Operator.get(id)
         else:
             return None
-
     return app
 
 def requires_access_level(access_level):
