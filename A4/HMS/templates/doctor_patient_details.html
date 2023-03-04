@@ -10,6 +10,7 @@
     Treatments</a>
 <a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black"
     href="/doctor/add_test">Assign Tests</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/doctor/add_prescription">Assign Prescriptions</a>
 
 {% endblock %}
 
@@ -82,7 +83,7 @@
                                 <td>No Drugs Prescribed</td>
                             </tr>
                             {% else %}
-                            {% for drug in treatment[4] %}
+                            {% for drug in treatment[6] %}
                             <tr>
                                 <td>{{ drug }}</td>
                             </tr>

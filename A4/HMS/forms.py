@@ -73,3 +73,9 @@ class AddTestForm(FlaskForm):
     bodypart = StringField("Associated Body Part", validators=[DataRequired(), Length(min=2, max=1000)])
     patient_id = IntegerField("Patient ID", validators=[DataRequired()])
     submit = SubmitField("Add Test")
+
+class AddPrescriptionForm(FlaskForm):
+    prescription_date = DateField("Prescription Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the date.")])
+    medicine = StringField("Medicine", validators=[DataRequired(), Length(min=2, max=1000)])
+    treatment_id = IntegerField("Treatment ID", validators=[DataRequired()])
+    submit = SubmitField("Add Prescription")

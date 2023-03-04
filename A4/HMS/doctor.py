@@ -54,11 +54,15 @@ def query_patient(patient_id):
             filename = None
         cur.execute("SELECT Name FROM Drugs_Prescribed WHERE Treatment_ID = %s", (treatment[0],))
         medicines = cur.fetchall()
+        medicine = []
+        for med in medicines:
+            medicine.append(med[0])
         treatment = treatment + (filename,)
-        treatment = treatment + (medicines,)
+        treatment = treatment + (medicine,)
         treatments_og.append(treatment)
 
     cur.close()
+    print(treatments_og)
     return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests, user = current_user)
 
 @doctor.route('/doctor/add_treatment' , methods=['GET', 'POST'])
@@ -99,6 +103,24 @@ def show_static_pdf():
         path = request.form['path']
         filename = request.form['filename']
         return send_file(path, as_attachment=True, download_name=filename)
+    
+@doctor.route('/doctor/add_prescription' , methods=['GET', 'POST'])
+@login_required
+@requires_access_level(2)
+def add_prescription():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details, Patient.Name, Patient.Age, Patient.Gender FROM Treatment JOIN Patient WHERE Treatment.Patient_ID = Patient.Patient_ID ")
+    treated_patients = cur.fetchall()
+    form = AddPrescriptionForm()
+    if form.validate_on_submit():
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO Drugs_Prescribed (Name, Treatment_ID) VALUES (%s, %s)", (form.medicine.data, form.treatment_id.data))
+        mysql.connection.commit()
+        cur.close()
+        flash('Prescription added successfully.', category='success')
+        return redirect(url_for('doctor.add_prescription'))
+    return render_template('doctor_add_prescription.html', form = form ,name=current_user.Name, treated_patients = treated_patients ,user = current_user)
+
 
 
 
