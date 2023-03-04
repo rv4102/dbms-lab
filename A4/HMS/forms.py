@@ -53,3 +53,19 @@ class AddRoom(FlaskForm):
     num = IntegerField("Room Number", validators=[DataRequired(), NumberRange(min=1)])
     floor = IntegerField("Floor Number", validators=[DataRequired(), NumberRange(min=1)])
     submit = SubmitField("Create Room")
+
+class AddTreatmentForm(FlaskForm):
+    choices = [('Prescription', 'Prescription'), ('Physiotherapy', 'Physiotherapy'), ('Operation', 'Operation'), ('Other', 'Other')]
+    treatment_date = DateField("Treatment Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the date.")])
+    category = SelectField(u'Field name', choices = choices, validators = [DataRequired()])    
+    details = StringField("Details", validators=[DataRequired(), Length(min=2, max=1000)])
+    patient_id = IntegerField("Patient ID", validators=[DataRequired()])
+    submit = SubmitField("Add Treatment")
+
+class AddTestForm(FlaskForm):
+    choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasoud')]
+    test_date = DateField("Test Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the date.")])
+    category = SelectField(u'Field name', choices = choices, validators = [DataRequired()])    
+    bodypart = StringField("Associated Body Part", validators=[DataRequired(), Length(min=2, max=1000)])
+    patient_id = IntegerField("Patient ID", validators=[DataRequired()])
+    submit = SubmitField("Add Test")

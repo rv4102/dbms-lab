@@ -336,6 +336,7 @@ def dataentry_treatment(patient_id, doctor_id):
         flash(f'Successfully added treatment {form.category.data} for patient {patient} by doctor {doctor}', 'success')
         return redirect(url_for('routes.dataentry'))
     return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)
+
 @routes.route('/admin/add_room', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(1)

@@ -121,7 +121,7 @@ class Doctor(UserMixin):
         return self.SuperID
 
 class FD_Operator(UserMixin):
-    def __init__(self, id, username, password, name, Address, Age, Gender):
+    def __init__(self, id, username, password, name, Address, Age, Gender, Personal_Contact):
         self.FD_Operator_ID = id
         self.Username = username
         self.Password = password
@@ -130,6 +130,7 @@ class FD_Operator(UserMixin):
         self.Address = Address
         self.Age = Age
         self.Gender = Gender
+        self.Personal_Contact = Personal_Contact
         self.AccessLevel = 3
         self.SuperID = int('3' + str(id))
 

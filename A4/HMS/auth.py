@@ -14,7 +14,12 @@ def login():
         username = request.form.get('username')
         password = request.form.get('password')
         user_IDs = staff.get_by_username(username)
+        print(user_IDs)
+        print(password)
+        print(username)
         for user in user_IDs:
+            print(user.Password)
+            print(check_password_hash(user.Password, password))
             if user and check_password_hash(user.Password, password):
                 session['Access_Level'] = user.AccessLevel
                 login_user(user, remember=True)
@@ -22,9 +27,9 @@ def login():
                 if staff == Administrator:
                     return redirect(url_for('routes.admin'))
                 elif staff == Doctor:
-                    return redirect(url_for('routes.index'))
+                    return redirect(url_for('doctor.doctor_dashboard'))
                 elif staff == DE_Operator:
-                    return redirect(url_for('routes.index'))
+                    return redirect(url_for('routes.dataentry'))
                 elif staff == FD_Operator:
                     return redirect(url_for('routes.frontdesk'))
                 
