@@ -48,7 +48,7 @@ class AddTestResult(FlaskForm):
     submit = SubmitField("Add Test")
 
 class AddTreatment(FlaskForm):
-    choices = [('Physiotherapy', 'Physiotherapy'), ('Operation', 'Operation')]
+    choices = [('Physiotherapy', 'Physiotherapy'), ('Operation', 'Operation'),('General', 'General')]
     # treatment_date = StringField("Treatment Date", format='YYYY-MM-DD',validators=[DataRequired(message="You need to enter the end date.")],render_kw={"placeholder": "YYYY-MM-DD"})
     treatment_date = DateField("Treatment Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the end date.")])
     category = SelectField(u'Field name', choices = choices, validators = [DataRequired()])    
