@@ -33,7 +33,9 @@ def create_app():
     app.config["MAIL_SERVER"]='smtp.gmail.com'  
     app.config["MAIL_PORT"] = 465  
     app.config["MAIL_USERNAME"] = 'HMS.iitkgp@gmail.com'  
-    app.config['MAIL_PASSWORD'] = 'tulcolduqjiwwpcn' #app password, different for every system
+    # app.config['MAIL_PASSWORD'] = 'tulcolduqjiwwpcn' #app password, different for every system (HMSiitkgp23)
+    app.config['MAIL_PASSWORD'] = 'tmctkhmtwagcfrxv' #app password, different for every system (HMSiitkgp23)
+
     app.config['MAIL_USE_TLS'] = False  
     app.config['MAIL_USE_SSL'] = True  
     app.config['MYSQL_DB'] = 'hospital_db'
@@ -45,8 +47,9 @@ def create_app():
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
 
-    @scheduler.task('cron', id='send_weekly_mail', day_of_week='sun', hour=8, minute=0, second=0)
+    @scheduler.task('cron', id='send_weekly_mail', day_of_week='sun', hour=22, minute=15, second=0)
     def send_mail():
+        print("Sending mail")
         with app.app_context():
             cur = mysql.connection.cursor()
             cur.execute(
@@ -60,12 +63,18 @@ def create_app():
                 patient_ids = cur.fetchall()
                 subject = f"Health Report for Patient"
                 body = f"Dear Doctor,\n\nPlease find the attached health report for Patient.\n\nRegards,\nHMS Team"
-                msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = [doctor_id[1]])
+                # msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = [doctor_id[1]])
+                msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = ['jating1120@gmail.com'])
                 for patient_id in patient_ids:
                     route_url = "http://127.0.0.1:5000/report/doctor/"+str(patient_id[0])
-                    pdfkit.from_url(route_url, './public/out.pdf')
-                    with app.open_resource('./public/out.pdf') as fp:
-                        msg.attach("health_report.pdf", "application/pdf", fp.read())
+                    print("url = ", route_url)
+                    pdfkit.from_url(route_url, '/public/out.pdf')
+                    print("PDF bn gya h")
+                    with app.open_resource('/public/out.pdf') as fp:
+                        # msg.attach("health_report.pdf", "application/pdf", fp.read())
+                        file_name = "health_report_" + str(patient_id[0]) + ".pdf"
+                        msg.attach(file_name,"application/pdf",fp.read())
+                        print("Attach b hogya h")
                 mail.send(msg)
                 print("Mail sent to doc: ", doctor_id[1])
     
