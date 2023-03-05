@@ -15,8 +15,8 @@ class RegisterPatient(FlaskForm):
     submit = SubmitField("Register Patient")
 
 class AddUser(FlaskForm):
-    choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator'), ('Administrator', 'Administrator')]
-    users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
+    # choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator'), ('Administrator', 'Administrator')]
+    # users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
     username = StringField("Username", validators=[DataRequired(), Length(min=2, max=50)])
     password1 = PasswordField("Password", validators=[DataRequired(), Length(min=2, max=20)])
     password2 = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password1')])
@@ -27,7 +27,7 @@ class AddUser(FlaskForm):
     contact_number = StringField("User's Contact Number", validators=[DataRequired(), Length(min=10, max=10)])
     submit = SubmitField("Add User")
 
-class DeleteUser(FlaskForm):
+class GetUser(FlaskForm):
     choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator'), ('Administrator', 'Administrator')]
     users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
     submit = SubmitField("Select User")
