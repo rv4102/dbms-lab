@@ -9,4 +9,4 @@ remaining work
 1. email sending and create the email form which is to be sent
 2. front end
 3. prescription mein path store karna hai file ka, change it to filename only such that path is not device specific (can be set in the .env file)
-
+4. login page pe errors theek colour mein nahi dikhta hai

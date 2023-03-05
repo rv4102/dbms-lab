@@ -9,6 +9,32 @@
 {% endblock %}
 
 {% block main_content %}
+
+    {% for patient in patients %}
+    <div class="modal fade" id="Modal{{ patient[0] }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Select Priority</h5>
+            </div>
+            <form action="/frontdesk/appointment_schedule/{{ patient[0] }}" method="post">
+                <div class="form-group modal-body">
+                    <label for="priority">Priority</label>
+                    <!-- <input type="date" class="form-control" id="date" name="date" required> -->
+                    <input type="radio" id="urgent" name="priority" value="Urgent">
+                    <label for="urgent">Urgent</label><br>
+                    <input type="radio" id="normal" name="priority" value="Normal">
+                    <label for="normal">Normal</label><br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+        </div>
+    </div> 
+    {% endfor %}
     <h1 class="mt-4">Schedule Appointment</h1>
     {% if patients|length == 0 %}
         <p>No patients</p>
@@ -33,7 +59,10 @@
                     {% for field in patient %}
                     <td>{{ field }}</td>
                     {% endfor %}
-                    <td><a href="/frontdesk/appointment_schedule/{{ patient[0] }}" class="btn btn-primary">Schedule Appointment</a></td>
+                    <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal{{ patient[0] }}">
+                        Schedule Appointment
+                    </button></td>
+                    <!-- <td><a href="/frontdesk/appointment_schedule/{{ patient[0] }}" class="btn btn-primary">Schedule Appointment</a></td> -->
                 </tr>
                 {% endfor %}
             </tbody>

@@ -139,11 +139,65 @@ def frontdesk_appointment_schedule():
 @login_required
 @requires_access_level(3)
 def frontdesk_appointment_schedule_patient(patient_id):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM Doctor")
-    doctors = cur.fetchall()
-    cur.close()
-    return render_template('frontdesk_appointment_schedule_patient.html', patient_id=patient_id, doctors=doctors,  user = current_user)
+    if request.method == 'POST':
+        is_urgent = request.form.get('priority')
+        if(is_urgent == 'Urgent'):
+            date_to_schedule = (datetime.now()+timedelta(days=1)).strftime("%Y-%m-%d")
+            cur = mysql.connection.cursor()
+            # start = '10:00:00'
+            # end = '16:00:00'
+            # for i in range(0, 6):
+            #     start[1] = str(i)
+            #     cur.execute("SELECT Doctor_ID")
+            # min_time = '16:00:00'
+            # cur.execute("SELECT Doctor_ID, MIN(Appointment_Time) FROM Appointment WHERE Appointment_Date = %s GROUP BY Doctor_ID", (date_to_schedule,))
+            # min_time_doctor = cur.fetchall()
+            # doctors_with_appointments = []
+            # for doctor in min_time_doctor:
+            #     doctors_with_appointments.append(doctor[0])
+            # cur.execute("SELECT * FROM Doctor WHERE Doctor_ID NOT IN (%s)", (doctors_with_appointments,))
+            # free_doctors = cur.fetchall()
+            # if(len(free_doctors) != 0):
+            #     doctor_id = free_doctors[0][0]
+            #     cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doctor_id, date_to_schedule, '10:00:00'))
+            # else:
+            #     for 
+            doctors_free = []
+            cur.execute("SELECT Doctor_ID, Name FROM Doctor WHERE Doctor_ID NOT IN (SELECT Doctor_ID FROM Appointment WHERE Appointment_Date = %s)", (date_to_schedule,))
+            doctors_free = cur.fetchall()
+            if(len(doctors_free) != 0):
+                doctors_id = doctors_free[0][0]
+                cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doctors_id, date_to_schedule, '10:00:00'))
+                mysql.connection.commit()
+                flash(f'Appointment scheduled for patient {patient_id} at 10:00:00 with doctor {doctors_free[0][1]}', 'success')
+                return redirect(url_for('routes.frontdesk_appointment_schedule'))
+            
+            else:
+                start = '10:00:00'
+                cur.execute("SELECT Doctor_ID, Name FROM Doctor")
+                doctors = cur.fetchall()
+
+                for i in range(0, 6):
+                    start = start[0]+str(i)+start[2:]
+                    for doc in doctors:
+                        cur.execute("SELECT * FROM Appointment WHERE Doctor_ID = %s AND Appointment_Date = %s AND Appointment_Time = %s", (doc[0], date_to_schedule, start))
+                        if(cur.fetchone() is None):
+                            cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doc[0], date_to_schedule, start))
+                            mysql.connection.commit()
+                            flash(f'Appointment scheduled for patient {patient_id} at {start} with doctor {doc[1]}', 'success')
+                            return redirect(url_for('routes.frontdesk_appointment_schedule'))
+                        
+                flash(f'No doctors available', 'danger')
+                return redirect(url_for('routes.frontdesk_appointment_schedule'))
+            
+            # flash(f'Appointment scheduled for patient {patient_id}', 'success')
+        else:
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM Doctor")
+            doctors = cur.fetchall()
+            cur.close()
+            return render_template('frontdesk_appointment_schedule_patient.html', patient_id=patient_id, doctors=doctors,  user = current_user)
+    
 
 @routes.route('/frontdesk/appointment_schedule/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
 @routes.route('/frontdesk/appointment_schedule/<patient_id>/<doctor_id>/', methods=['GET', 'POST'])
@@ -215,6 +269,20 @@ def admin():
     deos = cur.fetchall()
     return render_template('admin_dashboard.html', total_doctors=len(doctors), total_fdo=len(fdos), total_deo=len(deos), doctors=doctors, fdos=fdos, deos=deos, user=current_user)
 
+# @routes.route('/admin/edit_user', method=['GET', 'POST'])
+# @routes.route('/admin/edit_user/', method=['GET', 'POST'])
+# @login_required
+# @requires_access_level(1)
+# def admin_edit_user():
+#     form = AddUser()
+
+# @routes.route('/admin/edit_user_type', method=['GET', 'POST'])
+# @routes.route('/admin/edit_user_type/', method=['GET', 'POST'])
+# @login_required
+# @requires_access_level(1)
+# def admin_edit_user():
+#     form = AddUser()
+
 @routes.route('/admin/add', methods=['GET', 'POST'])
 @routes.route('/admin/add/', methods=['GET', 'POST'])
 @login_required
@@ -255,6 +323,7 @@ def admin_delete_select():
 
     return render_template('admin_delete_select.html', form=form,  user=current_user)
     
+
 @routes.route('/admin/delete/<user_type>/<user_id>', methods=['GET', 'POST'])
 @routes.route('/admin/delete/<user_type>/<user_id>/', methods=['GET', 'POST'])
 @login_required
