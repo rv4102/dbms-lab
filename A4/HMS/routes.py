@@ -187,7 +187,7 @@ def frontdesk_appointment_schedule_patient(patient_id):
                             flash(f'Appointment scheduled for patient {patient_id} at {start} with doctor {doc[1]}', 'success')
                             return redirect(url_for('routes.frontdesk_appointment_schedule'))
                         
-                flash(f'No doctors available', 'danger')
+                flash(f'No doctors available on urgent priority', 'danger')
                 return redirect(url_for('routes.frontdesk_appointment_schedule'))
             
             # flash(f'Appointment scheduled for patient {patient_id}', 'success')

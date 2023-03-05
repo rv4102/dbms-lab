@@ -19,17 +19,30 @@
             </div>
             <form action="/frontdesk/appointment_schedule/{{ patient[0] }}" method="post">
                 <div class="form-group modal-body">
-                    <label for="priority">Priority</label>
                     <!-- <input type="date" class="form-control" id="date" name="date" required> -->
-                    <input type="radio" id="urgent" name="priority" value="Urgent">
-                    <label for="urgent">Urgent</label><br>
-                    <input type="radio" id="normal" name="priority" value="Normal">
-                    <label for="normal">Normal</label><br>
+                    <!-- <div class="col">
+                        <input type="radio" id="urgent" name="priority" value="Urgent">
+                        <label for="urgent">Urgent</label><br>
+                    </div>
+                    <div class="col">
+                        <input type="radio" id="normal" name="priority" value="Normal">
+                        <label for="normal">Normal</label><br>
+                    </div> -->
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="priority" id="urgent" value="Urgent">
+                        <label class="form-check-label" for="urgent">Urgent</label>
+                      </div>
+                      <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="priority" id="normal" value="Normal">
+                        <label class="form-check-label" for="normal">Normal</label>
+                      </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
+
+                
             </form>
         </div>
         </div>
