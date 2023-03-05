@@ -83,6 +83,7 @@ CREATE TABLE Test(
     BodyPart        TEXT,
     Result          TEXT,
     ResultObtained  BOOLEAN,
+    Document_Path       TEXT,
     Patient_ID      int NOT NULL,
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
     PRIMARY KEY(Test_ID)

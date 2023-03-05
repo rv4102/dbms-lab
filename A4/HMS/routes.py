@@ -313,6 +313,10 @@ def admin_edit_user(user_type):
 @requires_access_level(1)
 def admin_delete_user(user_type, user_id):
     cur = mysql.connection.cursor()
+    cur.execute(f"DELETE FROM Treatment WHERE {user_type}_ID = {user_id}")
+    mysql.connection.commit()
+    cur.execute(f"DELETE FROM Appointment WHERE {user_type}_ID = {user_id}")
+    mysql.connection.commit()
     cur.execute(f"DELETE FROM {user_type} WHERE {user_type}_ID = '{user_id}'")
     mysql.connection.commit()
     cur.close()
@@ -376,9 +380,19 @@ def dataentry_test_id(test_id):
     cur.close()
     form = AddTestResult()
     if form.validate_on_submit():
-        print("Form validated")
         cur = mysql.connection.cursor()
-        cur.execute(f"UPDATE Test SET ResultObtained = 1 , Result = '{form.result.data}'WHERE Test_ID = '{test_id}'")
+        if(form.file_upload.data is not None):
+            filename = secure_filename(form.file_upload.data.filename)
+            print(filename)
+            print("HELLO")
+            patient_data_path = os.getcwd() + '/test_patient_data/' + test_id + '/'
+            if not os.path.exists(patient_data_path):
+                os.makedirs(patient_data_path)
+            form.file_upload.data.save(patient_data_path + filename)
+            print(patient_data_path + filename)
+            cur.execute(f"UPDATE Test SET ResultObtained = 1 , Result = '{form.result.data}', Document_Path = '{patient_data_path + filename}'WHERE Test_ID = '{test_id}'")
+        else:
+            cur.execute(f"UPDATE Test SET ResultObtained = 1 , Result = '{form.result.data}'WHERE Test_ID = '{test_id}'")
         mysql.connection.commit()
         cur.close()
         flash(f'Successfully added test result {test[1]} for patient {test[3]}', 'success')
@@ -410,7 +424,7 @@ def dataentry_select_doctor(patient_id):
     if form.validate_on_submit():
         if(form.file_upload.data is not None):
             filename = secure_filename(form.file_upload.data.filename)
-            patient_data_path = os.getcwd() + '/patient_data/' + patient_id + '/'
+            patient_data_path = os.getcwd() + '/treatment_patient_data/' + patient_id + '/'
             if not os.path.exists(patient_data_path):
                 os.makedirs(patient_data_path)
             form.file_upload.data.save(patient_data_path + filename)

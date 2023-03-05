@@ -55,7 +55,7 @@
           {{ form.file_upload.label(class="col-sm-4 col-form-label") }}
           <div class="col-sm-8">
             {{form.file_upload(class="form-control")}}
-            {% for error in form.details.errors %}
+            {% for error in form.file_upload.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>

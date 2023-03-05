@@ -45,6 +45,7 @@ class AddTestResult(FlaskForm):
     bodypart = StringField("Associated Body Part", validators=[DataRequired(), Length(min=2, max=1000)])
     patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
     result = StringField("Test Result", validators=[DataRequired(), Length(min=2, max=1000)])
+    file_upload = FileField("Upload File(Optional)", validators=[FileAllowed(['jpg', 'png', 'pdf'], 'Images only!')])
     submit = SubmitField("Add Test")
 
 class AddTreatment(FlaskForm):

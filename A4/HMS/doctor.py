@@ -43,9 +43,9 @@ def query_patient(patient_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details, Document_Path FROM Treatment WHERE Patient_ID = %s", (patient_id,))
     treatments = cur.fetchall()
-    cur.execute("SELECT Test_ID,TestDate,Category,BodyPart,Result,ResultObtained FROM Test WHERE Patient_ID = %s", (patient_id,))
+    cur.execute("SELECT Test_ID,TestDate,Category,BodyPart,Result,ResultObtained,Document_Path FROM Test WHERE Patient_ID = %s", (patient_id,))
     tests = cur.fetchall()
-    test_og = []
+    tests_og = []
     for test in tests:
         if test[5] == False:
             coloro = "bg-light"
@@ -53,9 +53,14 @@ def query_patient(patient_id):
         elif test[5] == True:
             coloro = "bg-light"
             textc = "text-dark"
-        test = test + (coloro,)
-        test = test + (textc,)
-        test_og.append(test)
+        test = test + (coloro,) #7
+        test = test + (textc,) #8
+        if test[6] != None:
+            filename = os.path.basename(test[6])
+        else:
+            filename = None
+        test = test + (filename,) #9
+        tests_og.append(test)
 
     filename = ""
     treatments_og = []
@@ -97,13 +102,21 @@ def query_patient(patient_id):
         cur.close()
         flash('Test added successfully.', category='success')
         return redirect(url_for('doctor.query_patient', patient_id=patient_id))
-    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = test_og, user = current_user, form_1=form_1, form_2=form_2, patient_id=patient_id)
+    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests_og, user = current_user, form_1=form_1, form_2=form_2, patient_id=patient_id)
 
 @doctor.route('/doctor/show/treatment_pdf', methods=['POST'])
 @login_required
 @requires_access_level(2)
-def show_static_pdf():
-
+def show_treatment_pdf():
+    if request.method == 'POST':
+        path = request.form['path']
+        filename = request.form['filename']
+        return send_file(path, as_attachment=True, download_name=filename)
+    
+@doctor.route('/doctor/show/test_pdf', methods=['POST'])
+@login_required
+@requires_access_level(2)
+def show_test_pdf():
     if request.method == 'POST':
         path = request.form['path']
         filename = request.form['filename']
