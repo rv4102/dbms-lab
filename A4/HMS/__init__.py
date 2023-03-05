@@ -47,7 +47,7 @@ def create_app():
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
 
-    @scheduler.task('cron', id='send_weekly_mail', day_of_week='sun', hour=22, minute=15, second=0)
+    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=1, minute=26, second=0)
     def send_mail():
         print("Sending mail")
         with app.app_context():
@@ -68,9 +68,12 @@ def create_app():
                 for patient_id in patient_ids:
                     route_url = "http://127.0.0.1:5000/report/doctor/"+str(patient_id[0])
                     print("url = ", route_url)
-                    pdfkit.from_url(route_url, '/public/out.pdf')
+                    path = os.getcwd()
+                    path = path + "/public/out.pdf"
+                    print("path = ", path)
+                    pdfkit.from_url(route_url, path)
                     print("PDF bn gya h")
-                    with app.open_resource('/public/out.pdf') as fp:
+                    with app.open_resource(path) as fp:
                         # msg.attach("health_report.pdf", "application/pdf", fp.read())
                         file_name = "health_report_" + str(patient_id[0]) + ".pdf"
                         msg.attach(file_name,"application/pdf",fp.read())
