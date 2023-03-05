@@ -45,6 +45,18 @@ def query_patient(patient_id):
     treatments = cur.fetchall()
     cur.execute("SELECT Test_ID,TestDate,Category,BodyPart,Result,ResultObtained FROM Test WHERE Patient_ID = %s", (patient_id,))
     tests = cur.fetchall()
+    test_og = []
+    for test in tests:
+        if test[5] == False:
+            coloro = "bg-light"
+            textc = "text-dark"
+        elif test[5] == True:
+            coloro = "bg-light"
+            textc = "text-dark"
+        test = test + (coloro,)
+        test = test + (textc,)
+        test_og.append(test)
+
     filename = ""
     treatments_og = []
     for treatment in treatments:
@@ -57,8 +69,16 @@ def query_patient(patient_id):
         medicine = []
         for med in medicines:
             medicine.append(med[0])
+        
+        if treatment[2] == "General":
+            color = "bg-primary"
+        elif treatment[2] == "Operation":
+            color = "bg-danger"
+        else:
+            color = "bg-success"
         treatment = treatment + (filename,)
         treatment = treatment + (medicine,)
+        treatment = treatment + (color,)
         treatments_og.append(treatment)
     cur.close()
     form_1 = AddTreatmentForm()
@@ -77,7 +97,7 @@ def query_patient(patient_id):
         cur.close()
         flash('Test added successfully.', category='success')
         return redirect(url_for('doctor.query_patient', patient_id=patient_id))
-    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests, user = current_user, form_1=form_1, form_2=form_2, patient_id=patient_id)
+    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = test_og, user = current_user, form_1=form_1, form_2=form_2, patient_id=patient_id)
 
 @doctor.route('/doctor/show/treatment_pdf', methods=['POST'])
 @login_required
