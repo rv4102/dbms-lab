@@ -210,6 +210,6 @@ def report(patient_id):
         treatment = treatment + (color,)
         treatments_og.append(treatment)
     cur.close()
-    return render_template('patient_details.html', name=current_user.Name, treatments=treatments_og, tests = test_og, user = current_user, patient_id=patient_id)
+    return render_template('patient_details.html', treatments=treatments_og, tests = test_og, user = current_user, patient_id=patient_id)
 
 
