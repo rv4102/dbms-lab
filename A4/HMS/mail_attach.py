@@ -23,7 +23,7 @@ mail = Mail(app)
 mysql.init_app(app)
  
 
-@app.route("/send/<patient_id>/<doctor_id>/<file>", methods = ["GET"])
+@app.route("/send/<patieidnt_id>/<doctor_id>/<file>", methods = ["GET"])
 def index(patient_id,doctor_id,file):
     extension = file[-3:]
     file = f"./public/{file}"
