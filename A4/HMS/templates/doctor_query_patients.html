@@ -30,12 +30,15 @@
                 <tr>
                     {% for field in patient %}
                     <td>{{ field }}</td>
-                    {% endfor %}
+                    {% endfor %}    
                     <td><a href="/doctor/query_patients/{{ patient[0] }}" class="btn btn-primary">Details</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    
+
     {% endif %}
 {% endblock %}

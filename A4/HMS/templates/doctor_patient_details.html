@@ -81,7 +81,7 @@
 {% if treatments|length == 0 %}
 <p>No Treatments to show</p>
 {% else %}
-<div class="table-responsive">
+<!-- <div class="table-responsive">
     <table class="table table-striped">
         <thead class="thead-dark">
             <tr>
@@ -118,7 +118,20 @@
             {% endfor %}
         </tbody>
     </table>
-</div>
+</div> -->
+
+
+{% for treatment in treatments %}
+    <div class="card text-white {{ treatment[7] }} mb-3" style="max-width: 18rem; display: inline-block; min-width: 18rem;">
+        <div class="card-header">Date: {{treatment[1]}}</div>
+        <div class="card-body">
+            <h5>{{treatment[2]}}</h5>
+            <p class="card-text">{{treatment[3]}}</p>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                        data-bs-target="#myOutput{{ treatment[0] }}">Drugs Prescribed</button>
+        </div>
+    </div>
+{% endfor %}
 
 {% for treatment in treatments %}
 <!-- Modal -->
@@ -235,36 +248,37 @@
 {% if tests|length == 0 %}
 <p>No Tests to show</p>
 {% else %}
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Test ID</th>
-                <th scope="col">Test Date</th>
-                <th scope="col">Category</th>
-                <th scope="col">Body Part</th>
-                <th scope="col">Result</th>
-                <th scope="col">Result Obtained</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for test in tests %}
-            <tr>
-                <td>{{ test[0] }}</td>
-                <td>{{ test[1] }}</td>
-                <td>{{ test[2] }}</td>
-                <td>{{ test[3] }}</td>
-                <td>{{ test[4] }}</td>
-                {% if test[5] == true %}
-                <td>True</td>
-                {% else %}
-                <td>False</td>
-                {% endif %}
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-</div>
+    
+
+{% for test in tests %}
+    <!-- <div class="card {{ test[6] }} {{test[7]}} mb-3" style="max-width: 18rem; display: inline-block; min-width: 18rem;">
+        <div class="card-header">Date: {{test[1]}}</div>
+        <div class="card-body">
+            <h5>{{test[2]}} - {{test[3]}}</h5>
+            <p class="card-text">{{test[4]}}</p>
+        </div>
+    </div> -->
+    {% if test[5] == True %}
+    <div class="card {{ test[6] }} {{test[7]}} mb-3" style="max-width: 18rem; display: inline-block; min-width: 18rem;">
+        <div class="card-header">Date: {{test[1]}}</div>
+        <div class="card-body">
+            <h5>{{test[2]}} - {{test[3]}}<img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/Eo_circle_green_checkmark.svg" width="40" height="40" style="float: right;"/>
+            </h5>
+            <p class="card-text">{{test[4]}}</p>
+        </div>
+    </div>
+    {% else %}
+    <div class="card {{ test[6] }} {{test[7]}} mb-3" style="max-width: 18rem; display: inline-block; min-width: 18rem;">
+        <div class="card-header">Date: {{test[1]}}</div>
+        <div class="card-body">
+            <h5>{{test[2]}} - {{test[3]}} <img src="https://logodix.com/logo/472804.png" width="40" height="40" style="float: right;"/>
+            </h5>
+            <p class="card-text">{{test[4]}}</p>
+        </div>
+    </div>
+    {% endif %}
+{% endfor %}
+
 {% endif %}
 
 {% endblock %}
