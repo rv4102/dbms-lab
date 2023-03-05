@@ -5,10 +5,16 @@ from flask import session, redirect, url_for
 from functools import wraps
 import os
 from dotenv import load_dotenv 
+from flask_mail import Mail, Message
+from flask_apscheduler import APScheduler
+import pdfkit
+
 load_dotenv()
 mysql = MySQL()
+scheduler = APScheduler()
 
 def create_app():
+
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
@@ -27,15 +33,44 @@ def create_app():
     app.config["MAIL_SERVER"]='smtp.gmail.com'  
     app.config["MAIL_PORT"] = 465  
     app.config["MAIL_USERNAME"] = 'HMS.iitkgp@gmail.com'  
-    app.config['MAIL_PASSWORD'] = 'tulcolduqjiwwpcn'
+    app.config['MAIL_PASSWORD'] = 'tulcolduqjiwwpcn' #app password, different for every system
     app.config['MAIL_USE_TLS'] = False  
     app.config['MAIL_USE_SSL'] = True  
     app.config['MYSQL_DB'] = 'hospital_db'
+    app.config['SCHEDULER_API_ENABLED'] = True
 
-
+    mail = Mail(app)
     mysql.init_app(app)
+    mail.init_app(app)
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
+
+    @scheduler.task('cron', id='send_weekly_mail', day_of_week='sun', hour=8, minute=0, second=0)
+    def send_mail():
+        with app.app_context():
+            cur = mysql.connection.cursor()
+            cur.execute(
+                "SELECT Doctor_ID, Username FROM Doctor"
+            )
+            doctor_ids = cur.fetchall()
+            for doctor_id in doctor_ids:
+                cur.execute(
+                    "SELECT Patient_ID FROM Treatment WHERE Doctor_ID = %s", (doctor_id[0],)
+                )
+                patient_ids = cur.fetchall()
+                subject = f"Health Report for Patient"
+                body = f"Dear Doctor,\n\nPlease find the attached health report for Patient.\n\nRegards,\nHMS Team"
+                msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = [doctor_id[1]])
+                for patient_id in patient_ids:
+                    route_url = "http://127.0.0.1:5000/report/doctor/"+str(patient_id[0])
+                    pdfkit.from_url(route_url, './public/out.pdf')
+                    with app.open_resource('./public/out.pdf') as fp:
+                        msg.attach("health_report.pdf", "application/pdf", fp.read())
+                mail.send(msg)
+                print("Mail sent to doc: ", doctor_id[1])
+    
+    scheduler.init_app(app)
+    scheduler.start()
     
     login_manager = LoginManager()
     login_manager.login_view = 'auth.login'
