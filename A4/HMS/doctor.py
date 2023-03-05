@@ -60,39 +60,24 @@ def query_patient(patient_id):
         treatment = treatment + (filename,)
         treatment = treatment + (medicine,)
         treatments_og.append(treatment)
-
     cur.close()
-    print(treatments_og)
-    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests, user = current_user)
-
-@doctor.route('/doctor/add_treatment' , methods=['GET', 'POST'])
-@login_required
-@requires_access_level(2)
-def add_treatment():
-    form = AddTreatmentForm()
-    if form.validate_on_submit():
+    form_1 = AddTreatmentForm()
+    if form_1.validate_on_submit():
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Treatment (TreatmentDate, Category, Details, Patient_ID, Doctor_ID) VALUES (%s, %s, %s, %s, %s)", (form.treatment_date.data, form.category.data, form.details.data, form.patient_id.data, current_user.Doctor_ID))
+        cur.execute("INSERT INTO Treatment (TreatmentDate, Category, Details, Patient_ID, Doctor_ID) VALUES (%s, %s, %s, %s, %s)", (form_1.treatment_date.data, form_1.category.data, form_1.details.data, patient_id, current_user.Doctor_ID))
         mysql.connection.commit()
         cur.close()
         flash('Treatment added successfully.', category='success')
-        return redirect(url_for('doctor.doctor_dashboard'))
-    return render_template('doctor_add_treatment.html', name=current_user.Name, form=form, user = current_user)
-
-@doctor.route('/doctor/add_test' , methods=['GET', 'POST'])
-@login_required
-@requires_access_level(2)
-def add_test():
-    form = AddTestForm()
-    if form.validate_on_submit():
+        return redirect(url_for('doctor.query_patient', patient_id=patient_id))
+    form_2 = AddTestForm()
+    if form_2.validate_on_submit():
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO Test (TestDate, Category, BodyPart, ResultObtained, Patient_ID) VALUES (%s, %s, %s, FALSE, %s)", (form.test_date.data, form.category.data, form.bodypart.data, form.patient_id.data))
+        cur.execute("INSERT INTO Test (TestDate, Category, BodyPart, ResultObtained, Patient_ID) VALUES (%s, %s, %s, FALSE, %s)", (form_2.test_date.data, form_2.category.data, form_2.bodypart.data, patient_id))
         mysql.connection.commit()
         cur.close()
-        flash('Treatment added successfully.', category='success')
-        return redirect(url_for('doctor.doctor_dashboard'))
-    return render_template('doctor_add_test.html', name=current_user.Name, form=form, user = current_user)
-
+        flash('Test added successfully.', category='success')
+        return redirect(url_for('doctor.query_patient', patient_id=patient_id))
+    return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests, user = current_user, form_1=form_1, form_2=form_2, patient_id=patient_id)
 
 @doctor.route('/doctor/show/treatment_pdf', methods=['POST'])
 @login_required
@@ -121,7 +106,33 @@ def add_prescription():
         return redirect(url_for('doctor.add_prescription'))
     return render_template('doctor_add_prescription.html', form = form ,name=current_user.Name, treated_patients = treated_patients ,user = current_user)
 
+# @doctor.route('/doctor/add_treatment' , methods=['GET', 'POST'])
+# @login_required
+# @requires_access_level(2)
+# def add_treatment():
+#     form = AddTreatmentForm()
+#     if form.validate_on_submit():
+#         cur = mysql.connection.cursor()
+#         cur.execute("INSERT INTO Treatment (TreatmentDate, Category, Details, Patient_ID, Doctor_ID) VALUES (%s, %s, %s, %s, %s)", (form.treatment_date.data, form.category.data, form.details.data, form.patient_id.data, current_user.Doctor_ID))
+#         mysql.connection.commit()
+#         cur.close()
+#         flash('Treatment added successfully.', category='success')
+#         return redirect(url_for('doctor.doctor_dashboard'))
+#     return render_template('doctor_add_treatment.html', name=current_user.Name, form=form, user = current_user)
 
+# @doctor.route('/doctor/add_test' , methods=['GET', 'POST'])
+# @login_required
+# @requires_access_level(2)
+# def add_test():
+#     form = AddTestForm()
+#     if form.validate_on_submit():
+#         cur = mysql.connection.cursor()
+#         cur.execute("INSERT INTO Test (TestDate, Category, BodyPart, ResultObtained, Patient_ID) VALUES (%s, %s, %s, FALSE, %s)", (form.test_date.data, form.category.data, form.bodypart.data, form.patient_id.data))
+#         mysql.connection.commit()
+#         cur.close()
+#         flash('Treatment added successfully.', category='success')
+#         return redirect(url_for('doctor.doctor_dashboard'))
+#     return render_template('doctor_add_test.html', name=current_user.Name, form=form, user = current_user)
 
 
 
