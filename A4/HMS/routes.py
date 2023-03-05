@@ -153,6 +153,11 @@ def frontdesk_appointment_schedule_date(patient_id, doctor_id):
     if request.method == 'POST':
         cur = mysql.connection.cursor()
         date_selected = request.form.get('date')
+        cur_date = datetime.now().strftime("%Y-%m-%d")
+        if date_selected <= cur_date:
+            flash(f'Please select a date in the future', 'danger')
+            return redirect(url_for('routes.frontdesk_appointment_schedule_patient', patient_id=patient_id))
+            # return redirect(url_for('routes.frontdesk_appointment_schedule_date', patient_id=patient_id, doctor_id=doctor_id))
         cur.execute("SELECT Appointment_Time FROM Appointment WHERE Appointment_Date = %s AND Doctor_ID = %s", (date_selected, doctor_id))
         appointments = cur.fetchall()
         # print(appointments)
