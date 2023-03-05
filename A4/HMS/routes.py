@@ -418,44 +418,61 @@ def dataentry_select_patient():
 @requires_access_level(4)
 def dataentry_select_doctor(patient_id):
     cur = mysql.connection.cursor()
+    
     cur.execute("SELECT Doctor_ID,Name,Username,Age,Gender,Personal_Contact FROM Doctor")
     doctors = cur.fetchall()
-    print(doctors)
-    return render_template('dataentry_select_doctor.html', user=current_user,doctors = doctors, patient_id = patient_id)
-
-@routes.route('/dataentry/treatment/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
-@routes.route('/dataentry/treatment/<patient_id>/<doctor_id>/', methods=['GET', 'POST'])
-@login_required
-@requires_access_level(4)
-def dataentry_treatment(patient_id, doctor_id):
-    cur = mysql.connection.cursor()
-    cur.execute("SELECT Name FROM Patient where Patient_ID = %s", (patient_id,))
-    patient = cur.fetchone()
-    cur.execute("SELECT Name FROM Doctor where Doctor_ID = %s", (doctor_id,))
-    doctor = cur.fetchone()
-    patient = patient[0]
-    doctor = doctor[0]
-    print(patient)
-    print(doctor)
-    cur.close()
+    cur.execute("SELECT Name FROM Patient WHERE Patient_ID = %s", (patient_id,))
+    patient_name = cur.fetchone()
     form = AddTreatment()
     if form.validate_on_submit():
-        print("Form validated")
-        cur = mysql.connection.cursor()
         if(form.file_upload.data is not None):
             filename = secure_filename(form.file_upload.data.filename)
             patient_data_path = os.getcwd() + '/patient_data/' + patient_id + '/'
             if not os.path.exists(patient_data_path):
                 os.makedirs(patient_data_path)
             form.file_upload.data.save(patient_data_path + filename)
-            cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category, Details, Document_Path) VALUES ('{patient_id}', '{doctor_id}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}', '{patient_data_path + filename}')")
+            cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category, Details, Document_Path) VALUES ('{patient_id}', '{form.doctor_id.data}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}', '{patient_data_path + filename}')")
         else:
-            cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category, Details) VALUES ('{patient_id}', '{doctor_id}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}')")
+            cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category, Details) VALUES ('{patient_id}', '{form.doctor_id.data}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}')")
         mysql.connection.commit()
         cur.close()
-        flash(f'Successfully added treatment {form.category.data} for patient {patient} by doctor {doctor}', 'success')
+        flash(f'Successfully added treatment {form.category.data} for patient {form.patient.data} by doctor {form.doctor.data}', 'success')
         return redirect(url_for('routes.dataentry'))
-    return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)
+    return render_template('dataentry_select_doctor.html', user=current_user,doctors = doctors, patient_name = patient_name, form = form)
+
+# @routes.route('/dataentry/treatment/<patient_id>/<doctor_id>', methods=['GET', 'POST'])
+# @routes.route('/dataentry/treatment/<patient_id>/<doctor_id>/', methods=['GET', 'POST'])
+# @login_required
+# @requires_access_level(4)
+# def dataentry_treatment(patient_id, doctor_id):
+#     cur = mysql.connection.cursor()
+#     cur.execute("SELECT Name FROM Patient where Patient_ID = %s", (patient_id,))
+#     patient = cur.fetchone()
+#     cur.execute("SELECT Name FROM Doctor where Doctor_ID = %s", (doctor_id,))
+#     doctor = cur.fetchone()
+#     patient = patient[0]
+#     doctor = doctor[0]
+#     print(patient)
+#     print(doctor)
+#     cur.close()
+#     form = AddTreatment()
+#     if form.validate_on_submit():
+#         print("Form validated")
+#         cur = mysql.connection.cursor()
+#         if(form.file_upload.data is not None):
+#             filename = secure_filename(form.file_upload.data.filename)
+#             patient_data_path = os.getcwd() + '/patient_data/' + patient_id + '/'
+#             if not os.path.exists(patient_data_path):
+#                 os.makedirs(patient_data_path)
+#             form.file_upload.data.save(patient_data_path + filename)
+#             cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category, Details, Document_Path) VALUES ('{patient_id}', '{doctor_id}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}', '{patient_data_path + filename}')")
+#         else:
+#             cur.execute(f"INSERT INTO Treatment (Patient_ID, Doctor_ID, TreatmentDate, Category, Details) VALUES ('{patient_id}', '{doctor_id}', '{form.treatment_date.data}', '{form.category.data}', '{form.details.data}')")
+#         mysql.connection.commit()
+#         cur.close()
+#         flash(f'Successfully added treatment {form.category.data} for patient {patient} by doctor {doctor}', 'success')
+#         return redirect(url_for('routes.dataentry'))
+#     return render_template('dataentry_add_treatment.html', user=current_user, patient=patient, doctor=doctor, form=form)
 
 # @routes.route("/send/<patient_id>/<doctor_id>/<file>", methods = ["GET"])
 # def index(patient_id,doctor_id,file):

@@ -55,6 +55,7 @@ class AddTreatment(FlaskForm):
     details = StringField("Details", validators=[DataRequired(), Length(min=2, max=1000)])
     patient = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=1000)])
     doctor = StringField("Doctor Name", validators=[DataRequired(), Length(min=2, max=1000)])
+    doctor_id = IntegerField("Doctor ID", validators=[DataRequired()])
     file_upload = FileField("Upload File(Optional)", validators=[FileAllowed(['jpg', 'png', 'pdf'], 'Images only!')])
     submit = SubmitField("Add Treatment")
 

@@ -30,11 +30,107 @@
                     {% for field in doctor %}
                     <td>{{ field }}</td>
                     {% endfor %}
-                    <td><a href="/dataentry/treatment/{{ patient_id }}/{{ doctor[0] }}" class="btn btn-primary">Add Treatment</a></td>
+                    <td><button type="button" class="btn btn-info" data-bs-toggle="modal"
+                        data-bs-target="#myOutput{{ doctor[0] }}">Add Treatment</button></td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
     </div>
+
+    {% for doctor in doctors %}
+<!-- Modal -->
+<div class="modal fade" id="myOutput{{ doctor[0] }}" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Add Treatment</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                
+
+                <div class = "container">
+                    <form method="post" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+                        <p>
+                            {{form.category(size="1", class="form-control")}}
+                          </p>
+                        <div class="form-group row">
+                            {{ form.treatment_date.label(class="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                              {{form.treatment_date(class="form-control")}}
+                                {% for error in form.treatment_date.errors %}
+                              <span class="help-block">{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.patient.label(class="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                              {{form.patient(class="form-control",value=patient_name[0],readonly = true)}}
+                                {% for error in form.patient.errors %}
+                              <span class="help-block">{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.doctor_id.label(class="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                              {{form.doctor_id(class="form-control",value=doctor[0],readonly = true)}}
+                                {% for error in form.doctor_id.errors %}
+                              <span class="help-block">{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            {{ form.doctor.label(class="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                              {{form.doctor(class="form-control",value=doctor[1],readonly = true)}}
+                                {% for error in form.doctor.errors %}
+                              <span class="help-block">{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        
+                        <div class="form-group row">
+                            {{ form.details.label(class="col-sm-4 col-form-label") }}
+                            <div class="col-sm-8">
+                              {{form.details(class="form-control")}}
+                                {% for error in form.details.errors %}
+                              <span class="help-block">{{ error }}</span>
+                              {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                          {{ form.file_upload.label(class="col-sm-4 col-form-label") }}
+                          <div class="col-sm-8">
+                            {{form.file_upload(class="form-control")}}
+                            {% for error in form.details.errors %}
+                            <span class="help-block">{{ error }}</span>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        <div class="form-group row">
+                          <div class="offset-sm-4 col-sm-8">
+                            {{ form.submit(class="btn btn-primary") }}
+                          </div>
+                        </div>
+                    </form>
+                </div>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endfor %}
+
     {% endif %}
 {% endblock %}
