@@ -55,11 +55,12 @@ def home():
     return render_template("timepass.html")
 @app.route("/send_page")
 def send_html():
-    pdfkit.from_url('http://127.0.0.1:5000/home', './public/out.pdf')
+
+    pdfkit.from_url('http://127.0.0.1:5000/home', '../public/out.pdf')
     subject = f"Health Report for Patient"
     body = f"Dear Doctor,\n\nPlease find the attached health report for Patient.\n\nRegards,\nHMS Team"
     msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = ['kushaz.sehgal@gmail.com'])
-    with app.open_resource('./public/out.pdf') as fp:  
+    with app.open_resource('../public/out.pdf') as fp:  
         msg.attach("health_report.pdf",'application/pdf',fp.read()) 
     mail.send(msg)
     return ("HTML page converted to pdf and sent!")

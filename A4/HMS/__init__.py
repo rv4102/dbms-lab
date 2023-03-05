@@ -47,7 +47,7 @@ def create_app():
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
 
-    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=1, minute=26, second=0)
+    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=9, minute=0, second=0)
     def send_mail():
         print("Sending mail")
         with app.app_context():
@@ -58,26 +58,23 @@ def create_app():
             doctor_ids = cur.fetchall()
             for doctor_id in doctor_ids:
                 cur.execute(
-                    "SELECT Patient_ID FROM Treatment WHERE Doctor_ID = %s", (doctor_id[0],)
+                    "SELECT distinct Patient_ID FROM Treatment WHERE Doctor_ID = %s", (doctor_id[0],)
                 )
                 patient_ids = cur.fetchall()
                 subject = f"Health Report for Patient"
                 body = f"Dear Doctor,\n\nPlease find the attached health report for Patient.\n\nRegards,\nHMS Team"
-                # msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = [doctor_id[1]])
-                msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = ['jating1120@gmail.com'])
+                msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = [doctor_id[1]])
+                # msg = Message(subject = subject, body = body, sender = app.config['MAIL_USERNAME'], recipients = ['jating1120@gmail.com'])
                 for patient_id in patient_ids:
+                    print("patient_id = ", patient_id[0])
                     route_url = "http://127.0.0.1:5000/report/doctor/"+str(patient_id[0])
-                    print("url = ", route_url)
                     path = os.getcwd()
                     path = path + "/public/out.pdf"
-                    print("path = ", path)
                     pdfkit.from_url(route_url, path)
-                    print("PDF bn gya h")
                     with app.open_resource(path) as fp:
                         # msg.attach("health_report.pdf", "application/pdf", fp.read())
                         file_name = "health_report_" + str(patient_id[0]) + ".pdf"
                         msg.attach(file_name,"application/pdf",fp.read())
-                        print("Attach b hogya h")
                 mail.send(msg)
                 print("Mail sent to doc: ", doctor_id[1])
     
