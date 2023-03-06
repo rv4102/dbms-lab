@@ -1,7 +1,7 @@
 {% extends 'frontdesk_base.html' %}
 
 {% block sidebar %} 
-    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black;" href="/frontdesk">Main DashBoard</a>
+    <a class="list-group-item list-group-item-action list-group-item-light p-3 dark-blue text-white" style="color: black;" href="/frontdesk">Main DashBoard</a>
     <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
     <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
     <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
@@ -11,7 +11,7 @@
 {% block main_content %}
 <div class="row mt-5">
     <div class="col-md-4 mb-4">
-      <div class="card">
+      <div class="card blue">
         <div class="card-body">
           <h5 class="card-title">Total Patients</h5>
           <p class="card-text">{{ total_patients }}</p>
@@ -19,7 +19,7 @@
       </div>
     </div>
     <div class="col-md-4 mb-4">
-      <div class="card">
+      <div class="card blue">
         <div class="card-body">
           <h5 class="card-title">Admitted Patients</h5>
           <p class="card-text">{{ admitted_patients }}</p>
@@ -27,7 +27,7 @@
       </div>
     </div>
     <div class="col-md-4 mb-4">
-      <div class="card">
+      <div class="card blue">
         <div class="card-body">
           <h5 class="card-title">Available Rooms</h5>
           <p class="card-text">{{ available_rooms }}</p>
@@ -40,7 +40,7 @@
         <h5 class = "mb-3">Recent Patients Registered</h5>
         <div class="table-responsive">
           <table class="table table-striped">
-            <thead>
+            <thead class="light-purple text-white">
               <tr>
                 <th scope="col">Patient ID</th>
                 <th scope="col">Name</th>
@@ -68,7 +68,7 @@
       <h5 class = "mb-3">Admitted Patients</h5>
       <div class="table-responsive">
         <table class="table table-striped">
-          <thead>
+          <thead class="light-purple text-white">
             <tr>
               <th scope="col">Admission Date</th>
               <th scope="col">Patient ID</th>
