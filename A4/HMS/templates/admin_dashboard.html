@@ -1,7 +1,7 @@
 {% extends 'admin_base.html' %}
 
 {% block sidebar %}
-<a class="list-group-item p-3 dark-blue text-white" href="/admin">Main DashBoard</a>
+<a class="list-group-item p-3 dark-purple text-white" href="/admin">Main DashBoard</a>
 <a class="list-group-item p-3" href="/admin/edit_user">Add/Delete User</a>
 <a class="list-group-item p-3" href="/admin/add_room">Get a Room!</a>
 {% endblock %}
@@ -9,7 +9,7 @@
 {% block main_content %}
 <div class="row mt-5">
   <div class="col-md-4 mb-4">
-    <div class="card blue">
+    <div class="card cerise">
       <div class="card-body">
         <h5 class="card-title text-white">Total Doctors</h5>
         <p class="card-text text-white">{{ total_doctors }}</p>
@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="col-md-4 mb-4">
-    <div class="card blue">
+    <div class="card cerise">
       <div class="card-body">
         <!-- printing card title in white and text also  -->
         <h5 class="card-title text-white">Total FrontDesk Operators</h5>
@@ -26,7 +26,7 @@
     </div>
   </div>
   <div class="col-md-4 mb-4">
-    <div class="card blue">
+    <div class="card cerise">
       <div class="card-body">
         <h5 class="card-title text-white">Total DataEntry Operators</h5>
         <p class="card-text text-white">{{ total_deo }}</p>
@@ -38,7 +38,7 @@
 <div class="table-responsive">
   <h5 class="mb-3">Recently Registered Doctors</h5>
   <table class="table table-striped">
-    <thead class="light-purple text-white">
+    <thead class="dark-purple text-white">
       <tr>
         <th scope="col">Doctor ID</th>
         <th scope="col">Name</th>
@@ -64,7 +64,7 @@
 <div class="table-responsive">
   <h5 class="mb-3">Recently Registered FrontDesk Operators</h5>
   <table class="table table-striped">
-    <thead class="light-purple text-white">
+    <thead class="dark-purple text-white">
       <tr>
         <th scope="col">FD_Operator ID</th>
         <th scope="col">Name</th>
@@ -90,7 +90,7 @@
 <div class="table-responsive">
   <h5 class="mb-3">Recently Registered DataEntry Operators</h5>
   <table class="table table-striped">
-    <thead class="light-purple text-white">
+    <thead class="dark-purple text-white">
       <tr>
         <th scope="col">DE_Operator ID</th>
         <th scope="col">Name</th>

@@ -1,9 +1,9 @@
 {% extends 'doctor_base.html' %}
 
 {% block sidebar %} 
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black;" href="/doctor">Main DashBoard</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 dark-blue text-white" style="color: black" href="/doctor/query_patients">Query Patients</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/doctor/add_prescription">Assign Prescriptions</a>
+<a class="list-group-item p-3 " style="color: black;" href="/doctor">Main DashBoard</a>
+<a class="list-group-item p-3 dark-purple text-white" style="color: black" href="/doctor/query_patients">Query Patients</a>
+<a class="list-group-item p-3 " style="color: black" href="/doctor/add_prescription">Assign Prescriptions</a>
 {% endblock %}
 
 {% block main_content %}
@@ -13,7 +13,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="light-purple text-white">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Patient ID</th>
                     <th scope="col">Name</th>
@@ -31,7 +31,7 @@
                     {% for field in patient %}
                     <td>{{ field }}</td>
                     {% endfor %}    
-                    <td><a href="/doctor/query_patients/{{ patient[0] }}" class="btn btn-primary">Details</a></td>
+                    <td><a href="/doctor/query_patients/{{ patient[0] }}" class="btn cerise text-white">Details</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
