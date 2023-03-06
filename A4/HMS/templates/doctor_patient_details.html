@@ -122,20 +122,32 @@
 
 
 {% for treatment in treatments %}
-    <div class="card text-white {{ treatment[7] }} mb-3" style="max-width: 18rem; display: inline-block; min-width: 18rem;">
+    <div class="card text-white {{ treatment[7] }} mb-3" style="max-width: 18rem; display: inline-block; min-width: 18rem; min-height: 18rem;">
         <div class="card-header">Date: {{treatment[1]}}</div>
         <div class="card-body">
             <h5>{{treatment[2]}}</h5>
             <p class="card-text">{{treatment[3]}}</p>
-            <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+            <div style="position: absolute; bottom: 2rem;">
+                <div class="row">
+                    <div class="col-6" style="max-width: 8rem; min-width: 8rem;">
+                        <button type="button" class="btn btn-warning" data-bs-toggle="modal"
                         data-bs-target="#myOutput{{ treatment[0] }}">Drugs Prescribed</button>
-            {% if treatment[4]|string() != None|string() %}
-            <form action="/doctor/show/treatment_pdf" method="post">
-                <input type="hidden" name="path" value="{{treatment[4]}}">
-                <input type="hidden" name="filename" value="{{treatment[5]}}">
-                <button type="submit" class="btn btn-info">View Document</button>
-            </form>
-            {% endif %}
+                    </div>
+                    <div class="col-6" style="max-width: 8rem; min-width: 8rem;">
+                        {% if treatment[4]|string() != None|string() %}
+                        <form action="/doctor/show/treatment_pdf" method="post">
+                            <input type="hidden" name="path" value="{{treatment[4]}}">
+                            <input type="hidden" name="filename" value="{{treatment[5]}}">
+                            <button type="submit" class="btn btn-info">View Document</button>
+                        </form>
+                        {% else %}
+                            <span></span>
+                        {% endif %}
+                    </div>
+                    
+                </div>
+            </div>
+            
         </div>
     </div>
 {% endfor %}
