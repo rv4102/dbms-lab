@@ -24,8 +24,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-
-        <form class="row g-3">
+        <form class="row g-3" method="post">
           {{form.hidden_tag()}}
           <div class="col-md-6">
             {{ form.username.label(for="inputEmail4", class="form-label") }}
@@ -36,45 +35,43 @@
           </div>
           <div class="col-md-6">
             {{ form.password1.label(for="inputPassword4", class="form-label") }}
-            {{ form.password1(class="form-control", type="password", id="inputPassword4", placeholder="8 or more
-            characters") }}
-            {% for error in form.username.errors %}
+            {{ form.password1(class="form-control", type="password", id="inputPassword4", placeholder="8 or more characters") }}
+            {% for error in form.password1.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>
           <div class="col-md-6">
             {{ form.name.label(class="form-label", for="name") }}
             {{ form.name(class="form-control", type="text", id="name") }}
-            {% for error in form.username.errors %}
+            {% for error in form.name.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>
           <div class="col-md-6">
             {{ form.gender.label(class="form-label", for="gender") }}
             {{ form.gender(class="form-control", type="text", id="gender")}}
-            {% for error in form.username.errors %}
+            {% for error in form.gender.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>
           <div class="col-md-6">
             {{ form.age.label(class="form-label", for="age") }}
             {{ form.age(class="form-control", type="number", id="age") }}
-            {% for error in form.username.errors %}
+            {% for error in form.age.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>
           <div class="col-md-6">
             {{ form.contact_number.label(class="form-label", for="ph_number") }}
             {{ form.contact_number(class="form-control", id="ph_number") }}
-            {% for error in form.username.errors %}
+            {% for error in form.contact_number.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>
           <div class="col-12">
             {{ form.address.label(class="form-label", for="inputAddress") }}
-            {{ form.address(class="form-control", type="text", id="inputAddress", placeholder="Street, Locality, City,
-            State") }}
-            {% for error in form.username.errors %}
+            {{ form.address(class="form-control", type="text", id="inputAddress", placeholder="Street, Locality, City, State") }}
+            {% for error in form.address.errors %}
             <span class="help-block">{{ error }}</span>
             {% endfor %}
           </div>
