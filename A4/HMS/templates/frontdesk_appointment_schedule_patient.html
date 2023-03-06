@@ -1,11 +1,11 @@
 {% extends 'frontdesk_base.html' %}
 
 {% block sidebar %} 
-<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3 dark-blue text-white" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
+<a class="list-group-item p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+    <a class="list-group-item p-3 dark-purple text-white" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
 {% endblock %}
        
     
@@ -24,8 +24,8 @@
                         <input type="date" class="form-control" id="date" name="date" required>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="button" class="btn cerise text-white" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn cerise text-white">Submit</button>
                     </div>
                 </form>
             </div>
@@ -38,7 +38,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="light-purple text-white">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Doctor ID</th>
                     <th scope="col">Name</th>
@@ -59,7 +59,7 @@
                     <td>{{ doc[6] }}</td>
                     <td>{{ doc[7] }}</td>
                     <td>
-                        <button data-bs-toggle="modal"  data-bs-target="#Modal{{ doc[0] }}" type="button" class="btn btn-primary">
+                        <button data-bs-toggle="modal"  data-bs-target="#Modal{{ doc[0] }}" type="button" class="btn cerise text-white">
                             Select Date
                         </button>
                     </td>

@@ -6,23 +6,24 @@ from wtforms.fields import DateField
 import datetime
 
 class RegisterPatient(FlaskForm):
+    gender_choices = [('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')]
+    gender = SelectField("Gender", choices = gender_choices, validators = [DataRequired()])
     name = StringField("Patient Name", validators=[DataRequired(), Length(min=2, max=50)])
     address = StringField("Patient Address", validators=[DataRequired(), Length(min=2, max=50)])
     age = IntegerField("Patient Age", validators=[DataRequired(), NumberRange(min=1, max=120)])
-    gender = StringField("Patient Gender", validators=[DataRequired(), Length(min=4, max=10)])
     contact_number = StringField("Patient Contact Number", validators=[DataRequired(), Length(min=10, max=10)])
     emergency_contact = StringField("Patient Emergency Contact", validators=[DataRequired(), Length(min=10, max=10)])
     submit = SubmitField("Register Patient")
 
 class AddUser(FlaskForm):
     gender_choices = [('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')]
+    gender = SelectField("Gender", choices = gender_choices, validators = [DataRequired()])
     username = StringField("Username", validators=[DataRequired(), Length(min=2, max=50), Email(message="Please enter a valid email address!")])
     password1 = PasswordField("Password", validators=[DataRequired(), Length(min=7, max=20)])
     # password2 = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password1')])
     name = StringField("Name", validators=[DataRequired(), Length(min=2, max=30)])
     address = StringField("Address", validators=[DataRequired(), Length(min=2, max=50)])
     age = IntegerField("Age", validators=[DataRequired(), NumberRange(min=1, max=120)])
-    gender = SelectField("Gender", choices = gender_choices, validators = [DataRequired()])
     contact_number = StringField("Contact Number", validators=[DataRequired(), Length(min=10, max=10)])
     submit = SubmitField("Add User")
 

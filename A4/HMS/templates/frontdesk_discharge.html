@@ -1,11 +1,11 @@
 {% extends 'frontdesk_base.html' %}
 
 {% block sidebar %} 
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3 dark-blue text-white" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
+    <a class="list-group-item p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
+    <a class="list-group-item p-3 dark-purple text-white" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
 {% endblock %}
 
 {% block main_content %}
@@ -15,7 +15,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="light-purple text-white">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Patient ID</th>
                     <th scope="col">Name</th>
@@ -33,7 +33,7 @@
                     {% for field in patient %}
                     <td>{{ field }}</td>
                     {% endfor %}
-                    <td><a href="/frontdesk/discharge/{{ patient[0] }}" class="btn btn-primary">Discharge</a></td>
+                    <td><a href="/frontdesk/discharge/{{ patient[0] }}" class="btn cerise text-white">Discharge</a></td>
                 </tr>
                 {% endfor %}
             </tbody>

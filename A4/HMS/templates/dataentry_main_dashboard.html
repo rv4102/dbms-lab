@@ -1,9 +1,9 @@
 {% extends 'dataentry_base.html' %}
 
 {% block sidebar %} 
-<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black;" href="/dataentry">Main DashBoard</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/dataentry/treatment">Add Treatment</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/dataentry/test">Add Test Result</a>
+<a class="list-group-item p-3 dark-purple text-white" style="color: black;" href="/dataentry">Main DashBoard</a>
+<a class="list-group-item p-3 " style="color: black" href="/dataentry/treatment">Add Treatment</a>
+<a class="list-group-item p-3 " style="color: black" href="/dataentry/test">Add Test Result</a>
 {% endblock %}
 
 {% block main_content %}
@@ -13,7 +13,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Treatment ID</th>
                     <th scope="col">Treatment Date</th>
@@ -41,7 +41,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Test ID</th>
                     <th scope="col">Test Date</th>
@@ -69,7 +69,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Test ID</th>
                     <th scope="col">Test Date</th>

@@ -1,9 +1,9 @@
 {% extends 'dataentry_base.html' %}
 
 {% block sidebar %} 
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black;" href="/dataentry">Main DashBoard</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/dataentry/treatment">Add Treatment</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 " style="color: black" href="/dataentry/test">Add Test Result</a>
+<a class="list-group-item p-3 " style="color: black;" href="/dataentry">Main DashBoard</a>
+<a class="list-group-item p-3 dark-purple text-white" style="color: black" href="/dataentry/treatment">Add Treatment</a>
+<a class="list-group-item p-3 " style="color: black" href="/dataentry/test">Add Test Result</a>
 {% endblock %}
 
 {% block main_content %}
@@ -13,7 +13,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="thead-dark">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Doctor ID</th>
                     <th scope="col">Name</th>
@@ -30,7 +30,7 @@
                     {% for field in doctor %}
                     <td>{{ field }}</td>
                     {% endfor %}
-                    <td><button type="button" class="btn btn-info" data-bs-toggle="modal"
+                    <td><button type="button" class="btn cerise text-white" data-bs-toggle="modal"
                         data-bs-target="#myOutput{{ doctor[0] }}">Add Treatment</button></td>
                 </tr>
                 {% endfor %}
@@ -53,7 +53,7 @@
                 
 
                 <div class = "container">
-                    <form method="post" enctype="multipart/form-data">
+                    <!-- <form method="post" enctype="multipart/form-data">
                         {{ form.hidden_tag() }}
                         <p>
                             {{form.category(size="1", class="form-control")}}
@@ -115,16 +115,67 @@
                         </div>
                         <div class="form-group row">
                           <div class="offset-sm-4 col-sm-8">
-                            {{ form.submit(class="btn btn-primary") }}
+                            {{ form.submit(class="btn cerise text-white") }}
                           </div>
                         </div>
+                    </form> -->
+                    <form class="row g-3" method="post" enctype="multipart/form-data">
+                      {{form.hidden_tag()}}
+                      <div class="col-12">
+                        {{form.category(size="1", class="form-control")}}
+                      </div>
+                      <div class="col-md-12">
+                        {{ form.treatment_date.label(class="form-label", for="date") }}
+                        {{ form.treatment_date(class="form-control", id="date") }}
+                        {% for error in form.treatment_date.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      <div class="col-md-6">
+                        {{ form.patient.label(class="form-label", for="patient") }}
+                        {{ form.patient(class="form-control", type="text", id="patient",value=patient_name[0],readonly=true)}}
+                        {% for error in form.patient.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      <div class="col-md-6">
+                        {{ form.doctor_id.label(class="form-label", for="doctor") }}
+                        {{ form.doctor_id(class="form-control", type="number", id="doctor", value=doctor[0],readonly=true) }}
+                        {% for error in form.doctor_id.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      <div class="col-12">
+                        {{ form.doctor.label(class="form-label", for="doctor") }}
+                        {{ form.doctor(class="form-control", type="text", id="doctor", value=doctor[1],readonly=true) }}
+                        {% for error in form.doctor.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      <div class="col-12">
+                        {{ form.details.label(class="form-label", for="details") }}
+                        {{ form.details(class="form-control", type="text", id="details", placeholder="Enter treatment information") }}
+                        {% for error in form.details.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      <div class="col-12">
+                        {{ form.file_upload.label(class="form-label", for="file") }}
+                        {{ form.file_upload(class="form-control", id="file") }}
+                        {% for error in form.file_upload.errors %}
+                        <span class="help-block">{{ error }}</span>
+                        {% endfor %}
+                      </div>
+                      <div class="col-12">
+                        {{ form.submit(class="btn cerise text-white") }}
+                      </div>
                     </form>
                 </div>
 
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn cerise text-white" data-bs-dismiss="modal">Close</button>
             </div>
         </div>
 

@@ -1,11 +1,11 @@
 {% extends 'frontdesk_base.html' %}
 
 {% block sidebar %} 
-<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3 dark-blue text-white" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
+<a class="list-group-item p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+    <a class="list-group-item p-3 dark-purple text-white" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
 {% endblock %}
 
 {% block main_content %}
@@ -19,15 +19,6 @@
             </div>
             <form action="/frontdesk/appointment_schedule/{{ patient[0] }}" method="post">
                 <div class="form-group modal-body">
-                    <!-- <input type="date" class="form-control" id="date" name="date" required> -->
-                    <!-- <div class="col">
-                        <input type="radio" id="urgent" name="priority" value="Urgent">
-                        <label for="urgent">Urgent</label><br>
-                    </div>
-                    <div class="col">
-                        <input type="radio" id="normal" name="priority" value="Normal">
-                        <label for="normal">Normal</label><br>
-                    </div> -->
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="radio" name="priority" id="urgent" value="Urgent">
                         <label class="form-check-label" for="urgent">Urgent</label>
@@ -38,8 +29,8 @@
                       </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="button" class="btn cerise text-white" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn cerise text-white">Submit</button>
                 </div>
 
                 
@@ -54,7 +45,7 @@
     {% else %}
     <div class="table-responsive">
         <table class="table table-striped">
-            <thead class="light-purple text-white">
+            <thead class="dark-purple text-white">
                 <tr>
                     <th scope="col">Patient ID</th>
                     <th scope="col">Name</th>
@@ -72,10 +63,9 @@
                     {% for field in patient %}
                     <td>{{ field }}</td>
                     {% endfor %}
-                    <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal{{ patient[0] }}">
+                    <td><button type="button" class="btn cerise text-white" data-bs-toggle="modal" data-bs-target="#Modal{{ patient[0] }}">
                         Schedule Appointment
                     </button></td>
-                    <!-- <td><a href="/frontdesk/appointment_schedule/{{ patient[0] }}" class="btn btn-primary">Schedule Appointment</a></td> -->
                 </tr>
                 {% endfor %}
             </tbody>

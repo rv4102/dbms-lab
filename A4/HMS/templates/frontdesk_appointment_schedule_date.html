@@ -1,11 +1,11 @@
 {% extends 'frontdesk_base.html' %}
 
 {% block sidebar %} 
-<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
-    <a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
+<a class="list-group-item p-3" style="color: black;" href="/frontdesk">Main DashBoard</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/register">Register Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/admit">Admit Patient</a>
+    <a class="list-group-item p-3" style="color: black" href="/frontdesk/discharge">Discharge Patient</a>
+    <a class="list-group-item p-3 dark-purple text-white" style="color: black" href="/frontdesk/appointment_schedule">Schedule Appointment</a>
 {% endblock %}
 
 {% block main_content %}
@@ -15,7 +15,7 @@
             <label for="date">Date</label>
             <input type="date" class="form-control" id="date" name="date" required>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn cerise text-white">Submit</button>
     </form>
     
 {% endblock %}
