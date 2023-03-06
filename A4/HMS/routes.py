@@ -27,7 +27,8 @@ def frontdesk():
     cur = mysql.connection.cursor()
     cur.execute("SELECT * FROM Patient ORDER BY Patient_ID DESC LIMIT 5")
     patients = cur.fetchall()
-    total_patients = len(patients)
+    cur.execute("SELECT * FROM Patient")
+    total_patients = len(cur.fetchall())
     cur.execute("SELECT * FROM Admitted")
     admitted = cur.fetchall()
     cur.execute("SELECT * FROM Discharged")
@@ -169,7 +170,7 @@ def frontdesk_appointment_schedule_patient(patient_id):
                 doctors_id = doctors_free[0][0]
                 cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doctors_id, date_to_schedule, '10:00:00'))
                 mysql.connection.commit()
-                flash(f'Appointment scheduled for patient {patient_id} at 10:00:00 with doctor {doctors_free[0][1]}', 'success')
+                flash(f'Appointment scheduled for patient {patient_id} at 10:00:00 on date {date_to_schedule} with doctor {doctors_free[0][1]}', 'success')
                 return redirect(url_for('routes.frontdesk_appointment_schedule'))
             
             else:
@@ -184,7 +185,7 @@ def frontdesk_appointment_schedule_patient(patient_id):
                         if(cur.fetchone() is None):
                             cur.execute("INSERT INTO Appointment (Patient_ID, Doctor_ID, Appointment_Date, Appointment_Time) VALUES (%s, %s, %s, %s)", (patient_id, doc[0], date_to_schedule, start))
                             mysql.connection.commit()
-                            flash(f'Appointment scheduled for patient {patient_id} at {start} with doctor {doc[1]}', 'success')
+                            flash(f'Appointment scheduled for patient {patient_id} at {start} on date {date_to_schedule} with doctor {doc[1]}', 'success')
                             return redirect(url_for('routes.frontdesk_appointment_schedule'))
                         
                 flash(f'No doctors available on urgent priority', 'danger')
@@ -210,7 +211,8 @@ def frontdesk_appointment_schedule_date(patient_id, doctor_id):
         cur_date = datetime.now().strftime("%Y-%m-%d")
         if date_selected <= cur_date:
             flash(f'Please select a date in the future', 'danger')
-            return redirect(url_for('routes.frontdesk_appointment_schedule_patient', patient_id=patient_id))
+            # return redirect(url_for('routes.frontdesk_appointment_schedule_patient', patient_id=patient_id, doctors = doctors))
+            return redirect(url_for('routes.frontdesk_appointment_schedule'))
             # return redirect(url_for('routes.frontdesk_appointment_schedule_date', patient_id=patient_id, doctor_id=doctor_id))
         cur.execute("SELECT Appointment_Time FROM Appointment WHERE Appointment_Date = %s AND Doctor_ID = %s", (date_selected, doctor_id))
         appointments = cur.fetchall()
@@ -313,10 +315,18 @@ def admin_edit_user(user_type):
 @requires_access_level(1)
 def admin_delete_user(user_type, user_id):
     cur = mysql.connection.cursor()
-    cur.execute(f"DELETE FROM Treatment WHERE {user_type}_ID = {user_id}")
-    mysql.connection.commit()
-    cur.execute(f"DELETE FROM Appointment WHERE {user_type}_ID = {user_id}")
-    mysql.connection.commit()
+    if user_type == 'Doctor':
+        cur.execute(f"DELETE FROM Drugs_Prescribed WHERE Treatment_ID IN (SELECT Treatment_ID FROM Treatment WHERE {user_type}_ID = {user_id})")
+        mysql.connection.commit()
+        cur.execute(f"DELETE FROM Treatment WHERE {user_type}_ID = {user_id}")
+        mysql.connection.commit()
+        cur.execute(f"DELETE FROM Appointment WHERE {user_type}_ID = {user_id}")
+        mysql.connection.commit()
+    if user_type == 'Administrator':
+        cur.execute(f"SELECT * FROM Administrator")
+        if current_user.Administrator_ID == int(user_id):
+            flash(f'Cannot delete current administrator', 'danger')
+            return redirect(url_for('routes.admin_edit_user', user_type=user_type, user=current_user))
     cur.execute(f"DELETE FROM {user_type} WHERE {user_type}_ID = '{user_id}'")
     mysql.connection.commit()
     cur.close()

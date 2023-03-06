@@ -37,7 +37,7 @@ class AddRoom(FlaskForm):
     submit = SubmitField("Create Room")
 
 class AddTestResult(FlaskForm):
-    choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasoud')]
+    choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasound')]
     test_date = DateField("Test Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the end date.")])
     # test_date = StringField("Test Date",validators=[DataRequired(message="You need to enter the end date.")],render_kw={"placeholder": "YYYY-MM-DD"})
     category = StringField("Category", validators=[DataRequired(), Length(min=2, max=1000)])
@@ -68,7 +68,7 @@ class AddTreatmentForm(FlaskForm):
     submit = SubmitField("Add Treatment")
 
 class AddTestForm(FlaskForm):
-    choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasoud')]
+    choices = [('CT Scan', 'CT Scan'), ('PET Scan', 'PET Scan'), ('Biopsy', 'Biopsy') , ('Ultrasound', 'Ultrasound')]
     test_date = DateField("Test Date",default=datetime.date.today(),format='%Y-%m-%d',validators=[DataRequired(message="You need to enter the date.")])
     category = SelectField(u'Field name', choices = choices, validators = [DataRequired()])    
     bodypart = StringField("Associated Body Part", validators=[DataRequired(), Length(min=2, max=1000)])
