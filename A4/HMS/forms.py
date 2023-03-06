@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileAllowed
 from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, DateField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, NumberRange, Email
 from wtforms.fields import DateField
 import datetime
 
@@ -15,16 +15,15 @@ class RegisterPatient(FlaskForm):
     submit = SubmitField("Register Patient")
 
 class AddUser(FlaskForm):
-    # choices = [('Doctor', 'Doctor'), ('FD_Operator', 'FrontDesk Operator'), ('DE_Operator', 'DataEntry Operator'), ('Administrator', 'Administrator')]
-    # users = SelectField(u'Field name', choices = choices, validators = [DataRequired()])
-    username = StringField("Username", validators=[DataRequired(), Length(min=2, max=50)])
-    password1 = PasswordField("Password", validators=[DataRequired(), Length(min=2, max=20)])
-    password2 = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password1')])
-    name = StringField("User's Name", validators=[DataRequired(), Length(min=2, max=20)])
-    address = StringField("User's Address", validators=[DataRequired(), Length(min=2, max=50)])
-    age = IntegerField("User's Age", validators=[DataRequired(), NumberRange(min=1, max=120)])
-    gender = StringField("User's Gender", validators=[DataRequired(), Length(min=4, max=10)])
-    contact_number = StringField("User's Contact Number", validators=[DataRequired(), Length(min=10, max=10)])
+    gender_choices = [('Male', 'Male'), ('Female', 'Female'), ('Other', 'Other')]
+    username = StringField("Username", validators=[DataRequired(), Length(min=2, max=50), Email(message="Please enter a valid email address!")])
+    password1 = PasswordField("Password", validators=[DataRequired(), Length(min=7, max=20)])
+    # password2 = PasswordField("Confirm Password", validators=[DataRequired(), EqualTo('password1')])
+    name = StringField("Name", validators=[DataRequired(), Length(min=2, max=30)])
+    address = StringField("Address", validators=[DataRequired(), Length(min=2, max=50)])
+    age = IntegerField("Age", validators=[DataRequired(), NumberRange(min=1, max=120)])
+    gender = SelectField("Gender", choices = gender_choices, validators = [DataRequired()])
+    contact_number = StringField("Contact Number", validators=[DataRequired(), Length(min=10, max=10)])
     submit = SubmitField("Add User")
 
 class GetUser(FlaskForm):

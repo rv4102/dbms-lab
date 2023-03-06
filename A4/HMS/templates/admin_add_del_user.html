@@ -1,13 +1,9 @@
 {% extends 'admin_base.html' %}
 
 {% block sidebar %}
-<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black;" href="/admin">Main
-  DashBoard</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3 active" style="color: black"
-  href="/admin/edit_user">Add/Delete
-  User</a>
-<a class="list-group-item list-group-item-action list-group-item-light p-3" style="color: black"
-  href="/admin/add_room">Get a Room!</a>
+<a class="list-group-item p-3" href="/admin">Main DashBoard</a>
+<a class="list-group-item p-3 dark-blue text-white" href="/admin/edit_user">Add/Delete User</a>
+<a class="list-group-item p-3" href="/admin/add_room">Get a Room!</a>
 {% endblock %}
 
 {% block main_content %}
@@ -15,7 +11,7 @@
   <h3 class="mt-4">View {{user_type}}s</h3>
   <!-- add user from here -->
   <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#user">
-      Add {{user_type}}
+    Add {{user_type}}
   </button>
 </div>
 <!-- modal defined here -->
@@ -28,100 +24,64 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
-        <div class="container">
-          <form method="post">
-            {{ form.hidden_tag() }}
-            <div class="form-group row">
-              {{ form.username.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.username(class="form-control") }}
-                {% for error in form.username.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.password1.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.password1(class="form-control") }}
-                {% for error in form.password1.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.password2.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.password2(class="form-control") }}
-                {% for error in form.password2.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.name.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.name(class="form-control") }}
-                {% for error in form.name.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.address.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.address(class="form-control") }}
-                {% for error in form.address.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.age.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.age(class="form-control") }}
-                {% for error in form.age.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.gender.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.gender(class="form-control") }}
-                {% for error in form.gender.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              {{ form.contact_number.label(class="col-sm-4 col-form-label") }}
-              <div class="col-sm-8">
-                {{ form.contact_number(class="form-control") }}
-                {% for error in form.contact_number.errors %}
-                <span class="help-block">{{ error }}</span>
-                {% endfor %}
-              </div>
-            </div>
-        
-            <div class="form-group row">
-              <div class="offset-sm-4 col-sm-8">
-                {{ form.submit(class="btn btn-primary") }}
-              </div>
-            </div>
-          </form>
-        </div>
 
-
-
-
+        <form class="row g-3">
+          {{form.hidden_tag()}}
+          <div class="col-md-6">
+            {{ form.username.label(for="inputEmail4", class="form-label") }}
+            {{ form.username(class="form-control", type="email", placeholder="Enter Email", id="inputEmail4") }}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.password1.label(for="inputPassword4", class="form-label") }}
+            {{ form.password1(class="form-control", type="password", id="inputPassword4", placeholder="8 or more
+            characters") }}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.name.label(class="form-label", for="name") }}
+            {{ form.name(class="form-control", type="text", id="name") }}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.gender.label(class="form-label", for="gender") }}
+            {{ form.gender(class="form-control", type="text", id="gender")}}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.age.label(class="form-label", for="age") }}
+            {{ form.age(class="form-control", type="number", id="age") }}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-md-6">
+            {{ form.contact_number.label(class="form-label", for="ph_number") }}
+            {{ form.contact_number(class="form-control", id="ph_number") }}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-12">
+            {{ form.address.label(class="form-label", for="inputAddress") }}
+            {{ form.address(class="form-control", type="text", id="inputAddress", placeholder="Street, Locality, City,
+            State") }}
+            {% for error in form.username.errors %}
+            <span class="help-block">{{ error }}</span>
+            {% endfor %}
+          </div>
+          <div class="col-12">
+            {{ form.submit(class="btn btn-primary ") }}
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -132,7 +92,7 @@
 {% else %}
 <div class="table-responsive">
   <table class="table table-striped">
-    <thead class="thead-dark">
+    <thead class="light-purple text-white">
       <tr>
         <th scope="col">{{user_type}} ID</th>
         <th scope="col">Name</th>

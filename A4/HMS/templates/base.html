@@ -15,14 +15,38 @@
       /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
       background: linear-gradient(to right, rgba(106, 17, 203, 1), rgba(37, 117, 252, 1))
     }
+    .blue {
+      background: #3795BD;
+    }
+    .dark-blue {
+      background: #2F58CD;
+    }
+    .light-purple {
+      background: #4E31AA;
+    }
+    .dark-purple {
+      background: #3A1078;
+    }
+    .gradient-black {
+      background: #000000;
+      /* fallback for old browsers */
+      background: -webkit-linear-gradient(to right, #434343, #000000);
+      /* Chrome 10-25, Safari 5.1-6 */
+      background: linear-gradient(to right, #434343, #000000);
+      /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
+    .bdr {
+      border-radius: 10px;
+      overflow: hidden;
+    }
   </style>
 </head>
 
 <body {% block bg_custom %}{% endblock %}>
   {% block navbar %}
-  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <nav class="navbar navbar-expand-sm navbar-light dark-blue">
     <div class="container-fluid">
-      <a class="navbar-brand" href="{{ url_for('routes.index') }}">Hospital Management System</a>
+      <a class="navbar-brand text-white">Soni Group of Hospitals</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -32,7 +56,7 @@
         </div>
         {% if user.is_authenticated %}
         <div class="navbar-nav ms-auto justify-content-end">
-          <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+          <a class="nav-link text-white" href="{{ url_for('auth.logout') }}">Logout</a>
         </div>
         {% endif %}
       </div>
