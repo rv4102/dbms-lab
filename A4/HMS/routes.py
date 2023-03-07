@@ -4,7 +4,6 @@ from . import requires_access_level, mysql
 from werkzeug.security import generate_password_hash
 from werkzeug.utils import secure_filename
 from .forms import *
-from datetime import datetime
 from .models import DE_Operator,Doctor,FD_Operator,Administrator, identify_class
 from datetime import datetime, timedelta
 import os  
@@ -31,12 +30,9 @@ def frontdesk():
     total_patients = len(cur.fetchall())
     cur.execute("SELECT * FROM Admitted")
     admitted = cur.fetchall()
-    cur.execute("SELECT * FROM Discharged")
     # get free rooms
-    cur.execute("SELECT * FROM Room WHERE Room_Num NOT IN (SELECT Room_Num FROM Admitted)")
+    cur.execute("SELECT * FROM Room WHERE (Room_Num, Floor) NOT IN (SELECT Room_Num, Floor FROM Admitted)")
     free_rooms = cur.fetchall()
-    # return render_template('frontdesk_dashboard.html',  total_patients = user = current_user)
-    # return render_template('frontdesk_dashboard.html', patients=patients, admitted=admitted, discharged=discharged, user = current_user)
     return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), available_rooms = len(free_rooms), patients = patients, admitted_patients_list=admitted, user = current_user)  
 
 @routes.route('/frontdesk/register', methods=['GET', 'POST'])
@@ -87,13 +83,13 @@ def frontdesk_admit_patient(patient_id):
     print(patient_id)
     cur = mysql.connection.cursor()
     date = datetime.now().strftime("%Y-%m-%d")
-    cur.execute("SELECT Room_Num FROM Room WHERE Room_Num NOT IN (SELECT Room_Num FROM Admitted)")
-    room_number = cur.fetchone()
-    if room_number is None:
+    cur.execute("SELECT Room_Num, Floor FROM Room WHERE (Room_Num, Floor) NOT IN (SELECT Room_Num, Floor FROM Admitted)")
+    room = cur.fetchone()
+    if room is None:
         flash(f'No rooms available', 'danger')
         return redirect(url_for('routes.frontdesk_admit'))
-    flash(f'Patient admitted to room {room_number[0]}', 'success')
-    cur.execute("INSERT INTO Admitted (Patient_ID, Room_Num, Date_Admitted) VALUES (%s, %s, %s)", (patient_id, room_number, date))
+    flash(f'Patient admitted to room {room[0]} on floor {room[1]}', 'success')
+    cur.execute("INSERT INTO Admitted (Patient_ID, Room_Num, Floor, Date_Admitted) VALUES (%s, %s, %s, %s)", (patient_id, room[0], room[1], date))
     mysql.connection.commit()
     cur.close()
     return redirect(url_for('routes.frontdesk_admit'))
@@ -107,7 +103,7 @@ def frontdesk_discharge():
     cur.execute("SELECT * FROM Patient WHERE Patient_ID IN (SELECT Patient_ID FROM Admitted)")
     patients = cur.fetchall()
     cur.close()
-    print(patients)
+    # print(patients)
     return render_template('frontdesk_discharge.html', patients=patients,  user=current_user)
 
 @routes.route('/frontdesk/discharge/<patient_id>')
@@ -115,9 +111,14 @@ def frontdesk_discharge():
 @login_required
 @requires_access_level(3)
 def frontdesk_discharge_patient(patient_id):
-    print(patient_id)
+    # print(patient_id)
+    date = datetime.now().strftime("%Y-%m-%d")
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM Admitted WHERE Patient_ID = %s", (patient_id,))
+    cur.execute(f"SELECT Room_Num, Floor FROM Admitted WHERE Patient_ID = {patient_id}")
+    room = cur.fetchone()
+    cur.execute(f"DELETE FROM Admitted WHERE Patient_ID = {patient_id}")
+    mysql.connection.commit()
+    cur.execute("INSERT INTO Discharged (Patient_ID, Room_Num, Floor, Date_Discharged) VALUES (%s, %s, %s, %s)", (patient_id, room[0], room[1], date))
     mysql.connection.commit()
     cur.close()
     flash(f'Patient discharged', 'success')

@@ -46,7 +46,7 @@ class Administrator(UserMixin):
     def create(id, username, name, password, Address, Age, Gender, Personal_Contact):
         cur = mysql.connection.cursor()
         # cur.execute("INSERT INTO Administrator(Administrator_ID, Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, username, name, password, Address, Age, Gender, Personal_Contact))
-        cur.execute("INSERT INTO Administrator(Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (username, name, password, Address, Age, Gender, Personal_Contact))
+        cur.execute("INSERT INTO Administrator(Username, Name, Password, Address, Age, Gender, Personal_Contact) VALUES (%s, %s, %s, %s, %s, %s, %s)", (username, name, password, Address, Age, Gender, Personal_Contact))
         
         mysql.connection.commit()
         return Administrator.get(id)

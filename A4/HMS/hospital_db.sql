@@ -15,17 +15,10 @@ CREATE TABLE Patient(
     PRIMARY KEY(Patient_ID)
 );
 
-CREATE TABLE Patient_longTermAilments(
-    longTermAilment     VARCHAR(200),
-    Patient_ID          int NOT NULL,
-    FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
-    PRIMARY KEY(longTermAilment, Patient_ID)
-);
-
 CREATE TABLE Room(
     Room_Num        INT NOT NULL,
     Floor           INT NOT NULL,
-    PRIMARY KEY(Room_Num)
+    PRIMARY KEY(Room_Num, Floor)
 );
 
 CREATE TABLE Administrator(
@@ -93,18 +86,20 @@ CREATE TABLE Admitted(
     Date_Admitted   DATE,
     Patient_ID      int NOT NULL,
     Room_Num        INT NOT NULL,
+    Floor           INT NOT NULL,
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
-    FOREIGN KEY(Room_Num) REFERENCES Room(Room_Num),
-    PRIMARY KEY(Date_Admitted, Patient_ID, Room_Num)
+    FOREIGN KEY(Room_Num, Floor) REFERENCES Room(Room_Num, Floor),
+    PRIMARY KEY(Date_Admitted, Patient_ID, Room_Num, Floor)
 );
 
 CREATE TABLE Discharged(
     Date_Discharged   DATE,
     Patient_ID      int NOT NULL,
     Room_Num        INT NOT NULL,
+    Floor           INT NOT NULL,
     FOREIGN KEY(Patient_ID) REFERENCES Patient(Patient_ID),
-    FOREIGN KEY(Room_Num) REFERENCES Room(Room_Num),
-    PRIMARY KEY(Date_Discharged, Patient_ID, Room_Num)
+    FOREIGN KEY(Room_Num, Floor) REFERENCES Room(Room_Num, Floor),
+    PRIMARY KEY(Date_Discharged, Patient_ID, Room_Num, Floor)
 );
 
 CREATE TABLE Treatment(
