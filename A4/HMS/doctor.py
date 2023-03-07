@@ -1,16 +1,14 @@
 from flask import render_template, Blueprint, flash, redirect, url_for, request, send_file
 from flask_login import login_required, current_user
 from . import requires_access_level, mysql
-from werkzeug.security import generate_password_hash
 from .forms import *
 from datetime import datetime
-from .models import DE_Operator,Doctor,FD_Operator,Administrator, identify_class
-from datetime import datetime, timedelta
 import os
 
 doctor = Blueprint('doctor', __name__)
 
 @doctor.route('/doctor', methods=['GET', 'POST'])
+@doctor.route('/doctor/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(2)
 def doctor_dashboard():
@@ -26,7 +24,9 @@ def doctor_dashboard():
     cur.close()
     return render_template('doctor_dashboard.html', name=current_user.Name, appointments=appointments, patients_treated=patients_treated, user = current_user)
 
+
 @doctor.route('/doctor/query_patients', methods=['GET', 'POST'])
+@doctor.route('/doctor/query_patients/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(2)
 def query_patients():
@@ -37,6 +37,7 @@ def query_patients():
     return render_template('doctor_query_patients.html', name=current_user.Name, patients=patients, user = current_user)
 
 @doctor.route('/doctor/query_patients/<int:patient_id>', methods=['GET', 'POST'])
+@doctor.route('/doctor/query_patients/<int:patient_id>/', methods=['GET', 'POST'])
 @login_required
 @requires_access_level(2)
 def query_patient(patient_id):
@@ -105,6 +106,7 @@ def query_patient(patient_id):
     return render_template('doctor_patient_details.html', name=current_user.Name, treatments=treatments_og, tests = tests_og, user = current_user, form_1=form_1, form_2=form_2, patient_id=patient_id)
 
 @doctor.route('/doctor/show/treatment_pdf', methods=['POST'])
+@doctor.route('/doctor/show/treatment_pdf/', methods=['POST'])
 @login_required
 @requires_access_level(2)
 def show_treatment_pdf():
@@ -123,6 +125,7 @@ def show_test_pdf():
         return send_file(path, as_attachment=True, download_name=filename)
     
 @doctor.route('/doctor/add_prescription' , methods=['GET', 'POST'])
+@doctor.route('/doctor/add_prescription/' , methods=['GET', 'POST'])
 @login_required
 @requires_access_level(2)
 def add_prescription():
@@ -168,6 +171,7 @@ def add_prescription():
 #     return render_template('doctor_add_test.html', name=current_user.Name, form=form, user = current_user)
 
 @doctor.route('/report/doctor/<int:patient_id>', methods=['GET', 'POST'])
+@doctor.route('/report/doctor/<int:patient_id>/', methods=['GET', 'POST'])
 def report(patient_id):
     cur = mysql.connection.cursor()
     cur.execute("SELECT Treatment_ID, TreatmentDate, Category, Details, Document_Path FROM Treatment WHERE Patient_ID = %s", (patient_id,))

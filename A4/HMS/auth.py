@@ -25,13 +25,13 @@ def login():
                 login_user(user, remember=True)
                 flash('Logged in successfully.', category='success')
                 if staff == Administrator:
-                    return redirect(url_for('routes.admin'))
+                    return redirect(url_for('adm.admin'))
                 elif staff == Doctor:
                     return redirect(url_for('doctor.doctor_dashboard'))
                 elif staff == DE_Operator:
-                    return redirect(url_for('routes.dataentry'))
+                    return redirect(url_for('deo.dataentry'))
                 elif staff == FD_Operator:
-                    return redirect(url_for('routes.frontdesk'))
+                    return redirect(url_for('fdo.frontdesk'))
                 
                 return redirect(url_for('routes.index'))
         flash('Incorrect Username or Password', category='danger')

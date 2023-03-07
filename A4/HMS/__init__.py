@@ -14,19 +14,24 @@ mysql = MySQL()
 scheduler = APScheduler()
 
 def create_app():
-
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
 
-    from .routes import routes
+    # from .routes import routes
     from .auth import auth
+    from .admin import adm
     from .doctor import doctor
+    from .front_desk import fdo
+    from .data_entry import deo
 
-    app.register_blueprint(routes, url_prefix='/')
+    # app.register_blueprint(routes, url_prefix='/')
+    app.register_blueprint(adm, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
     app.register_blueprint(doctor, url_prefix='/')
-    # init MYSQL
+    app.register_blueprint(fdo, url_prefix='/')
+    app.register_blueprint(deo, url_prefix='/')
 
+    # init MYSQL
     # app.config['MYSQL_HOST'] = 'localhost'
     app.config['MYSQL_USER'] = os.getenv('MYSQL_USER')
     app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
