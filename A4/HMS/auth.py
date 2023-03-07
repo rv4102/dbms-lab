@@ -76,6 +76,7 @@ def sign_up():
             session['Access_Level'] = new_user.AccessLevel
             login_user(new_user, remember=True)
             flash('Account created!', category='success')
-            return redirect(url_for('routes.index'))
+            # return redirect(url_for('routes.index'))
+            return redirect(url_for('auth.login'))
         
     return render_template("sign_up.html", user=current_user)

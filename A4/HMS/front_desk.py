@@ -22,9 +22,11 @@ def frontdesk():
     cur.execute("SELECT * FROM Admitted")
     admitted = cur.fetchall()
     # get free rooms
+    cur.execute("SELECT * FROM Discharged")
+    discharged = cur.fetchall()
     cur.execute("SELECT * FROM Room WHERE (Room_Num, Floor) NOT IN (SELECT Room_Num, Floor FROM Admitted)")
     free_rooms = cur.fetchall()
-    return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), available_rooms = len(free_rooms), patients = patients, admitted_patients_list=admitted, user = current_user)  
+    return render_template('frontdesk_dashboard.html', total_patients=total_patients, admitted_patients=len(admitted), available_rooms = len(free_rooms), patients = patients, admitted_patients_list=admitted, discharged_patients_list = discharged, user = current_user)  
 
 @fdo.route('/frontdesk/register', methods=['GET', 'POST'])
 @fdo.route('/frontdesk/register/', methods=['GET', 'POST'])

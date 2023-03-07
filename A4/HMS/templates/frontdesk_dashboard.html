@@ -89,5 +89,30 @@
       </div>
       
     </div>
+    <div class="mb-4">
+      <h5 class = "mb-3">Discharged Patients</h5>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead class="dark-purple text-white">
+            <tr>
+              <th scope="col">Discharge Date</th>
+              <th scope="col">Patient ID</th>
+              <th scope="col">Room Number</th>
+              <th scope="col">Floor</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for patient in discharged_patients_list %}
+              <tr>
+                {% for field in patient %}
+                  <td>{{ field }}</td>
+                {% endfor %}
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
   </div>
 {% endblock %}
