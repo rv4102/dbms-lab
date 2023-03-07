@@ -10,32 +10,24 @@
 <h1 class="mt-4">Register a Room</h1>
 
 <div class="container">
-  <form method="post">
-    {{ form.hidden_tag() }}
-    <div class="form-group row">
-      {{ form.num.label(class="col-sm-4 col-form-label") }}
-      <div class="col-sm-8">
-        {{ form.num(class="form-control") }}
-        {% for error in form.num.errors %}
-        <span class="help-block">{{ error }}</span>
-        {% endfor %}
-      </div>
+  <form class="row g-3" method="post">
+    {{form.hidden_tag()}}
+    <div class="col-md-6">
+      {{ form.num.label(for="room", class="form-label") }}
+      {{ form.num(class="form-control", type="text", placeholder="Enter Room Number", id="room") }}
+      {% for error in form.num.errors %}
+      <span class="help-block">{{ error }}</span>
+      {% endfor %}
     </div>
-
-    <div class="form-group row">
-      {{ form.floor.label(class="col-sm-4 col-form-label") }}
-      <div class="col-sm-8">
-        {{ form.floor(class="form-control") }}
-        {% for error in form.floor.errors %}
-        <span class="help-block">{{ error }}</span>
-        {% endfor %}
-      </div>
+    <div class="col-md-6">
+      {{ form.floor.label(for="floor", class="form-label") }}
+      {{ form.floor(class="form-control", type="text", id="floor", placeholder="Enter Floor Number") }}
+      {% for error in form.floor.errors %}
+      <span class="help-block">{{ error }}</span>
+      {% endfor %}
     </div>
-
-    <div class="form-group row">
-      <div class="offset-sm-4 col-sm-8">
-        {{ form.submit(class="btn cerise text-white") }}
-      </div>
+    <div class="col-12">
+      {{ form.submit(class="btn cerise text-white") }}
     </div>
   </form>
 </div>
