@@ -160,3 +160,5 @@ cython_debug/
 
 test_patient_data/
 treatment_patient_data/
+DBMS\ Lab\ 2021/
+.DS_Store
