@@ -52,7 +52,7 @@ def create_app():
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
 
-    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=9, minute=0, second=0)
+    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=14, minute=44, second=0)
     def send_mail():
         print("Sending mail")
         with app.app_context():
@@ -113,7 +113,7 @@ def requires_access_level(access_level):
         def decorated_function(*args, **kwargs):
             if session['Access_Level'] != access_level:
                 flash('You do not have access to that page. Sorry!', category='danger')
-                return redirect(url_for('routes.login'))
+                return redirect(url_for('auth.login'))
             return f(*args, **kwargs)
         return decorated_function
     return decorator
