@@ -132,7 +132,4 @@ CREATE TABLE Drugs_Prescribed(
     FOREIGN KEY(Treatment_ID) REFERENCES Treatment(Treatment_ID),
     PRIMARY KEY(Name, Treatment_ID)
 );
-INSERT INTO Patient (Name, Address, Age, Gender, Personal_Contact, Emergency_Contact) VALUES ("hfjkds", "jfdksh", 231, "Male", "1234567890", "1234567890");
-INSERT INTO Doctor (Name, Address, Age, Gender, Personal_Contact) VALUES ("Dr. A", "A", 20, "Male", "1234567890");
-INSERT INTO Room (Room_Num, Floor) VALUES (1, 1);
-INSERT INTO Test (TestDate, Category, BodyPart, ResultObtained, Patient_ID) VALUES ('2023-05-03', 'PET Scan', 'Brain', 0, 1);
+
