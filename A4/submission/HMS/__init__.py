@@ -13,6 +13,12 @@ load_dotenv()
 mysql = MySQL()
 scheduler = APScheduler()
 
+def reverse_tuple(t):
+    new_tuple = ()
+    for i in range(len(t)-1, -1, -1):
+        new_tuple += (t[i],)
+    return new_tuple
+
 def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = '5791628bb0b13ce0c676dfde280ba245'
@@ -52,7 +58,7 @@ def create_app():
 
     from .models import Administrator, Doctor, DE_Operator, FD_Operator
 
-    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=9, minute=0, second=0)
+    @scheduler.task('cron', id='send_weekly_mail', day_of_week='mon', hour=14, minute=50, second=0)
     def send_mail():
         print("Sending mail")
         with app.app_context():
@@ -61,6 +67,7 @@ def create_app():
                 "SELECT Doctor_ID, Username FROM Doctor"
             )
             doctor_ids = cur.fetchall()
+            doctor_ids = reverse_tuple(doctor_ids)
             for doctor_id in doctor_ids:
                 cur.execute(
                     "SELECT distinct Patient_ID FROM Treatment WHERE Doctor_ID = %s", (doctor_id[0],)
@@ -113,7 +120,7 @@ def requires_access_level(access_level):
         def decorated_function(*args, **kwargs):
             if session['Access_Level'] != access_level:
                 flash('You do not have access to that page. Sorry!', category='danger')
-                return redirect(url_for('routes.login'))
+                return redirect(url_for('auth.login'))
             return f(*args, **kwargs)
         return decorated_function
     return decorator

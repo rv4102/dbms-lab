@@ -33,7 +33,8 @@ def login():
                 elif staff == FD_Operator:
                     return redirect(url_for('fdo.frontdesk'))
                 
-                return redirect(url_for('routes.index'))
+                # return redirect(url_for('routes.index'))
+                return redirect(url_for('auth.login'))
         flash('Incorrect Username or Password', category='danger')
     return render_template('login.html', user=current_user)
 
