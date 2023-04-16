@@ -2,6 +2,7 @@
 #define __BUFFER_HPP__
 #include <unordered_map>
 #include <queue>
+#include <algorithm>
 
 #define BLOCK_SIZE 4096
 enum BUFF_MANAGEMENT {LRU, MRU, CLOCK};
