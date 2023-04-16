@@ -41,6 +41,7 @@ void load_records(BufferPool& pool, int start_block, int num_blocks, const char*
 int main() {
     // Create a buffer pool with LRU eviction strategy and a size of 3 blocks
     BufferPool pool(3, LRU);
+    populate_records();
 
     // Load the records for the "employees" table
     load_records(pool, 0, 2, "employees.bin");
@@ -53,9 +54,11 @@ int main() {
         char buffer1[BLOCK_SIZE], buffer2[BLOCK_SIZE];
         pool.read_block(i, buffer1);
         Record* record1 = reinterpret_cast<Record*>(buffer1);
+        cout << record1->id << " " << record1->name << " ";
         for (int j = 0; j < 1; j++) {
             pool.read_block(2 + j, buffer2);
             Record* record2 = reinterpret_cast<Record*>(buffer2);
+            cout << record2->id << " " << record2->name << endl;
             if (record1->id == record2->id) {
                 cout << record1->id << " " << record1->name << " " << record2->name << endl;
             }

@@ -44,7 +44,7 @@ private:
     std::deque<int> block_access_pattern;                           // used for LRU and MRU
     int clock_hand;                                                 // used for clock policy algorithm
 
-    BufferBlock& load_from_disk(int block_id);
+    BufferBlock& load_from_disk(int block_id, BufferBlock &block);
     void update_access(int block_id);
     void evict_block();
     void evict_LRU();

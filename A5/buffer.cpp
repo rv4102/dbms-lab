@@ -79,7 +79,8 @@ void BufferPool::read_block(int block_id, char *buffer){
     }
 
     // Block is not in the pool, load it from disk
-    BufferBlock &block = load_from_disk(block_id);
+    BufferBlock block;
+    block = load_from_disk(block_id, block);
     clock_hand = block_id; // set the clock_hand to point to a unpinned block
 
     // Add the block to the pool
@@ -117,7 +118,8 @@ void BufferPool::write_block(int block_id, const char *buffer)
     else
     {
         // Block is not in the pool, load it from disk
-        BufferBlock &block = load_from_disk(block_id);
+        BufferBlock block;
+        block = load_from_disk(block_id, block);
         clock_hand = block_id; // set the clock_hand to point to a unpinned block
 
         // Add the block to the pool
@@ -161,10 +163,9 @@ BufferPool::~BufferPool()
 }
 
 // Load a block from disk
-BufferBlock & BufferPool::load_from_disk(int block_id)
+BufferBlock & BufferPool::load_from_disk(int block_id, BufferBlock &block)
 {
     // Read the block from disk into a new buffer block
-    BufferBlock block;
     read_from_disk(block_id, block.get_buffer());
 
     // Return the new block
