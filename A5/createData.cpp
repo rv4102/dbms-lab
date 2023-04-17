@@ -9,17 +9,17 @@ using namespace std;
 // make a struct for database
 typedef struct{
     char name[20];
-    int age;
-    int weight;
-}Person;
+    int grade;
+    int rollno;
+}Student;
 
-void fill_data(Person *p){
+void fill_data(Student *p){
     for(int i=0; i<NUM_RECORDS; i++){
         string name = "abc" + to_string(i);
         strcpy(p[i].name, name.c_str());
-        p[i].age = rand()%20+5;
-        p[i].weight = rand()%50+20;
-        cout<<p[i].name<<" "<<p[i].age<<" "<<p[i].weight<<endl;
+        p[i].grade = rand()%12+1;
+        p[i].rollno = rand()%100+1;
+        cout<<p[i].name<<" "<<p[i].grade<<" "<<p[i].rollno<<endl;
     }
 }
 
@@ -27,10 +27,10 @@ int main(){
     FILE *file_pointer;
     file_pointer = fopen("data.bin", "wb");
 
-    Person p[NUM_RECORDS];
+    Student p[NUM_RECORDS];
     fill_data(p);
 
-    int recordSize = sizeof(Person);
+    int recordSize = sizeof(Student);
 
     // add first 4 bytes in page 1 as number of records in last page
     int i=0, totalRecords = NUM_RECORDS;

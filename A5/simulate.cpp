@@ -34,21 +34,21 @@ void simulate::processSelectQuery(FILE *file_pointer, int col1, string value){
         data += sizeof(int);
         while(numRecords--){
             char name[20];
-            int age;
-            int weight;
+            int grade;
+            int rollno;
             memcpy(name, data,20*sizeof(char));
-            memcpy(&age, data+20*sizeof(char), sizeof(int));
-            memcpy(&weight, data+20*sizeof(char)+sizeof(int), sizeof(int));
+            memcpy(&grade, data+20*sizeof(char), sizeof(int));
+            memcpy(&rollno, data+20*sizeof(char)+sizeof(int), sizeof(int));
             data += recordSize;
             numLeft -= recordSize;
-            if(col1==2 && age == atoi(value.c_str())){
-                cout<<name<<" "<<age<<" "<<weight<<endl;
+            if(col1==2 && grade == atoi(value.c_str())){
+                cout<<name<<" "<<grade<<" "<<rollno<<endl;
             }
-            else if(col1==3 && weight == atoi(value.c_str())){
-                cout<<name<<" "<<age<<" "<<weight<<endl;
+            else if(col1==3 && rollno == atoi(value.c_str())){
+                cout<<name<<" "<<grade<<" "<<rollno<<endl;
             }
             else if(col1==1 && value == name){
-                cout<<name<<" "<<age<<" "<<weight<<endl;
+                cout<<name<<" "<<grade<<" "<<rollno<<endl;
             }
         }
         // unpin page
