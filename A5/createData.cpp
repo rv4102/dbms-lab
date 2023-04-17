@@ -58,7 +58,7 @@ int main(){
             fwrite(&c, sizeof(char), 1, file_pointer);
             numLeft--;
         }
-        if(i==1000){
+        if(i==NUM_RECORDS){
             break;
         }
     }

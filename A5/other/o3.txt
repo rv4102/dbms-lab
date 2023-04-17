@@ -1,2 +1,0 @@
-Select a Replacement Algorithm:
-1 LRU, 2 CLOCK, 3 MRU: 

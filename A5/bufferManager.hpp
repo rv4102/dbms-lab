@@ -14,7 +14,7 @@ using namespace std;
 class pageFrame{
 private:
     bool is_pinned;             // either is_pinned or unpinned
-    bool ref_bit;         // for clock replacement algorithm
+    bool ref_bit;               // for clock replacement algorithm
     int num_page;               // page number of page
     char *data;                 // data in page
     FILE *file_pointer;         // file to which this page belongs to
