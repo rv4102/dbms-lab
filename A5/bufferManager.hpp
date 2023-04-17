@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 #include <iterator>
-#include <queue>
+#include <list>
 
 using namespace std;
 #define PAGE_SIZE 4096
@@ -73,8 +73,8 @@ public:
 
 class LRUBufferManager: public baseBufferManager{
 private:
-    deque<pageFrame> lru;  // list to implement LRU
-    unordered_map<pair<FILE*, int>, deque<pageFrame>::iterator, PairHash> mp;   // map to identify whether a page is present in buffer or not
+    list<pageFrame> lru;  // list to implement LRU
+    unordered_map<pair<FILE*, int>, list<pageFrame>::iterator, PairHash> mp;   // map to identify whether a page is present in buffer or not
 
 public:
     LRUBufferManager(int numFrames);
@@ -101,8 +101,8 @@ public:
 
 class MRUBufferManager: public baseBufferManager{
 private:
-    deque<pageFrame> mru;   // list to implement MRU
-    unordered_map<pair<FILE*, int>, deque<pageFrame>::iterator, PairHash> mp;   // map to identify whether a page is present in buffer or not
+    list<pageFrame> mru;   // list to implement MRU
+    unordered_map<pair<FILE*, int>, list<pageFrame>::iterator, PairHash> mp;   // map to identify whether a page is present in buffer or not
 
 public:
     MRUBufferManager(int numFrames);
