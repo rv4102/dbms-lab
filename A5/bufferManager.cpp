@@ -10,7 +10,7 @@ pageFrame::pageFrame(const pageFrame &pageFrame){
     memcpy(this->data, pageFrame.data, PAGE_SIZE);
     this->file_pointer = pageFrame.file_pointer;
     this->is_pinned = pageFrame.is_pinned;
-    this->second_chance = pageFrame.second_chance;
+    this->ref_bit = pageFrame.ref_bit;
 }
 
 // populates a frame in memory
@@ -19,7 +19,7 @@ void pageFrame::setFrame(FILE*file_pointer, int num_page, char* data, bool is_pi
     this->data = data;
     this->file_pointer = file_pointer;
     this->is_pinned = is_pinned;
-    this->second_chance = true;
+    this->ref_bit = true;
 }
 
 // unpin a frame
@@ -163,7 +163,7 @@ char *ClockBufferManager::getPage(FILE* file_pointer, int num_page){
             increment_accesses();
 
             // update second chance
-            bufferPool[i].second_chance = true;
+            bufferPool[i].ref_bit = true;
             bufferPool[i].is_pinned = true;
             increment_pageHits();
             return bufferPool[i].data;
@@ -186,9 +186,9 @@ char *ClockBufferManager::getPage(FILE* file_pointer, int num_page){
 
     // page is not present in memory and memory is full
     while(true){
-        if(bufferPool[clock_hand].second_chance){
+        if(bufferPool[clock_hand].ref_bit){
             // page has second chance
-            bufferPool[clock_hand].second_chance = false;
+            bufferPool[clock_hand].ref_bit = false;
             clock_hand = (clock_hand+1)%getNumFrames();
             continue;
         }
@@ -204,7 +204,7 @@ char *ClockBufferManager::getPage(FILE* file_pointer, int num_page){
         bufferPool[clock_hand].file_pointer = file_pointer;
         bufferPool[clock_hand].num_page = num_page;
         bufferPool[clock_hand].is_pinned = true;
-        bufferPool[clock_hand].second_chance = true;
+        bufferPool[clock_hand].ref_bit = true;
         int store = clock_hand;
         clock_hand = (clock_hand+1)%getNumFrames();
         increment_diskReads();
