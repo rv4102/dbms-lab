@@ -152,7 +152,7 @@ int main(){
         exit(1);
     }
 
-    cout<<"Enter number of frames: ";
+    cout<<"Enter max number of frames in buffer: ";
     int numFrames;
     cin >> numFrames;
 
