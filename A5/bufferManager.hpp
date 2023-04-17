@@ -4,7 +4,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <unordered_map>
+#include <map>
 #include <iterator>
 #include <list>
 
@@ -43,15 +43,6 @@ public:
 };
 
 
-struct PairHash {
-    size_t operator()(const pair<FILE *, int>& p) const {
-        size_t h1 = hash<FILE *>()(p.first);
-        size_t h2 = hash<int>()(p.second);
-        return h1 ^ h2;
-    }
-};
-
-
 class baseBufferManager {
 private:
     int numFrames;          // number of frames that can be fit in pool
@@ -74,7 +65,7 @@ public:
 class LRUBufferManager: public baseBufferManager{
 private:
     list<pageFrame> lru;  // list to implement LRU
-    unordered_map<pair<FILE*, int>, list<pageFrame>::iterator, PairHash> mp;   // map to identify whether a page is present in buffer or not
+    map<pair<FILE*, int>, list<pageFrame>::iterator> mp;   // map to identify whether a page is present in buffer or not
 
 public:
     LRUBufferManager(int numFrames);
@@ -102,7 +93,7 @@ public:
 class MRUBufferManager: public baseBufferManager{
 private:
     list<pageFrame> mru;   // list to implement MRU
-    unordered_map<pair<FILE*, int>, list<pageFrame>::iterator, PairHash> mp;   // map to identify whether a page is present in buffer or not
+    map<pair<FILE*, int>, list<pageFrame>::iterator> mp;   // map to identify whether a page is present in buffer or not
 
 public:
     MRUBufferManager(int numFrames);
