@@ -1,4 +1,0 @@
-Edit the .env file to specify the MySQL user and MySQL password.
-Install all required packages using requirements.txt
-The e-mail functionalities require : wkhtmltopdf (install using sudo apt install)
-Run using : python3 run.py

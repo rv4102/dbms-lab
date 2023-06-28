@@ -7,5 +7,3 @@
 3. [Shivam Raj](https://github.com/Shivam751/)
 4. [Kushaz Sehgal](https://github.com/kushazsehgal/)
 5. [Aniket Kumar](https://github.com/Ani-Kar/)
-
-To Reinitialize Database => mysql -u root -p < HMS/hospital_db.sql
