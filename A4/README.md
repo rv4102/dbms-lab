@@ -98,6 +98,10 @@ Where the credentials will be the ones you use to login to mysql server.
 |:--:|
 | *Doctor Add Test* |
 
+| ![](./images/sample_doctor_report.png) |
+|:--:|
+| *Sample Weekly Report for a Doctor* |
+
 | ![](./images/schema.png) |
 |:--:|
 | *Relational Schema for Hospital Management System* |
