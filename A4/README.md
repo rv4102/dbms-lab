@@ -10,7 +10,7 @@ This is a web application written in **Python Flask** and **Bootstrap CSS** with
 
 ## Dependencies
 
-1. [mysql](https://dev.mysql.com/doc/refman/8.0/en/installing.html)
+1. ![mysql](https://dev.mysql.com/doc/refman/8.0/en/installing.html)
 2. python@3.10
 3. All packages in requirements.txt (`python3 -m pip install -r requirements.txt`)
 4. wkhtmltopdf (`sudo apt install wkhtmltopdf`)
@@ -30,21 +30,74 @@ Where the credentials will be the ones you use to login to mysql server.
 
 ## Screenshots
 
-1. [Relational Schema for Hospital Management System](./images/schema.png)
-2. [Admin Dashboard](./images/admin_dashboard.png)
-3. [Admin Add/Delete User](./images/admin_add_del.png)
-4. [Login Page](./images/login.png)
-5. [Pop-Up in case of unauthorised access](./images/login_unauthorised.png)
-6. [Frontdesk Operator's Dashboard](./images/fdo_dashboard.png)
-7. [Register Patient Page](./images/fdo_register.png)
-8. [Admit Patient Page](./images/fdo_admit.png)
-9. [Schedule an Appointment Page](./images/fdo_appt.png)
-10. [Schedule a 'Normal' Appointment Page (date selector)](./images/fdo_appt_date.png)
-11. [DataEntry Operator's Dashboard](./images/deo_dashboard.png)
-12. [DataEntry Operator Add Treatment](./images/deo_add_treatment.png)
-13. [DataEntry Operator Treatment Form](./images/deo_treatment_filled.png)
-14. [DataEntry Operator Add Test Result](./images/deo_add_test.png)
-15. [DataEntry Operator Test Form](./images/deo_test_filled.png)
-16. [Doctor Dashboard](./images/doc_dashboard.png)
-17. [Doctor Query Patients](./images/doc_query_patients.png)
-18. [Doctor Add Test](./images/doc_add_test.png)
+| ![](./images/login.png) |
+|:--:|
+| *Login Page* |
+
+| ![](./images/login_unauthorised.png) |
+|:--:|
+| *Pop-Up in case of unauthorised access* |
+
+| ![Admin Dashboard](./images/admin_dashboard.png) | 
+|:--:| 
+| *Admin Dashboard* |
+
+| ![Admin Add/Delete User](./images/admin_add_del.png) |
+|:--:|
+| *Admin Add/Delete User* |
+
+| ![](./images/fdo_dashboard.png) |
+|:--:|
+| *Frontdesk Operator's Dashboard* |
+
+| ![](./images/fdo_register.png) |
+|:--:|
+| *Register Patient Page* |
+
+| ![](./images/fdo_admit.png) |
+|:--:|
+| *Admit Patient Page* |
+
+| ![](./images/fdo_appt.png) |
+|:--:|
+| *Schedule an Appointment Page* |
+
+| ![](./images/fdo_appt_date.png) |
+|:--:|
+| *Schedule a 'Normal' Appointment Page (date selector)* |
+
+| ![](./images/deo_dashboard.png) |
+|:--:|
+| *DataEntry Operator's Dashboard* |
+
+| ![](./images/deo_add_treatment.png) |
+|:--:|
+| *DataEntry Operator Add Treatment* |
+
+| ![](./images/deo_treatment_filled.png) |
+|:--:|
+| *DataEntry Operator Treatment Form* |
+
+| ![](./images/deo_add_test.png) |
+|:--:|
+| *DataEntry Operator Add Test Result* |
+
+| ![](./images/deo_test_filled.png) |
+|:--:|
+| *DataEntry Operator Test Form* |
+
+| ![](./images/doc_dashboard.png) |
+|:--:|
+| *Doctor Dashboard* |
+
+| ![](./images/doc_query_patients.png) |
+|:--:|
+| *Doctor Query Patients* |
+
+| ![](./images/doc_add_test.png) |
+|:--:|
+| *Doctor Add Test* |
+
+| ![](./images/schema.png) |
+|:--:|
+| *Relational Schema for Hospital Management System* |
