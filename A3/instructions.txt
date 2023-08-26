@@ -1,0 +1,10 @@
+For C:
+
+navigate to A3/C
+run : gcc queries.c -o q_c -Imysql -Lmysql/8.0.32/lib/ `mysql_config --libs`
+
+navigate to A3/Java
+run : java -cp mysql-connector-j-8.0.32.jar queries.java
+
+navigate to A3/Python
+run : python3 queries.py
