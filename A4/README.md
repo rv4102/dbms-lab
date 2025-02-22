@@ -10,7 +10,7 @@ This is a web application written in **Python Flask** and **Bootstrap CSS** with
 
 ## Dependencies
 
-1. ![mysql](https://dev.mysql.com/doc/refman/8.0/en/installing.html)
+1. [mysql](https://dev.mysql.com/doc/refman/8.0/en/installing.html)
 2. python@3.10
 3. All packages in requirements.txt (`python3 -m pip install -r requirements.txt`)
 4. wkhtmltopdf (`sudo apt install wkhtmltopdf`)
